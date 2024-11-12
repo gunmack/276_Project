@@ -8,7 +8,7 @@ import { execOnce } from 'next/dist/shared/lib/utils';
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: 'AIzaSyDaRVx0Dh_V7T6vaeNutG95HqkUVgQAhyU',
+  apiKey: 'AIzaSyD2MiQS9LJMwXh2E6w8vvidHFLfcP8y2FQ',
   authDomain: 'db12-d9987.firebaseapp.com',
   databaseURL: 'https://db12-d9987-default-rtdb.firebaseio.com',
   projectId: 'db12-d9987',
@@ -19,7 +19,7 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const firebase = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+const firebaseDB = initializeApp(firebaseConfig);
+// const analytics = getAnalytics(app);
 
-export default firebase;
+export default firebaseDB;
