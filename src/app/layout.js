@@ -3,20 +3,18 @@ import './globals.css';
 
 const ibmPlexMono = IBM_Plex_Mono({
   subsets: ['latin'],
-  weight: ['400', '700'],
+  weight: ['400', '700']
 });
 
 export const metadata = {
   title: 'QuizLing',
-  description: 'Language Learning',
+  description: 'Language Learning'
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${ibmPlexMono.className} antialiased`}>
-        {children}
-      </body>
+      <body className={`${ibmPlexMono.className} antialiased`}>{children}</body>
     </html>
   );
 }

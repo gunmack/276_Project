@@ -54,6 +54,7 @@ export default function MainMenu() {
 
   return (
     <div
+      data-testid="main menu"
       className="relative min-h-screen flex flex-col justify-center items-center p-8 sm:p-20 bg-gradient-to-r"
       style={{
         background: 'linear-gradient(to right, #3D6FB6, #4E9D99, #7FBFBA)'
