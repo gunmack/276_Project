@@ -7,8 +7,8 @@
   --foreground-light: #171717;
   --background-dark: #121212;
   --foreground-dark: #ededed;
-  --primary-color: #007bff;
-  --primary-color-hover: #0056b3;
+  --primary-color: #0a0202;
+  --primary-color-hover: #00b368;
   --secondary-bg: #f3f4f6;
   --border-color: #d1d5db;
   --input-bg: #ffffff;
@@ -16,26 +16,40 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background-light: var(--background-dark);
-    --foreground-light: var(--foreground-dark);
-    --secondary-bg: #1f2937;
-    --border-color: #374151;
-    --input-bg: #1a1a1a;
+    --background: #ffffff;
+    --foreground: #000000;
   }
 }
 
 body {
-  color: var(--foreground-light);
-  background: var(--background-light);
+  color: var(--foreground);
+  background: var(--background);
   font-family: 'Inter', sans-serif;
   display: flex;
-  justify-content: center;  /* Horizontally center */
-  align-items: center;      /* Vertically center */
-  min-height: 100vh;        /* Ensure the body takes full height of the viewport */
-  margin: 0;                /* Remove default margin */
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  
+  /* Apply animated gradient as background */
+  background: linear-gradient(90deg,  #3D6FB6, #4E9D99, #7FBFBA);
+  background-size: 200% 200%;
+  animation: gradient-x 15s ease infinite;
 }
 
-/* Container for the text-to-speech app */
+@keyframes gradient-x {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Additional styling for your components */
 .text-to-speech-container {
   display: flex;
   flex-direction: column;
@@ -48,6 +62,7 @@ body {
   margin: 40px auto;
   gap: 16px;
 }
+
 
 /* Input textarea */
 .text-input {
@@ -123,3 +138,5 @@ body {
   border-radius: 6px;
   text-align: center;
 }
+
+
