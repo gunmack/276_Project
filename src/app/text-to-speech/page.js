@@ -1,5 +1,5 @@
 
-import TextToSpeechButton from '../../../../components/TextToSpeechButton'
+import TextToSpeechButton from '../../../components/TextToSpeechButton'
 export default function Home() {
   return (
     <div>
