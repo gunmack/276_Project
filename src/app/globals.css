@@ -18,20 +18,13 @@
   :root {
     --background: #ffffff;
     --foreground: #000000;
-    --background: #ffffff;
-    --foreground: #000000;
   }
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: 'Inter', sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
 
   /* Apply animated gradient as background */
   background: linear-gradient(90deg, #3d6fb6, #4e9d99, #7fbfba);
