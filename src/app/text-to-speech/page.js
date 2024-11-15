@@ -2,7 +2,6 @@ import React from 'react';
 import Toolbar from '../Toolbar';
 import Link from 'next/link';
 
-
 export default function TextToSpeech() {
   return (
     <>
@@ -12,9 +11,8 @@ export default function TextToSpeech() {
         style={{
           background: 'linear-gradient(to right, #3D6FB6, #4E9D99, #7FBFBA)'
         }}
-        
       >
-        <Toolbar/>
+        <Toolbar />
         <main className="flex flex-col gap-8 row-start-2 items-center justify-center sm:items-start">
           <div className="flex flex-col justify-center items-center p-8 gap-4 font-[family-name:var(--font-geist-mono)]">
             <h1 className="text-5xl text-center mb-2">Text to Speech</h1>

@@ -70,7 +70,10 @@ export default function Toolbar() {
         </ul>
 
         <div className="absolute bottom-4 right-4">
-          <Link href="/main-menu" className="inline-flex items-center gap-2 text-lg font-medium bg-gray-200 p-2 hover:bg-gray-300 rounded-lg transition-all duration-300">
+          <Link
+            href="/main-menu"
+            className="inline-flex items-center gap-2 text-lg font-medium bg-gray-200 p-2 hover:bg-gray-300 rounded-lg transition-all duration-300"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
