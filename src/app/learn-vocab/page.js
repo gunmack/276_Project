@@ -88,7 +88,7 @@ export default function LearnVocab() {
         <main className="flex flex-col gap-8 row-start-2 items-center justify-center sm:items-start">
           <div className="flex flex-col justify-center items-center p-8 gap-4 font-[family-name:var(--font-geist-mono)]">
             <h1 className="text-5xl text-center mb-2">Learn Vocab</h1>
-            <div className="grid grid-cols-1 gap-4 mb-8 w-full">
+            <div className="grid grid-cols-1 gap-4 mb-2 w-full">
               <button>
                 <select
                   value={targetLanguage}
@@ -131,7 +131,7 @@ export default function LearnVocab() {
               </div>
             </div>
 
-            <div className=" grid grid-row p-12 m-12">
+            <div className=" grid grid-row p-8 m-8">
               <button
                 onClick={handleTranslate}
                 className="p-2 m-2 bg-black text-white rounded-lg  shadow-lg hover:bg-white hover:text-black"
