@@ -1,20 +1,14 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import Toolbar from '../Toolbar';
-import Link from 'next/link';
-import { GoogleGenerativeAI } from '@google/generative-ai';
 
 export default function LearnVocab() {
   const [inputText, setInputText] = useState('');
   const [targetLanguage, setTargetLanguage] = useState('en'); // Default target language
-  const [targetType, setTargetType] = useState('en');
   const [translations, setTranslations] = useState([]);
   const [generatedContent, setGeneratedContent] = useState(''); // State for generated content
   const [translatedText, setTranslatedText] = useState('');
   const [error, setError] = useState(null);
-
-  const apiKey = process.env.NEXT_PUBLIC_TRANSLATE_JULKAR;
-  const geminiKey = process.env.NEXT_PUBLIC_GEMINI_JULKAR;
 
   useEffect(() => {
     // Clear translations on component mount (page reload)
@@ -25,19 +19,18 @@ export default function LearnVocab() {
   async function handleTranslate() {
     setError(null); // Reset error state
     try {
-      const url = `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`;
-
-      const response = await fetch(url, {
+      const response = await fetch('/api/vocabTranslate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          q: inputText,
-          target: targetLanguage
-        })
+        body: JSON.stringify({ inputText, targetLanguage })
       });
 
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Error: ${errorText}`);
+      }
       const data = await response.json();
-      const translations = data.data.translations.map((t) => t.translatedText);
+      const translations = data.translations;
       setTranslations(translations);
       setTranslatedText(translations[0]);
     } catch (error) {
@@ -45,28 +38,22 @@ export default function LearnVocab() {
       console.error(error);
     }
   }
+
   async function callGemini() {
     setError(null); // Reset error state
     try {
-      const genAI = new GoogleGenerativeAI(geminiKey);
-      const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+      const response = await fetch('/api/generateVocab', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
 
-      const prompt = `The user is a second language student.
-      1. Then randomly pick a language: 
-        - French  
-        - German 
-        - Spanish 
-        - Italian
-      2. Repeat step 1 two times.
-      3. Pick a random word from the language. 
-      4. Now generate a random sentence with that word.
-      Do not include the language in the response. Do not include the category in the response.
-      Only respond with your result. Ensure the response in 1 language only.`;
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Error: ${errorText}`);
+      }
 
-      setTranslatedText('');
-      const result = await model.generateContent(prompt);
-      let generatedText = result.response.text();
-      generatedText = generatedText.replace(/\*\*/g, '');
+      const data = await response.json();
+      let generatedText = data.generatedText;
       setInputText(generatedText); // Update input text with generated content
       setGeneratedContent(generatedText); // Update state with generated content
     } catch (error) {
@@ -131,7 +118,7 @@ export default function LearnVocab() {
               </div>
             </div>
 
-            <div className=" grid grid-row p-8 m-8">
+            <div className=" grid grid-row p-12 m-12">
               <button
                 onClick={handleTranslate}
                 className="p-2 m-2 bg-black text-white rounded-lg  shadow-lg hover:bg-white hover:text-black"
