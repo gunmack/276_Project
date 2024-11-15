@@ -25,16 +25,11 @@ export default function LearnVocab() {
         body: JSON.stringify({ inputText, targetLanguage })
       });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Error: ${errorText}`);
-      }
       const data = await response.json();
       const translations = data.translations;
       setTranslations(translations);
       setTranslatedText(translations[0]);
     } catch (error) {
-      setError(error.message);
       console.error(error);
     }
   }
@@ -47,17 +42,11 @@ export default function LearnVocab() {
         headers: { 'Content-Type': 'application/json' }
       });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Error: ${errorText}`);
-      }
-
       const data = await response.json();
       let generatedText = data.generatedText;
       setInputText(generatedText); // Update input text with generated content
       setGeneratedContent(generatedText); // Update state with generated content
     } catch (error) {
-      setError(error.message);
       console.error(error);
     }
   }
