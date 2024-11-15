@@ -1,6 +1,7 @@
 import React from 'react';
 import Toolbar from '../Toolbar';
 import Link from 'next/link';
+import TextToSpeechButton from '../../../components/TextToSpeechButton';
 
 export default function TextToSpeech() {
   return (
@@ -16,6 +17,7 @@ export default function TextToSpeech() {
         <main className="flex flex-col gap-8 row-start-2 items-center justify-center sm:items-start">
           <div className="flex flex-col justify-center items-center p-8 gap-4 font-[family-name:var(--font-geist-mono)]">
             <h1 className="text-5xl text-center mb-2">Text to Speech</h1>
+            <TextToSpeechButton />
           </div>
         </main>
       </div>
