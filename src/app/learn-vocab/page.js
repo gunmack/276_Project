@@ -13,8 +13,8 @@ export default function LearnVocab() {
   const [translatedText, setTranslatedText] = useState('');
   const [error, setError] = useState(null);
 
-  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_TRANSLATE_API_KEY;
-  const geminiKey = process.env.NEXT_PUBLIC_GOOGLE_GEMINI_API_KEY;
+  const apiKey = process.env.NEXT_PUBLIC_TRANSLATE_JULKAR;
+  const geminiKey = process.env.NEXT_PUBLIC_GEMINI_JULKAR;
 
   useEffect(() => {
     // Clear translations on component mount (page reload)
@@ -47,41 +47,6 @@ export default function LearnVocab() {
   }
   async function callGemini() {
     setError(null); // Reset error state
-    // try {
-    //   const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${geminiKey}`;
-
-    //   const response = await fetch(url, {
-    //     method: 'POST',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify({
-    //       contents: [
-    //         {
-    //           parts: [
-    //             {
-    //               text: 'How to say happy birthday in spanish?' // Use the inputText as the prompt
-    //             }
-    //           ]
-    //         }
-    //       ]
-    //     })
-    //   });
-
-    //   const data = await response.json();
-    //   if (data.error) {
-    //     throw new Error(data.error.message);
-    //   }
-
-    //   if (!data.choices || data.choices.length === 0) {
-    //     throw new Error('No choices returned from the API');
-    //   }
-
-    //   const generatedContent = data.choices[0].text;
-    //   setTranslations([generatedContent]);
-    // } catch (error) {
-    //   setError(error.message);
-    //   console.error(error);
-    // }
-
     try {
       const genAI = new GoogleGenerativeAI(geminiKey);
       const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
