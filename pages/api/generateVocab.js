@@ -3,6 +3,9 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 
 export default async function handler(req, res) {
   const geminiKey = process.env.GOOGLE_CLOUD_GEMINI_JULKAR;
+  if (!apiKey) {
+    return res.status(500).json({ error: 'API key is missing' });
+  }
   const genAI = new GoogleGenerativeAI(geminiKey);
   const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 

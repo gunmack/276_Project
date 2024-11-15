@@ -5,6 +5,9 @@ export default async function handler(req, res) {
 
   const apiKey = process.env.GOOGLE_CLOUD_TRANSLATE_JULKAR;
   const url = `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`;
+  if (!apiKey) {
+    return res.status(500).json({ error: 'API key is missing' });
+  }
 
   try {
     const response = await fetch(url, {
