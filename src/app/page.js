@@ -1,5 +1,6 @@
 import Link from 'next/link';
 
+
 export default function Home() {
   return (
     <>
@@ -9,6 +10,7 @@ export default function Home() {
         style={{
           background: 'linear-gradient(to right, #3D6FB6, #4E9D99, #7FBFBA)'
         }}
+        
       >
         <main className="flex flex-col gap-8 row-start-2 items-center justify-center sm:items-start">
           <div className="flex flex-col justify-center items-center p-8 gap-4 font-[family-name:var(--font-geist-mono)]">
