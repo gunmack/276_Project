@@ -43,7 +43,7 @@ jobs:
       - name: Install dependencies
         run: npm install
         
-      - name: Set up Babel for Jest (if needed)
+      - name: Set up Babel for Jest (required)
         run: npm install --save-dev babel-jest @babel/preset-env @babel/preset-react
         
       - name: Restore babel.config.js for testing
@@ -51,3 +51,7 @@ jobs:
 
       - name: Run Jest tests
         run: npm run test
+
+      - name: Completely remove babel.config.js for production build deployment on vercel
+        run: |
+          mv babel.config.js babel.config.js.backup || echo "No Babel config to remove"
