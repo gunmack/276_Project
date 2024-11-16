@@ -10,14 +10,14 @@ export default async function handler(req, res) {
 
     const requestBody = {
       q: text,
-      target: targetLanguage, // Target language passed from the frontend
+      target: targetLanguage // Target language passed from the frontend
     };
 
     try {
       const response = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(requestBody),
+        body: JSON.stringify(requestBody)
       });
 
       const data = await response.json();

@@ -13,11 +13,13 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:e2e": "playwright test",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "test:clear": "jest --clearCache"
   },
   "dependencies": {
     "@google-cloud/text-to-speech": "^5.5.0",
     "@google/generative-ai": "^0.21.0",
+    "cross-fetch": "^4.0.0",
     "font-awesome": "^4.7.0",
     "framer-motion": "^11.11.11",
     "next": "15.0.2",
