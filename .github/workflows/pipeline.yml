@@ -19,7 +19,7 @@ jobs:
           node-version: '20.18.0'
 
       - name: Install dependencies
-        run: npm ci # for clean install
+        run: npm install
 
       - name: Set up Babel for Jest (if needed)
         run: npm install --save-dev babel-jest @babel/preset-env @babel/preset-react
