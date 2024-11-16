@@ -9,7 +9,12 @@
     "lint": "next lint",
     "check-format": "prettier --check .",
     "check-lint": "eslint . --ext ts --ext tsx --ext js  --ext jsx",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+     "test": "jest",
+    "test:watch": "jest --watch",
+    "test:e2e": "playwright test",
+    "test:coverage": "jest --coverage",
+    "test:clear": "jest --clearCache"
   },
   "dependencies": {
     "font-awesome": "^4.7.0",
