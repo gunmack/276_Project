@@ -21,9 +21,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Temporarily remove babel.config.js for production build
-        run: |
-          mv babel.config.js babel.config.js.backup || echo "No Babel config to remove"
+     # - name: Temporarily remove babel.config.js for production build
+      #  run: |
+      #   mv babel.config.js babel.config.js.backup || echo "No Babel config to remove"
 
       - name: Build the app
         run: npm run build
