@@ -21,14 +21,18 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Temporarily remove babel.config.js for production build
+        run: |
+          mv babel.config.js babel.config.js.backup || echo "No Babel config to remove"
+
+      - name: Build the app
+        run: npm run build
+
       - name: Set up Babel for Jest (if needed)
         run: npm install --save-dev babel-jest @babel/preset-env @babel/preset-react
 
       - name: Run Jest tests
         run: npm run test
-
-      - name: Build the app
-        run: npm run build
 
   test:
     runs-on: ubuntu-latest
