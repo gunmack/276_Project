@@ -3,14 +3,21 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background-light: #ffffff;
+  --foreground-light: #171717;
+  --background-dark: #121212;
+  --foreground-dark: #ededed;
+  --primary-color: #0a0202;
+  --primary-color-hover: #00b368;
+  --secondary-bg: #f3f4f6;
+  --border-color: #d1d5db;
+  --input-bg: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #ffffff;
+    --foreground: #000000;
   }
 }
 
@@ -18,4 +25,117 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+
+  /* Apply animated gradient as background */
+  background: linear-gradient(90deg, #3d6fb6, #4e9d99, #7fbfba);
+  background-size: 200% 200%;
+  animation: gradient-x 15s ease infinite;
+}
+
+@keyframes gradient-x {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Additional styling for your components */
+.text-to-speech-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: var(--secondary-bg);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 450px;
+  margin: 40px auto;
+  gap: 16px;
+}
+
+/* Input textarea */
+.text-input {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  background-color: var(--input-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  transition: border-color 0.2s ease;
+}
+
+.text-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.3);
+}
+
+/* Language dropdown */
+.language-dropdown {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  background-color: var(--input-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  transition: border-color 0.2s ease;
+  cursor: pointer;
+}
+
+.language-dropdown:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.3);
+}
+
+.animate-gradient-x {
+  background-size: 200% 200%;
+  animation: gradient-x 15s ease infinite;
+}
+
+/* Speak button */
+.speak-button {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease;
+}
+
+.speak-button:hover:not(:disabled) {
+  background-color: var(--primary-color-hover);
+  transform: translateY(-2px);
+}
+
+.speak-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.speak-button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+/* Translated text display box */
+.translated-text-box {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  color: var(--foreground-light);
+  background-color: var(--secondary-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  text-align: center;
 }
