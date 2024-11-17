@@ -3,8 +3,10 @@ name: CI Pipeline
 on:
   push:
     branches:
-      - test-workflow
+      - staging
   pull_request:
+    branches:
+      - staging
 
 jobs:
   build:
