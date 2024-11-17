@@ -1,0 +1,52 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - staging
+  pull_request:
+    branches:
+      - staging
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20.18.0'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build the app
+        run: npm run build
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20.18.0'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Restore babel.config.js for testing
+        run: mv babel.config.js.backup babel.config.js || echo "No Babel config to restore"
+
+      - name: Run Jest tests
+        run: npm run test
+
+      - name: Completely remove babel.config.js for production build deployment on vercel
+        run: |
+          mv babel.config.js babel.config.js.backup || echo "No Babel config to remove"
