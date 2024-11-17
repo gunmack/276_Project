@@ -39,9 +39,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Set up Babel for Jest (required)
-        run: npm install --save-dev babel-jest @babel/preset-env @babel/preset-react jest-environment-jsdom
-
       - name: Restore babel.config.js for testing
         run: mv babel.config.js.backup babel.config.js || echo "No Babel config to restore"
 
