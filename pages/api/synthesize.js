@@ -11,7 +11,7 @@ export default async function handler(req, res) {
     const voiceMap = {
       fr: { languageCode: 'fr-FR', ssmlGender: 'NEUTRAL' },
       de: { languageCode: 'de-DE', ssmlGender: 'NEUTRAL' },
-      es: { languageCode: 'es-ES', ssmlGender: 'NEUTRAL' },
+      es: { languageCode: 'es-ES', ssmlGender: 'NEUTRAL' }
     };
 
     const selectedLanguage = req.body.language || 'fr'; // Default to French
@@ -20,20 +20,22 @@ export default async function handler(req, res) {
     const requestBody = {
       input: { text: text },
       voice: voice,
-      audioConfig: { audioEncoding: 'MP3' },
+      audioConfig: { audioEncoding: 'MP3' }
     };
 
     try {
       const response = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(requestBody),
+        body: JSON.stringify(requestBody)
       });
 
       const data = await response.json();
 
       if (data.audioContent) {
-        res.status(200).json({ success: true, audioContent: data.audioContent });
+        res
+          .status(200)
+          .json({ success: true, audioContent: data.audioContent });
       } else {
         res.status(500).json({ success: false, error: data.error });
       }

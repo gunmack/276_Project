@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 // Helper function to decode HTML entities
 function decodeHtmlEntities(text) {
@@ -28,9 +28,9 @@ export default function TextToSpeechBox() {
       const translationResponse = await fetch('/api/translate', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ text, targetLanguage: selectedLanguage }),
+        body: JSON.stringify({ text, targetLanguage: selectedLanguage })
       });
 
       const translationData = await translationResponse.json();
@@ -44,9 +44,9 @@ export default function TextToSpeechBox() {
         const response = await fetch('/api/synthesize', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ text: decodedText }),
+          body: JSON.stringify({ text: decodedText })
         });
 
         const data = await response.json();
@@ -74,7 +74,7 @@ export default function TextToSpeechBox() {
   };
 
   return (
-    <div className="text-to-speech-container">
+    <div data-testid="tts-box" className="text-to-speech-container">
       <textarea
         value={text}
         onChange={(e) => setText(e.target.value)}
@@ -94,7 +94,11 @@ export default function TextToSpeechBox() {
         <option value="es">Spanish</option>
       </select>
       <br />
-      <button onClick={handleClick} disabled={isLoading} className="speak-button">
+      <button
+        onClick={handleClick}
+        disabled={isLoading}
+        className="speak-button"
+      >
         {isLoading ? 'Synthesizing...' : 'Speak Translated Text'}
       </button>
 
