@@ -44,7 +44,7 @@ body {
   }
 }
 
-/* Additional styling for your components */
+/* Additional styling */
 .text-to-speech-container {
   display: flex;
   flex-direction: column;
@@ -139,3 +139,4 @@ body {
   border-radius: 6px;
   text-align: center;
 }
+
