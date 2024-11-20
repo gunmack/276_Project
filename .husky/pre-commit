@@ -1,0 +1,19 @@
+# Pre-commit Hook
+
+prettier $(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g') --write --ignore-unknown
+git update-index --again
+npm run build
+
+## Check if the backup exists first
+
+if [ -f babel.config.js.backup ]; then
+mv babel.config.js.backup babel.config.js
+else
+echo "babel.config.js.backup not found, skipping restore."
+fi
+
+npm run test
+
+## If needed, move the config back to its backup after the tests
+
+mv babel.config.js babel.config.js.backup
