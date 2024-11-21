@@ -14,13 +14,15 @@
     "test:watch": "jest --watch",
     "test:e2e": "playwright test",
     "test:coverage": "jest --coverage",
-    "test:clear": "jest --clearCache"
+    "test:clear": "jest --clearCache",
+    "prepare": "husky"
   },
   "dependencies": {
     "@google-cloud/text-to-speech": "^5.5.0",
     "@google/generative-ai": "^0.21.0",
     "@heroicons/react": "^2.1.5",
     "cross-fetch": "^4.0.0",
+    "fill-range": "^7.1.1",
     "font-awesome": "^4.7.0",
     "framer-motion": "^11.11.11",
     "jest": "^29.7.0",
@@ -28,6 +30,7 @@
     "node-fetch": "^3.3.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "simple-swizzle": "^0.2.2"
     "react-tsparticles": "^2.12.2",
     "tsparticles": "^3.5.0"
   },
@@ -44,6 +47,7 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-react": "^7.37.2",
     "globals": "^15.12.0",
+    "husky": "^9.1.6",
     "jest-environment-jsdom": "^29.7.0",
     "jest-html-reporter": "^3.10.2",
     "postcss": "^8",
