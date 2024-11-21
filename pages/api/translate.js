@@ -1,11 +1,8 @@
 // pages/api/translate.js
 import fetch from 'node-fetch';
 
-
-
 // make the function to handle request and response
 export default async function handler(req, res) {
-
   // make sure the request method is POST
   if (req.method === 'POST') {
     // destructures the req body grabbing the text and target language.
@@ -18,9 +15,8 @@ export default async function handler(req, res) {
     //this is the request body that is being SENT to the google api
     const requestBody = {
       q: text,
-      target: targetLanguage, // Target language passed from the frontend
+      target: targetLanguage // Target language passed from the frontend
     };
-
 
     try {
       // using fetch function to make POST request being sent to the Google Cloud Translation API
@@ -29,7 +25,7 @@ export default async function handler(req, res) {
         // makes sure to show API we are sending it in JSON format
         headers: { 'Content-Type': 'application/json' },
         // the fetch expects it to be a string, so we turn the request body into a JSON string
-        body: JSON.stringify(requestBody),
+        body: JSON.stringify(requestBody)
       });
 
       // stores the response into data
@@ -55,7 +51,7 @@ export default async function handler(req, res) {
       res.status(500).json({ success: false, error: error.message });
     }
   } else {
-    // the case where it is not a POST request 
+    // the case where it is not a POST request
     res.status(405).json({ message: 'Method not allowed' });
   }
 }

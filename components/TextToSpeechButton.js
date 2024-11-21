@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 // helper function it helps decode any HTML entities in the translated text so its a clean readable output.
 function decodeHtmlEntities(text) {
@@ -13,13 +13,13 @@ function decodeHtmlEntities(text) {
 // makes the function for the component
 export default function TextToSpeechBox() {
   //stores the user's input text
-  const [text, setText] = useState(''); 
+  const [text, setText] = useState('');
   // tracks whether APIs are currently being called to show a loading state
-  const [isLoading, setIsLoading] = useState(false); 
+  const [isLoading, setIsLoading] = useState(false);
   //stores translated text recieved from API
-  const [translatedText, setTranslatedText] = useState(''); 
+  const [translatedText, setTranslatedText] = useState('');
   // tracks the currently selected language (default french)
-  const [selectedLanguage, setSelectedLanguage] = useState('fr'); 
+  const [selectedLanguage, setSelectedLanguage] = useState('fr');
 
   // this is the main function that is triggered when the user clicks "speak translated text"
   const handleClick = async () => {
@@ -38,19 +38,17 @@ export default function TextToSpeechBox() {
       const translationResponse = await fetch('/api/translate', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
         //sends the text and target language to the API
-        body: JSON.stringify({ text, targetLanguage: selectedLanguage }),
+        body: JSON.stringify({ text, targetLanguage: selectedLanguage })
       });
-
 
       // gets the translation resposne and store it in translationData
       const translationData = await translationResponse.json();
 
       // checks if we actually got stuff back
       if (translationData.success && translationData.translatedText) {
-
         // Decode HTML entities in the translated text
         const decodedText = decodeHtmlEntities(translationData.translatedText);
         setTranslatedText(decodedText); // Update translated text state
@@ -59,23 +57,22 @@ export default function TextToSpeechBox() {
         const response = await fetch('/api/synthesize', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ text: decodedText }),
+          body: JSON.stringify({ text: decodedText })
         });
-        
+
         // gets response and stores it in data
         const data = await response.json();
 
         // checks if its a sucess
         if (data.success && data.audioContent) {
-          // checking the audio stuff and playing it 
+          // checking the audio stuff and playing it
           const audioBuffer = Buffer.from(data.audioContent, 'base64');
           const audioBlob = new Blob([audioBuffer], { type: 'audio/mp3' });
           const audioUrl = URL.createObjectURL(audioBlob);
           const audio = new Audio(audioUrl);
           audio.play();
-
         } else {
           // otherwise give error if it was a problem with the data
           console.error('Error synthesizing speech:', data.error);
@@ -96,7 +93,7 @@ export default function TextToSpeechBox() {
   };
 
   return (
-    <div className="text-to-speech-container">
+    <div data-testid="tts-box" className="text-to-speech-container">
       <textarea
         value={text}
         onChange={(e) => setText(e.target.value)}
@@ -116,7 +113,11 @@ export default function TextToSpeechBox() {
         <option value="es">Spanish</option>
       </select>
       <br />
-      <button onClick={handleClick} disabled={isLoading} className="speak-button">
+      <button
+        onClick={handleClick}
+        disabled={isLoading}
+        className="speak-button"
+      >
         {isLoading ? 'Synthesizing...' : 'Speak Translated Text'}
       </button>
 

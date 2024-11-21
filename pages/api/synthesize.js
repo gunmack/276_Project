@@ -17,11 +17,11 @@ export default async function handler(req, res) {
     const voiceMap = {
       fr: { languageCode: 'fr-FR', ssmlGender: 'NEUTRAL' },
       de: { languageCode: 'de-DE', ssmlGender: 'NEUTRAL' },
-      es: { languageCode: 'es-ES', ssmlGender: 'NEUTRAL' },
+      es: { languageCode: 'es-ES', ssmlGender: 'NEUTRAL' }
     };
 
-    // extracts the language property and defaults to french if nothing is chosen 
-    const selectedLanguage = req.body.language || 'fr'; 
+    // extracts the language property and defaults to french if nothing is chosen
+    const selectedLanguage = req.body.language || 'fr';
     // looks up voice config for ur selected language in the voice map and plays it
     const voice = voiceMap[selectedLanguage] || voiceMap['fr'];
 
@@ -32,7 +32,7 @@ export default async function handler(req, res) {
       // the languag voice we've chosen
       voice: voice,
       // and we want it in MP3
-      audioConfig: { audioEncoding: 'MP3' },
+      audioConfig: { audioEncoding: 'MP3' }
     };
 
     // making a POST request to the Goggle Cloud using the fetch function.
@@ -42,16 +42,18 @@ export default async function handler(req, res) {
         // tells api that we are sending the request in JSON Format
         headers: { 'Content-Type': 'application/json' },
         // the fetch expects it to be a string, so we turn the request body into a JSON string
-        body: JSON.stringify(requestBody),
+        body: JSON.stringify(requestBody)
       });
 
       // stores the response form the api into data
       const data = await response.json();
 
-      // checking if the audio exists in the API response  
+      // checking if the audio exists in the API response
       if (data.audioContent) {
         //if it is send the 200OK response with audio
-        res.status(200).json({ success: true, audioContent: data.audioContent });
+        res
+          .status(200)
+          .json({ success: true, audioContent: data.audioContent });
       } else {
         // if not sned the 500 internal server error
         res.status(500).json({ success: false, error: data.error });
