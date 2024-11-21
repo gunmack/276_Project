@@ -25,7 +25,9 @@ export default function Flashcards() {
 
         // Check if generatedText is a valid string
         if (generatedText && typeof generatedText === 'string') {
-          const sentences = generatedText.split('\n').map(sentence => sentence.trim());
+          const sentences = generatedText
+            .split('\n')
+            .map((sentence) => sentence.trim());
           if (sentences.length > 0) {
             setCurrentFlashcard({
               original: sentences[0], // Take the first sentence for simplicity
@@ -47,7 +49,10 @@ export default function Flashcards() {
       const response = await fetch('/api/vocabTranslate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ inputText: currentFlashcard.original, targetLanguage: 'en' }) // Translate to English
+        body: JSON.stringify({
+          inputText: currentFlashcard.original,
+          targetLanguage: 'en'
+        }) // Translate to English
       });
 
       const data = await response.json();
@@ -97,9 +102,13 @@ export default function Flashcards() {
             <div className="grid grid-cols-1 gap-4 mb-4 w-full">
               <div className="col-span-1 w-full h-80 flex justify-center items-center rounded-lg bg-white shadow-md">
                 <div className="p-8 text-center">
-                  <h2 className="text-xl font-bold">{currentFlashcard.original}</h2>
+                  <h2 className="text-xl font-bold">
+                    {currentFlashcard.original}
+                  </h2>
                   {currentFlashcard.translation && (
-                    <p className="mt-4 text-lg text-gray-700">{currentFlashcard.translation}</p>
+                    <p className="mt-4 text-lg text-gray-700">
+                      {currentFlashcard.translation}
+                    </p>
                   )}
                 </div>
               </div>

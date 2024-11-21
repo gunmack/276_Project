@@ -63,7 +63,7 @@ export default function Toolbar() {
           top: 0,
           left: 0,
           height: '100vh',
-          zIndex: 1000,
+          zIndex: 1000
         }}
       >
         <ul className="flex flex-col gap-6 pt-20">
@@ -125,7 +125,6 @@ export default function Toolbar() {
           <span className="block w-6 h-0.5 bg-black"></span>
         </button>
       )}
-      
     </>
   );
 }
