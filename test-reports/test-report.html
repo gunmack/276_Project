@@ -271,18 +271,18 @@
     <div class="jesthtml-content">
       <header><h1 id="title">Test Report</h1></header>
       <div id="metadata-container">
-        <div id="timestamp">Started: 2024-11-16 16:25:44</div>
+        <div id="timestamp">Started: 2024-11-20 22:59:19</div>
         <div id="summary">
           <div id="suite-summary">
             <div class="summary-total">Suites (1)</div>
-            <div class="summary-passed">1 passed</div>
-            <div class="summary-failed summary-empty">0 failed</div>
+            <div class="summary-passed summary-empty">0 passed</div>
+            <div class="summary-failed">1 failed</div>
             <div class="summary-pending summary-empty">0 pending</div>
           </div>
           <div id="test-summary">
             <div class="summary-total">Tests (9)</div>
-            <div class="summary-passed">9 passed</div>
-            <div class="summary-failed summary-empty">0 failed</div>
+            <div class="summary-passed">8 passed</div>
+            <div class="summary-failed">1 failed</div>
             <div class="summary-pending summary-empty">0 pending</div>
           </div>
         </div>
@@ -298,7 +298,7 @@
             <div class="suite-path">
               C:\Users\jreed\Code\fall_24\cmpt276_code\276_Project\__tests__\pages.test.js
             </div>
-            <div class="suite-time">1.452s</div>
+            <div class="suite-time">1.817s</div>
           </div></label
         >
         <div class="suite-tests">
@@ -307,7 +307,7 @@
               <div class="test-suitename">App</div>
               <div class="test-title">should render Landing page</div>
               <div class="test-status">passed</div>
-              <div class="test-duration">0.038s</div>
+              <div class="test-duration">0.039s</div>
             </div>
           </div>
           <div class="test-result passed">
@@ -315,7 +315,7 @@
               <div class="test-suitename">App</div>
               <div class="test-title">should render Main Menu</div>
               <div class="test-status">passed</div>
-              <div class="test-duration">0.016s</div>
+              <div class="test-duration">0.013s</div>
             </div>
           </div>
           <div class="test-result passed">
@@ -323,15 +323,227 @@
               <div class="test-suitename">App</div>
               <div class="test-title">should render Achievements page</div>
               <div class="test-status">passed</div>
-              <div class="test-duration">0.007s</div>
+              <div class="test-duration">0.006s</div>
             </div>
           </div>
-          <div class="test-result passed">
+          <div class="test-result failed">
             <div class="test-info">
               <div class="test-suitename">App</div>
               <div class="test-title">should render Ai Conversations page</div>
-              <div class="test-status">passed</div>
-              <div class="test-duration">0.006s</div>
+              <div class="test-status">failed</div>
+              <div class="test-duration">0.022s</div>
+            </div>
+            <div class="failureMessages">
+              <pre class="failureMsg">
+TestingLibraryElementError: Unable to find an element by: [data-testid="AI conversations"]
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;div
+      class="chatbot-container"
+    &gt;
+      &lt;div
+        class="absolute top-0 left-0 h-full bg-white p-4 shadow-lg transition-transform duration-300 transform -translate-x-full"
+        style="width: 20%;"
+      &gt;
+        &lt;ul
+          class="flex flex-col gap-6 pt-20"
+        &gt;
+          &lt;a
+            href="./learn-vocab"
+          &gt;
+            &lt;button
+              class="w-full h-14 rounded-lg border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background hover:bg-[#5999AE] dark:hover:bg-[#5999AE] text-sm sm:text-base shadow-md"
+            &gt;
+              Learn Vocab
+            &lt;/button&gt;
+          &lt;/a&gt;
+          &lt;a
+            href="./quizzes"
+          &gt;
+            &lt;button
+              class="w-full h-14 rounded-lg border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background hover:bg-[#5999AE] dark:hover:bg-[#5999AE] text-sm sm:text-base shadow-md"
+            &gt;
+              Quizzes
+            &lt;/button&gt;
+          &lt;/a&gt;
+          &lt;a
+            href="./text-to-speech"
+          &gt;
+            &lt;button
+              class="w-full h-14 rounded-lg border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background hover:bg-[#5999AE] dark:hover:bg-[#5999AE] text-sm sm:text-base shadow-md"
+            &gt;
+              Text-to-Speech
+            &lt;/button&gt;
+          &lt;/a&gt;
+          &lt;a
+            href="./ai-conversations"
+          &gt;
+            &lt;button
+              class="w-full h-14 rounded-lg border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background hover:bg-[#5999AE] dark:hover:bg-[#5999AE] text-sm sm:text-base shadow-md"
+            &gt;
+              AI Conversations
+            &lt;/button&gt;
+          &lt;/a&gt;
+          &lt;a
+            href="./flashcards"
+          &gt;
+            &lt;button
+              class="w-full h-14 rounded-lg border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background hover:bg-[#5999AE] dark:hover:bg-[#5999AE] text-sm sm:text-base shadow-md"
+            &gt;
+              Flashcards
+            &lt;/button&gt;
+          &lt;/a&gt;
+          &lt;a
+            href="./achievements"
+          &gt;
+            &lt;button
+              class="w-full h-14 rounded-lg border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background hover:bg-[#5999AE] dark:hover:bg-[#5999AE] text-sm sm:text-base shadow-md"
+            &gt;
+              Achievements
+            &lt;/button&gt;
+          &lt;/a&gt;
+        &lt;/ul&gt;
+        &lt;div
+          class="absolute bottom-4 right-4"
+        &gt;
+          &lt;a
+            class="inline-flex items-center gap-2 text-lg font-medium bg-gray-200 p-2 hover:bg-gray-300 rounded-lg transition-all duration-300"
+            href="/main-menu"
+          &gt;
+            &lt;svg
+              class="w-6 h-6 text-gray-700 transition-all duration-300"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            &gt;
+              &lt;path
+                d="M3 10.5L12 4.5l9 6v9.75a.75.75 0 01-.75.75H3.75a.75.75 0 01-.75-.75V10.5z"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              /&gt;
+              &lt;path
+                d="M9.75 21V11.25h4.5V21"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              /&gt;
+            &lt;/svg&gt;
+            &lt;span
+              class="text-gray-700"
+            &gt;
+              Home
+            &lt;/span&gt;
+          &lt;/a&gt;
+        &lt;/div&gt;
+        &lt;button
+          class="absolute top-8 right-4 flex flex-col items-center justify-center w-12 h-12 hover:bg-[#d1d1d1] dark:hover:bg-[#d1d1d1] p-2 bg-gray-200 rounded transition-all duration-300"
+        &gt;
+          &lt;span
+            class="block w-7 h-0.5 bg-black mb-1 rounded-md"
+          /&gt;
+          &lt;span
+            class="block w-7 h-0.5 bg-black mb-1 rounded-md"
+          /&gt;
+          &lt;span
+            class="block w-7 h-0.5 bg-black rounded-md"
+          /&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+      &lt;button
+        class="fixed top-8 left-8 flex flex-col items-center justify-center w-10 h-10 hover:bg-[#d1d1d1] dark:hover:bg-[#d1d1d1] p-2 bg-gray-200 rounded"
+      &gt;
+        &lt;span
+          class="block w-6 h-0.5 bg-black mb-1"
+        /&gt;
+        &lt;span
+          class="block w-6 h-0.5 bg-black mb-1"
+        /&gt;
+        &lt;span
+          class="block w-6 h-0.5 bg-black"
+        /&gt;
+      &lt;/button&gt;
+      &lt;h1&gt;
+        Gemini Multilingual Chatbot
+      &lt;/h1&gt;
+      &lt;label
+        for="language-select"
+      &gt;
+        Choose a Language: 
+      &lt;/label&gt;
+      &lt;select
+        class="language-dropdown"
+        id="language-select"
+      &gt;
+        &lt;option
+          value="French"
+        &gt;
+          French
+        &lt;/option&gt;
+        &lt;option
+          value="German"
+        &gt;
+          German
+        &lt;/option&gt;
+        &lt;option
+          value="Spanish"
+        &gt;
+          Spanish
+        &lt;/option&gt;
+        &lt;option
+          value="English"
+        &gt;
+          English
+        &lt;/option&gt;
+      &lt;/select&gt;
+      &lt;div
+        class="chat-area"
+      /&gt;
+      &lt;div
+        class="input-container"
+      &gt;
+        &lt;input
+          class="text-input"
+          placeholder="Type your message..."
+          type="text"
+          value=""
+        /&gt;
+        &lt;button
+          class="speak-button"
+          disabled=""
+        &gt;
+          Send
+        &lt;/button&gt;
+      &lt;/div&gt;
+      &lt;button
+        class="top-right-clear"
+      &gt;
+        Clear Chat
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+    at Object.getElementError (C:\Users\jreed\Code\fall_24\cmpt276_code\276_Project\node_modules\@testing-library\dom\dist\config.js:37:19)
+    at C:\Users\jreed\Code\fall_24\cmpt276_code\276_Project\node_modules\@testing-library\dom\dist\query-helpers.js:76:38
+    at C:\Users\jreed\Code\fall_24\cmpt276_code\276_Project\node_modules\@testing-library\dom\dist\query-helpers.js:52:17
+    at C:\Users\jreed\Code\fall_24\cmpt276_code\276_Project\node_modules\@testing-library\dom\dist\query-helpers.js:95:19
+    at Object.getByTestId (C:\Users\jreed\Code\fall_24\cmpt276_code\276_Project\__tests__\pages.test.js:41:29)
+    at Promise.then.completed (C:\Users\jreed\Code\fall_24\cmpt276_code\276_Project\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (C:\Users\jreed\Code\fall_24\cmpt276_code\276_Project\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (C:\Users\jreed\Code\fall_24\cmpt276_code\276_Project\node_modules\jest-circus\build\run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at _runTest (C:\Users\jreed\Code\fall_24\cmpt276_code\276_Project\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (C:\Users\jreed\Code\fall_24\cmpt276_code\276_Project\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (C:\Users\jreed\Code\fall_24\cmpt276_code\276_Project\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Users\jreed\Code\fall_24\cmpt276_code\276_Project\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Users\jreed\Code\fall_24\cmpt276_code\276_Project\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
+    at jestAdapter (C:\Users\jreed\Code\fall_24\cmpt276_code\276_Project\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
+    at runTestInternal (C:\Users\jreed\Code\fall_24\cmpt276_code\276_Project\node_modules\jest-runner\build\runTest.js:367:16)
+    at runTest (C:\Users\jreed\Code\fall_24\cmpt276_code\276_Project\node_modules\jest-runner\build\runTest.js:444:34)</pre
+              >
             </div>
           </div>
           <div class="test-result passed">
@@ -339,7 +551,7 @@
               <div class="test-suitename">App</div>
               <div class="test-title">should render Flashcards page</div>
               <div class="test-status">passed</div>
-              <div class="test-duration">0.007s</div>
+              <div class="test-duration">0.006s</div>
             </div>
           </div>
           <div class="test-result passed">
@@ -347,7 +559,7 @@
               <div class="test-suitename">App</div>
               <div class="test-title">should render Learn Vocab page</div>
               <div class="test-status">passed</div>
-              <div class="test-duration">0.018s</div>
+              <div class="test-duration">0.014s</div>
             </div>
           </div>
           <div class="test-result passed">
@@ -355,7 +567,7 @@
               <div class="test-suitename">App</div>
               <div class="test-title">should render Quizzes page</div>
               <div class="test-status">passed</div>
-              <div class="test-duration">0.005s</div>
+              <div class="test-duration">0.008s</div>
             </div>
           </div>
           <div class="test-result passed">
@@ -363,7 +575,7 @@
               <div class="test-suitename">App</div>
               <div class="test-title">should render Text to Speech page</div>
               <div class="test-status">passed</div>
-              <div class="test-duration">0.008s</div>
+              <div class="test-duration">0.014s</div>
             </div>
           </div>
           <div class="test-result passed">
