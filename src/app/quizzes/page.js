@@ -1,4 +1,5 @@
-"use client";
+// pages/quizzes/page.js
+'use client';
 
 import React, { useState } from 'react';
 import Toolbar from '../Toolbar';
@@ -8,15 +9,18 @@ export default function Quizzes() {
   const [userAnswer, setUserAnswer] = useState('');
   const [feedback, setFeedback] = useState('');
   const [loading, setLoading] = useState(false);
+  const [quizType, setQuizType] = useState('word-translation'); // Default quiz type
 
   async function fetchQuiz() {
     setLoading(true);
     setQuiz(null);
     setFeedback('');
+    setUserAnswer(''); // Reset the user's input answer
     try {
       const response = await fetch('/api/generateQuiz', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ quizType })
       });
       const data = await response.json();
       setQuiz(data); // Store the quiz data
@@ -31,11 +35,15 @@ export default function Quizzes() {
   function checkAnswer() {
     if (!quiz || !userAnswer) return;
     const correctAnswer = quiz.correctAnswer;
-    const correctOption = ['A', 'B', 'C', 'D'][quiz.options.indexOf(correctAnswer)];
+    const correctOption = ['A', 'B', 'C', 'D'][
+      quiz.options.indexOf(correctAnswer)
+    ];
     if (userAnswer.toUpperCase() === correctOption) {
       setFeedback('🎉 Correct!');
     } else {
-      setFeedback(`❌ Incorrect. The correct answer was ${correctOption}: ${correctAnswer}`);
+      setFeedback(
+        `❌ Incorrect. The correct answer was ${correctOption}: ${correctAnswer}`
+      );
     }
   }
 
@@ -44,7 +52,7 @@ export default function Quizzes() {
       data-testid="Quizzes"
       className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-ibmPlexMono)] bg-gradient-to-r"
       style={{
-        background: 'linear-gradient(to right, #3D6FB6, #4E9D99, #7FBFBA)',
+        background: 'linear-gradient(to right, #3D6FB6, #4E9D99, #7FBFBA)'
       }}
     >
       <Toolbar />
@@ -54,14 +62,27 @@ export default function Quizzes() {
             Language Quizzes
           </h1>
           <p className="text-lg text-center text-white mb-6 max-w-md">
-            Test your language skills! Generate a random quiz that will ask you to translate a word or phrase. Choose the correct option and see how well you do!
+            Test your language skills! Generate a random quiz that will ask you
+            to translate a word or phrase. Choose the correct option and see how
+            well you do!
           </p>
+          <div className="mb-4">
+            <label className="text-white mr-4">Select Quiz Type:</label>
+            <select
+              value={quizType}
+              onChange={(e) => setQuizType(e.target.value)}
+              className="p-2 rounded-md"
+            >
+              <option value="word-translation">Word Translation</option>
+              <option value="phrase-translation">Phrase Translation</option>
+            </select>
+          </div>
           <button
             onClick={fetchQuiz}
             disabled={loading}
             className="px-8 py-3 bg-black text-white text-lg font-semibold rounded-md shadow-md hover:bg-gray-800 hover:scale-105 transition-transform duration-200"
           >
-            {loading ? 'Loading...' : 'Generate Random Quiz'}
+            {loading ? 'Loading...' : 'Generate Quiz'}
           </button>
         </div>
 
@@ -71,7 +92,10 @@ export default function Quizzes() {
             <ul className="list-none mb-6">
               {quiz.options.map((option, index) => (
                 <li key={index} className="mb-2">
-                  <span className="font-bold">{['A', 'B', 'C', 'D'][index]}:</span> {option}
+                  <span className="font-bold">
+                    {['A', 'B', 'C', 'D'][index]}:
+                  </span>{' '}
+                  {option}
                 </li>
               ))}
             </ul>
@@ -93,7 +117,9 @@ export default function Quizzes() {
             {feedback && (
               <p
                 className={`mt-6 text-lg font-semibold ${
-                  feedback.includes('Correct') ? 'text-green-600' : 'text-red-600'
+                  feedback.includes('Correct')
+                    ? 'text-green-600'
+                    : 'text-red-600'
                 }`}
               >
                 {feedback}
