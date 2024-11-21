@@ -30,7 +30,7 @@
     "node-fetch": "^3.3.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "simple-swizzle": "^0.2.2"
+    "simple-swizzle": "^0.2.2",
     "react-tsparticles": "^2.12.2",
     "tsparticles": "^3.5.0"
   },

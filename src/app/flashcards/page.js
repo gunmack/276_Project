@@ -2,6 +2,12 @@
 import React, { useState, useEffect } from 'react';
 import Toolbar from '../Toolbar';
 
+function decodeHtmlEntities(text) {
+  const textArea = document.createElement('textarea');
+  textArea.innerHTML = text;
+  return textArea.value;
+}
+
 export default function Flashcards() {
   const [currentFlashcard, setCurrentFlashcard] = useState(null);
   const [error, setError] = useState(null);
@@ -52,15 +58,18 @@ export default function Flashcards() {
         body: JSON.stringify({
           inputText: currentFlashcard.original,
           targetLanguage: 'en'
-        }) // Translate to English
+        })
       });
 
       const data = await response.json();
       const translations = data.translations;
 
+      // Decode HTML entities in the translated text
+      const decodedText = decodeHtmlEntities(translations[0]);
+
       setCurrentFlashcard({
         ...currentFlashcard,
-        translation: translations[0]
+        translation: decodedText // Update with the decoded text
       });
     } catch (error) {
       console.error(error);
@@ -72,9 +81,6 @@ export default function Flashcards() {
     <div
       data-testid="Flashcards"
       className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-ibmPlexMono)] bg-gradient-to-r"
-      style={{
-        background: 'linear-gradient(to right, #3D6FB6, #4E9D99, #7FBFBA)'
-      }}
     >
       <Toolbar />
       <main className="flex flex-col gap-8 row-start-2 items-center justify-center sm:items-start">
@@ -90,8 +96,8 @@ export default function Flashcards() {
                 <option value="">Select a language</option>
                 <option value="de">German</option>
                 <option value="es">Spanish</option>
-                <option value="fr-FR">French (French)</option>
-                <option value="fr-CA">French (Canadian)</option>
+                <option value="fr-FR">French (France)</option>
+                <option value="fr-CA">French (Canada)</option>
                 <option value="it">Italian</option>
                 {/* Add more language options as needed */}
               </select>
