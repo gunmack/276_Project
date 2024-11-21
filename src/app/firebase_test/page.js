@@ -1,13 +1,29 @@
+/**
+ * To practice communication with Firebase Realtime Database
+ */
+
 'use client';
 import React, { useEffect, useState } from 'react';
-import firebaseDB from '../../../firebase_config'; // Assuming the correct path to your configuration file
+import { firebaseDB } from '../../../firebase_config';
 import { getDatabase, ref, onValue, update } from 'firebase/database';
-
-// App.js
+import { useAuth } from '../context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 function FirebaseOps() {
   const [data, setData] = useState([]);
   const [entryCount, setEntryCount] = useState(0);
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/auth'); // Redirect to login page if not logged in
+    }
+  }, [user, loading, router]);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   useEffect(() => {
     // Initialize the Firebase database with the provided configuration

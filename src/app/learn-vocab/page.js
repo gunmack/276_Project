@@ -1,6 +1,8 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import Toolbar from '../Toolbar';
+import { useAuth } from '../context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 export default function LearnVocab() {
   const [inputText, setInputText] = useState('');
@@ -9,6 +11,18 @@ export default function LearnVocab() {
   const [generatedContent, setGeneratedContent] = useState(''); // State for generated content
   const [translatedText, setTranslatedText] = useState('');
   const [error, setError] = useState(null);
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/auth'); // Redirect to login page if not logged in
+    }
+  }, [user, loading, router]);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   useEffect(() => {
     // Clear translations on component mount (page reload)

@@ -1,11 +1,33 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { signOut, onAuthStateChanged } from 'firebase/auth';
+
+import { getAuth } from 'firebase/auth';
 
 export default function Toolbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [buttonVisible, setButtonVisible] = useState(true);
+  const [username, setUsername] = useState(''); // State to store the username
+  const auth = getAuth();
+
+  useEffect(() => {
+    // Listen for authentication state changes and retrieve the username
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUsername(user.displayName || 'Anonymous User'); // Set displayName or fallback to 'User'
+      } else {
+        setUsername(''); // Clear username if not authenticated
+      }
+    });
+
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    }; // Clean up the listener
+  }, [auth]);
 
   const toggleMenu = () => {
     if (menuOpen) {
@@ -17,6 +39,16 @@ export default function Toolbar() {
     } else {
       setMenuOpen(true);
     }
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth); // Sign out the user
+    } catch (error) {
+      console.error('Error logging out:', error); // Log any errors
+      alert('An error occurred while logging out. Please try again.');
+    }
+    alert('Success! You will be redirected to the login page.');
   };
 
   const features = [
@@ -60,6 +92,9 @@ export default function Toolbar() {
         style={{ width: '20%' }}
       >
         <ul className="flex flex-col gap-6 pt-20">
+          <div className="pt-4 pb-6 text-center">
+            <h2 className="text-xl font-bold">Welcome, {username}!</h2>
+          </div>
           {features.map((feature) => (
             <Link key={feature.name} href={feature.href}>
               <button className="w-full h-14 rounded-lg border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background hover:bg-[#5999AE] dark:hover:bg-[#5999AE] text-sm sm:text-base shadow-md">
@@ -68,7 +103,6 @@ export default function Toolbar() {
             </Link>
           ))}
         </ul>
-
         <div className="absolute bottom-4 right-4">
           <Link
             href="/main-menu"
@@ -94,7 +128,14 @@ export default function Toolbar() {
               />
             </svg>
             <span className="text-gray-700">Home</span>
-          </Link>
+          </Link>{' '}
+          {/* Sign Out Button */}
+          <button
+            onClick={handleSignOut}
+            className="inline-flex items-center gap-2 text-lg font-medium bg-red-500 text-white p-2 hover:bg-red-600 rounded-lg transition-all duration-300"
+          >
+            <span>Log Out</span>
+          </button>
         </div>
 
         <button
