@@ -14,7 +14,7 @@ export default function MainMenu() {
     {
       name: 'Quizzes',
       href: './quizzes',
-      description: 'Test your knowledge with AI generated quiz questions.'
+      description: 'Test your knowledge.'
     },
     {
       name: 'Text-to-Speech',
