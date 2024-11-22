@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import Toolbar from '../Toolbar';
 import { useAuth } from '../context/AuthContext';
 import { useRouter } from 'next/navigation';
+import { firebaseDB } from '../../../firebase_config';
+import { getDatabase, ref, get, set } from 'firebase/database';
 
 function decodeHtmlEntities(text) {
   const textArea = document.createElement('textarea');
@@ -26,6 +28,24 @@ export default function Flashcards() {
   const [currentFlashcard, setCurrentFlashcard] = useState(null);
   const [error, setError] = useState(null);
   const [targetLanguage, setTargetLanguage] = useState(''); // initialize language
+
+  const addToFlashCards = async () => {
+    const database = getDatabase(firebaseDB);
+    const FlashCardCountRef = ref(
+      database,
+      `Users/${user.displayName}/FlashCardCount`
+    );
+    const count = await get(FlashCardCountRef);
+    let newCount = 1;
+    if (count.exists()) {
+      newCount = count.val() + 1;
+    }
+    try {
+      await set(FlashCardCountRef, newCount);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   async function generateNewFlashcard() {
     setError(null); // Reset error state
@@ -85,6 +105,7 @@ export default function Flashcards() {
         ...currentFlashcard,
         translation: decodedText // Update with the decoded text
       });
+      addToFlashCards();
     } catch (error) {
       console.error(error);
       setError('Failed to fetch translation');
