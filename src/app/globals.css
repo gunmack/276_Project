@@ -44,7 +44,7 @@ body {
   }
 }
 
-/* Additional styling for your components */
+/* Additional styling */
 .text-to-speech-container {
   display: flex;
   flex-direction: column;
@@ -138,4 +138,218 @@ body {
   border: 1px solid var(--border-color);
   border-radius: 6px;
   text-align: center;
+}
+.vocab-box {
+  padding: 4%;
+  font-size: 16px;
+  color: var(--foreground-light);
+  background-color: var(--secondary-bg);
+  border: 1% solid var(--border-color);
+  border-radius: 2%;
+  text-align: center;
+  margin: 4%;
+}
+
+.vocab-text {
+  max-width: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 4%;
+  align-items: center;
+  justify-content: center;
+}
+
+.textarea {
+  width: 100%;
+  font-size: 16px;
+  padding: 4%;
+  background-color: var(--input-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  transition: border-color 0.2s ease;
+  resize: none; /* Prevent manual resizing */
+  overflow-y: auto; /* Hide overflow to prevent scrolling initially */
+  overflow-x: auto;
+}
+.vocab-in {
+  font-size: 16px;
+  margin: 1%;
+  color: var(--foreground-light);
+  background-color: var(--secondary-bg);
+  text-align: center;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.vocab-out {
+  font-size: 16px;
+  margin: 1%;
+  color: var(--foreground-light);
+  background-color: var(--secondary-bg);
+  text-align: center;
+  max-width: 50%;
+}
+
+.no-list {
+  list-style: none; /* Remove default bullet points */
+  padding: 0;
+  margin: 0;
+  max-width: 100%;
+  background-color: var(--input-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 4%;
+}
+
+.no-list li {
+  word-wrap: break-word; /* Allow text inside list items to break */
+  word-break: break-word;
+  max-width: 100%; /* Break long words inside list items */
+}
+
+.translate-button-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* Ensures it takes the full width of the parent */
+}
+
+.translate-button {
+  width: 80%;
+  justify-content: center;
+  align-items: center;
+  padding: 2%;
+  font-size: 14px;
+  font-weight: 600;
+  margin: 2%;
+  color: #ffffff;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease;
+}
+
+.translate-button:hover:not(:disabled) {
+  background-color: var(--primary-color-hover);
+  transform: translateY(-2px);
+}
+/* Chatbot container styling */
+.chatbot-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;  /* Reduced padding to save space */
+  background-color: var(--secondary-bg);
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  max-width: 1000px;
+  margin: 70px auto; /* Reduced margin to fit within screen */
+  gap: 12px; /* Adjusted gap to fit on screen */
+  height: 80vh; /* Use viewport height to fit chatbot within the screen */
+  overflow: hidden; /* Prevents content from spilling out */
+}
+
+/* Heading styling */
+.chatbot-container h1 {
+  text-align: center;
+  font-size: 28px; /* Slightly smaller font to fit on screen */
+  color: #333;
+  margin: 0; /* Remove margin to save space */
+}
+
+/* Language selector styling */
+.language-dropdown {
+  margin: 8px 0;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px; /* Smaller font size */
+  width: 100%;
+  max-width: 400px;
+}
+
+/* Chat area styling */
+.chat-area {
+  flex-grow: 1; /* Allow chat area to expand and take available space */
+  overflow-y: auto;
+  margin: 10px 0;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  background-color: #fff;
+  width: 100%;
+  font-size: 16px; /* Reduced font size */
+  max-height: 50vh; /* Limit height to avoid overflow */
+}
+
+.message {
+  margin: 8px 0; /* Reduced spacing between messages */
+  font-size: 16px; /* Smaller text */
+}
+
+/* Styling for user messages */
+.message.user {
+  text-align: right;
+  color: #2a2a2a;
+}
+
+/* Styling for bot messages */
+.message.bot {
+  text-align: left;
+  color: #0077b6;
+}
+
+/* Input container styling */
+.input-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px; /* Reduced gap between input and button */
+  width: 100%;
+}
+
+.text-input {
+  flex-grow: 1;
+  padding: 12px; /* Reduced padding */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+
+
+/* Error message styling */
+.error {
+  color: red;
+  font-size: 14px; /* Smaller error font size */
+  text-align: center;
+  margin-top: 10px;
+}
+
+
+.top-right-clear {
+  position: fixed;
+  top: 20px; /* 20px from the top of the page */
+  right: 20px; /* 20px from the right of the page */
+  background-color: black;
+  color: white;
+  border-radius: 16px;
+  width: 150px;
+  height: 50px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease;
+}
+
+.top-right-clear:hover {
+  background-color: red;
 }

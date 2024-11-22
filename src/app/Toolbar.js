@@ -57,7 +57,14 @@ export default function Toolbar() {
       {/* Side Menu */}
       <div
         className={`absolute top-0 left-0 h-full bg-white p-4 shadow-lg transition-transform duration-300 ${menuOpen ? 'transform translate-x-0' : 'transform -translate-x-full'}`}
-        style={{ width: '20%' }}
+        style={{
+          width: '20%',
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          height: '100vh',
+          zIndex: 1000
+        }}
       >
         <ul className="flex flex-col gap-6 pt-20">
           {features.map((feature) => (
