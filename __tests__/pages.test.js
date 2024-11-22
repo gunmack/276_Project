@@ -12,6 +12,7 @@ import LearnVocab from '../src/app/learn-vocab/page';
 import Quizzes from '../src/app/quizzes/page';
 import TextToSpeech from '../src/app/text-to-speech/page';
 import TextToSpeechBox from '../components/TextToSpeechButton';
+import VocabBox from '../components/VocabBox';
 
 describe('App', () => {
   it('should render Landing page', () => {
@@ -74,5 +75,12 @@ describe('App', () => {
 
     const tts_box = screen.getByTestId('tts-box');
     expect(tts_box).toBeInTheDocument();
+  });
+
+  it('should render Vocab box', () => {
+    render(<VocabBox />);
+
+    const vocab_box = screen.getByTestId('Vocab Box');
+    expect(vocab_box).toBeInTheDocument();
   });
 });
