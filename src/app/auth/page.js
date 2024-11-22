@@ -4,6 +4,8 @@
 
 'use client';
 import React, { useState, useEffect } from 'react';
+import { firebaseDB } from '../../../firebase_config';
+import { getDatabase, ref, onValue, update, set, get } from 'firebase/database';
 import {
   signInWithPopup,
   GoogleAuthProvider,
@@ -30,10 +32,51 @@ export default function Login() {
     return () => unsubscribe(); // Clean up the subscription
   }, [router]);
 
+  const addUserData = async (user) => {
+    const database = getDatabase(firebaseDB);
+
+    if (!user || !user.displayName) {
+      console.error('Invalid user data.');
+      return;
+    }
+
+    const userRef = ref(database, `Users/${user.displayName}`);
+
+    try {
+      // Check if the user already exists
+      const snapshot = await get(userRef);
+      if (snapshot.exists()) {
+        console.log('User already exists in the database.');
+        return;
+      }
+
+      const newUserData = {
+        displayName: user.displayName
+      };
+      // Create a reference to the user count
+      const userCountRef = ref(database, 'Users/UserCount');
+
+      // Retrieve current user count and increment it
+      const userCountSnapshot = await get(userCountRef);
+      let newUserCount = 1; // Default if the count doesn't exist
+
+      if (userCountSnapshot.exists()) {
+        newUserCount = userCountSnapshot.val() + 1; // Increment the current count
+      }
+
+      await set(userRef, newUserData);
+      await set(userCountRef, newUserCount);
+      console.log('User added successfully.');
+    } catch (error) {
+      console.error('Error checking or adding user:', error);
+    }
+  };
   const handleGoogleSignIn = async () => {
     const provider = new GoogleAuthProvider();
     try {
-      await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      addUserData(user);
       router.push('/main-menu'); // Redirect to a protected page
     } catch (err) {
       setError('Error signing in with Google: ' + err.message);

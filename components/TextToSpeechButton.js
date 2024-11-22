@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
+import { firebaseDB } from '../firebase_config';
+import { getDatabase, ref, get, set } from 'firebase/database';
 
 // helper function it helps decode any HTML entities in the translated text so its a clean readable output.
 function decodeHtmlEntities(text) {
@@ -12,6 +14,21 @@ function decodeHtmlEntities(text) {
 }
 // makes the function for the component
 export default function TextToSpeechBox() {
+  const addToTts = async () => {
+    const database = getDatabase(firebaseDB);
+    const ttsCountRef = ref(database, `Users/${user.displayName}/ttsCount`);
+    const count = await get(ttsCountRef);
+    let newCount = 1;
+    if (count.exists()) {
+      newCount = count.val() + 1;
+    }
+    try {
+      await set(ttsCountRef, newCount);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   //stores the user's input text
   const [text, setText] = useState('');
   // tracks whether APIs are currently being called to show a loading state
@@ -73,6 +90,7 @@ export default function TextToSpeechBox() {
           const audioUrl = URL.createObjectURL(audioBlob);
           const audio = new Audio(audioUrl);
           audio.play();
+          addToTts();
         } else {
           // otherwise give error if it was a problem with the data
           console.error('Error synthesizing speech:', data.error);

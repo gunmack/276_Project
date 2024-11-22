@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { signOut, onAuthStateChanged } from 'firebase/auth';
+import { useRouter } from 'next/navigation';
 
 import { getAuth } from 'firebase/auth';
 
@@ -11,6 +12,7 @@ export default function Toolbar() {
   const [buttonVisible, setButtonVisible] = useState(true);
   const [username, setUsername] = useState(''); // State to store the username
   const auth = getAuth();
+  const router = useRouter();
 
   useEffect(() => {
     // Listen for authentication state changes and retrieve the username
@@ -18,7 +20,7 @@ export default function Toolbar() {
       if (user) {
         setUsername(user.displayName || 'Anonymous User'); // Set displayName or fallback to 'User'
       } else {
-        setUsername(''); // Clear username if not authenticated
+        setUsername('Anonymous User'); // Clear username if not authenticated
       }
     });
 
@@ -43,12 +45,13 @@ export default function Toolbar() {
 
   const handleSignOut = async () => {
     try {
-      await signOut(auth); // Sign out the user
+      await signOut(auth);
+      alert('Success! You have been logged out.'); // Sign out the user
+      router.push('/logout'); // Redirect to the login page
     } catch (error) {
       console.error('Error logging out:', error); // Log any errors
       alert('An error occurred while logging out. Please try again.');
     }
-    alert('Success! You will be redirected to the login page.');
   };
 
   const features = [
@@ -100,7 +103,7 @@ export default function Toolbar() {
       >
         <ul className="flex flex-col gap-6 pt-20">
           <div className="pt-4 pb-6 text-center">
-            <h2 className="text-xl font-bold">Welcome, {username}!</h2>
+            <h2 className="text-xl font-bold">Hello, {username}!</h2>
           </div>
           {features.map((feature) => (
             <Link key={feature.name} href={feature.href}>

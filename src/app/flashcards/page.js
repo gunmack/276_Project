@@ -14,15 +14,15 @@ export default function Flashcards() {
   const { user, loading } = useAuth();
   const router = useRouter();
 
-  useEffect(() => {
-    if (!loading && !user) {
-      router.push('/auth'); // Redirect to login page if not logged in
-    }
-  }, [user, loading, router]);
+  // useEffect(() => {
+  //   if (!loading && !user) {
+  //     router.push('/auth'); // Redirect to login page if not logged in
+  //   }
+  // }, [user, loading, router]);
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
+  // if (loading) {
+  //   return <p>Loading...</p>;
+  // }
   const [currentFlashcard, setCurrentFlashcard] = useState(null);
   const [error, setError] = useState(null);
   const [targetLanguage, setTargetLanguage] = useState(''); // initialize language

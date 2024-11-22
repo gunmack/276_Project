@@ -15,7 +15,7 @@ export default function Logout() {
         <a className="bg-white p-1 rounded-md hover:bg-red-500" href="./">
           here
         </a>{' '}
-        to log back in.
+        to go to the landing page.
       </p>
     </div>
   );

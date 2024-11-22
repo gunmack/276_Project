@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import Toolbar from '../Toolbar';
 import { useAuth } from '../context/AuthContext';
 import { useRouter } from 'next/navigation';
+import { firebaseDB } from '../../../firebase_config';
+import { getDatabase, ref, get, set } from 'firebase/database';
 
 export default function LearnVocab() {
   const [inputText, setInputText] = useState('');
@@ -14,15 +16,30 @@ export default function LearnVocab() {
   const { user, loading } = useAuth();
   const router = useRouter();
 
-  useEffect(() => {
-    if (!loading && !user) {
-      router.push('/auth'); // Redirect to login page if not logged in
-    }
-  }, [user, loading, router]);
+  // useEffect(() => {
+  //   if (!loading && !user) {
+  //     router.push('/auth'); // Redirect to login page if not logged in
+  //   }
+  // }, [user, loading, router]);
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
+  // if (loading) {
+  //   return <p>Loading...</p>;
+  // }
+
+  const addToVocab = async () => {
+    const database = getDatabase(firebaseDB);
+    const vocabCountRef = ref(database, `Users/${user.displayName}/VocabCount`);
+    const count = await get(vocabCountRef);
+    let newCount = 1;
+    if (count.exists()) {
+      newCount = count.val() + 1;
+    }
+    try {
+      await set(vocabCountRef, newCount);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     // Clear translations on component mount (page reload)
@@ -43,6 +60,7 @@ export default function LearnVocab() {
       const translations = data.translations;
       setTranslations(translations);
       setTranslatedText(translations[0]);
+      addToVocab();
     } catch (error) {
       console.error(error);
     }

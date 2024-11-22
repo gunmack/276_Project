@@ -9,15 +9,15 @@ export default function GeminiChatbot() {
   const { user, loading } = useAuth();
   const router = useRouter();
 
-  useEffect(() => {
-    if (!loading && !user) {
-      router.push('/auth'); // Redirect to login page if not logged in
-    }
-  }, [user, loading, router]);
+  // useEffect(() => {
+  //   if (!loading && !user) {
+  //     router.push('/auth'); // Redirect to login page if not logged in
+  //   }
+  // }, [user, loading, router]);
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
+  // if (loading) {
+  //   return <p>Loading...</p>;
+  // }
   const [language, setLanguage] = useState('English');
   const [message, setMessage] = useState('');
   const [conversation, setConversation] = useState([]);

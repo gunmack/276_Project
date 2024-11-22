@@ -15,22 +15,22 @@ function FirebaseOps() {
   const { user, loading } = useAuth();
   const router = useRouter();
 
-  useEffect(() => {
-    if (!loading && !user) {
-      router.push('/auth'); // Redirect to login page if not logged in
-    }
-  }, [user, loading, router]);
+  // useEffect(() => {
+  //   if (!loading && !user) {
+  //     router.push('/auth'); // Redirect to login page if not logged in
+  //   }
+  // }, [user, loading, router]);
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
+  // if (loading) {
+  //   return <p>Loading...</p>;
+  // }
 
   useEffect(() => {
     // Initialize the Firebase database with the provided configuration
     const database = getDatabase(firebaseDB);
 
     // Reference to the specific collection in the database
-    const collectionRef = ref(database, 'Users/Jack/Vocab');
+    const collectionRef = ref(database, 'Users');
 
     // Function to fetch data from the database
     const fetchData = () => {
@@ -87,8 +87,8 @@ function FirebaseOps() {
 
   return (
     <div>
-      <h1>Data from database:</h1>
-      <p>Number of entries: {entryCount - 1}</p>
+      <h1>Users from database:</h1>
+      <p>Number of users: {entryCount - 1}</p>
       <ul>
         {data.map((item, index) => (
           <li key={index}>
