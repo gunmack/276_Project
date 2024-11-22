@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { firebaseDB } from '../firebase_config';
 import { getDatabase, ref, get, set } from 'firebase/database';
+import { useAuth } from '../src/app/context/AuthContext';
 
 // helper function it helps decode any HTML entities in the translated text so its a clean readable output.
 function decodeHtmlEntities(text) {
@@ -14,6 +15,8 @@ function decodeHtmlEntities(text) {
 }
 // makes the function for the component
 export default function TextToSpeechBox() {
+  const { user } = useAuth();
+
   const addToTts = async () => {
     const database = getDatabase(firebaseDB);
     const ttsCountRef = ref(database, `Users/${user.displayName}/ttsCount`);

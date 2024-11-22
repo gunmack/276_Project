@@ -1,5 +1,8 @@
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
+import { firebaseDB } from '../firebase_config';
+import { getDatabase, ref, get, set } from 'firebase/database';
+import { useAuth } from '../src/app/context/AuthContext';
 
 const languageOptions = [
   { key: 'en', label: 'English' },
@@ -27,12 +30,28 @@ export default function VocabBox() {
   const [Tloading, setTLoading] = useState(false);
   const [Gloading, setGLoading] = useState(false);
   const textareaRef = useRef(null);
+  const { user } = useAuth();
 
   useEffect(() => {
     // Clear translations on component mount (page reload)
     setTranslations([]);
     setTranslatedText('');
   }, []);
+
+  const addToVocab = async () => {
+    const database = getDatabase(firebaseDB);
+    const vocabCountRef = ref(database, `Users/${user.displayName}/VocabCount`);
+    const count = await get(vocabCountRef);
+    let newCount = 1;
+    if (count.exists()) {
+      newCount = count.val() + 1;
+    }
+    try {
+      await set(vocabCountRef, newCount);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   async function handleTranslate() {
     if (!targetLanguage) {
@@ -58,6 +77,7 @@ export default function VocabBox() {
       );
       setTranslations(decodedTranslations); // Save decoded translations
       setTranslatedText(decodedTranslations[0]); // Set the first translation
+      addToVocab();
     } catch (error) {
       console.error(error);
       alert('An error occurred during translation.');
@@ -128,21 +148,13 @@ export default function VocabBox() {
                 placeholder="Enter text"
                 className="textarea"
                 rows={10}
-                cols={20}
+                cols={50}
               />
             </div>
           )}
 
           {translatedText && (
             <div>
-              <br />
-              <strong>
-                Translating to{' '}
-                {languageOptions.find((lang) => lang.key === targetLanguage)
-                  ?.label || 'Unknown'}
-              </strong>
-              <br />
-              <br />
               <div className="vocab-text">
                 <div className="vocab-out">
                   <textarea
@@ -151,10 +163,20 @@ export default function VocabBox() {
                     onChange={(e) => setInputText(e.target.value)}
                     placeholder="Enter text"
                     className="textarea"
+                    cols={50}
+                    rows={10}
                   />
                 </div>
                 <div className="vocab-out">
                   <div>
+                    <strong>
+                      Translating to{' '}
+                      {languageOptions.find(
+                        (lang) => lang.key === targetLanguage
+                      )?.label || 'Unknown'}
+                    </strong>
+                    <br />
+                    <br />
                     <ul className="no-list">
                       {translations.map((translation, index) => (
                         <li key={index}>{translation}</li>

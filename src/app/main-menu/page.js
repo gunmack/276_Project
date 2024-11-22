@@ -12,44 +12,42 @@ import { getDatabase, ref, get } from 'firebase/database';
 export default function MainMenu() {
   const { user, loading } = useAuth();
   const router = useRouter();
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState('Begin Your Learning Journey!');
   const [username, setUsername] = useState(''); // State to store the username
 
-  useEffect(() => {
-    const getMessage = async () => {
-      const msg = await checkUser();
-      setMessage(msg);
-    };
+  // useEffect(() => {
+  //   const getMessage = async () => {
+  //     const msg = await checkUser();
+  //     setMessage(msg);
+  //   };
 
-    getMessage();
-  }, [user]);
+  //   getMessage();
+  // }, [user]);
 
-  const checkUser = async () => {
-    const database = getDatabase(firebaseDB);
-    if (user) {
-      setUsername(user.displayName || 'Anonymous User'); // Set displayName or fallback to 'User'
-    } else {
-      setUsername(''); // Clear username if not authenticated
-    }
+  // const checkUser = async () => {
+  //   const database = getDatabase(firebaseDB);
+  //   // const _database = database;
+  //   if (user) {
+  //     setUsername(user.displayName || 'Anonymous User'); // Set displayName or fallback to 'User'
+  //   } else {
+  //     setUsername(''); // Clear username if not authenticated
+  //   }
 
-    if (!username) {
-      console.error('Username is not defined');
-      return;
-    }
+  //   // let userRef = (0, _database.ref)(database, 'Users/'.concat(username));
 
-    userRef = (0, _database.ref)(database, 'Users/'.concat(username));
+  //   const userRef = ref(database, `Users/${username}`);
 
-    // const userRef = ref(database, `Users/${username}`);
-    const snapshot = await get(userRef);
-    // Check if the user exists
-    const newUser = !snapshot.exists();
+  //   // const userRef = ref(database, `Users/${username}`);
+  //   const snapshot = await get(userRef);
+  //   // Check if the user exists
+  //   const newUser = !snapshot.exists();
 
-    // Set the message based on whether the user is new or returning
-    const msg = newUser
-      ? 'Begin Your Learning Journey!'
-      : `Welcome Back to Quizling!`;
-    return msg;
-  };
+  //   // Set the message based on whether the user is new or returning
+  //   const msg = newUser
+  //     ? 'Begin Your Learning Journey!'
+  //     : `Welcome Back to Quizling!`;
+  //   return msg;
+  // };
 
   // useEffect(() => {
   //   if (!loading && !user) {
