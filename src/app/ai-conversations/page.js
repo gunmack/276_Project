@@ -1,24 +1,137 @@
+'use client'; // Client-side rendering
 import React from 'react';
 import Toolbar from '../Toolbar';
-import Link from 'next/link';
+import { useState, useEffect } from 'react';
 
-export default function AiConversations() {
+export default function GeminiChatbot() {
+  const [language, setLanguage] = useState('English');
+  const [message, setMessage] = useState('');
+  const [conversation, setConversation] = useState([]);
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  // retrieves a conversation string from localStorage if it has data then
+  // parse the JSON string into an array
+  useEffect(() => {
+    const savedConversation = localStorage.getItem('conversation');
+    if (savedConversation) {
+      setConversation(JSON.parse(savedConversation));
+    }
+  }, []);
+
+  //save conversation to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('conversation', JSON.stringify(conversation));
+  }, [conversation]);
+
+  // function to update the language state based on the dropdown selection
+  const handleLanguageChange = (e) => setLanguage(e.target.value);
+  // function for handling the message sending process
+  const handleSendMessage = async () => {
+    // stops function from executing if the message input is empty
+    if (!message) return;
+    // set loading state to true while waiting from response
+    setIsLoading(true);
+
+    try {
+      //use the fetch function to send a request to the API
+      const response = await fetch('/api/geminiChat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        // string the JSON response and extract the three values
+        body: JSON.stringify({
+          message,
+          language,
+          conversation
+        })
+      });
+
+      // store response into data
+      const data = await response.json();
+
+      // if no response give error
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to fetch response.');
+      }
+
+      // updates the conversation history by appending the user's message and the bot's reply
+      setConversation((prev) => [
+        ...prev,
+        { sender: 'User', text: message },
+        { sender: 'Bot', text: data.reply }
+      ]);
+      setMessage('');
+    } catch (err) {
+      setError(`Error: ${err.message}`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleClearChat = () => {
+    setConversation([]);
+    localStorage.removeItem('conversation');
+  };
+
   return (
-    <>
-      <div
-        data-testid="AI conversations"
-        className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-ibmPlexMono)] bg-gradient-to-r"
-        style={{
-          background: 'linear-gradient(to right, #3D6FB6, #4E9D99, #7FBFBA)'
-        }}
+    <div className="chatbot-container" data-testid="AI conversations">
+      <Toolbar />
+      <h1>Gemini Multilingual Chatbot</h1>
+
+      <label htmlFor="language-select">Choose a Language: </label>
+      <select
+        id="language-select"
+        value={language}
+        onChange={handleLanguageChange}
+        className="language-dropdown"
       >
-        <Toolbar />
-        <main className="flex flex-col gap-8 row-start-2 items-center justify-center sm:items-start">
-          <div className="flex flex-col justify-center items-center p-8 gap-4 font-[family-name:var(--font-geist-mono)]">
-            <h1 className="text-5xl text-center mb-2">AI Conversations</h1>
-          </div>
-        </main>
+        <option value="French">French</option>
+        <option value="German">German</option>
+        <option value="Spanish">Spanish</option>
+        <option value="English">English</option>
+      </select>
+
+      <div className="chat-area">
+        {conversation.map((msg, idx) => (
+          <p
+            key={idx}
+            className={`message ${msg.sender === 'User' ? 'user' : 'bot'}`}
+          >
+            <strong>{msg.sender}: </strong>
+            {msg.text}
+          </p>
+        ))}
       </div>
-    </>
+
+      <div className="input-container">
+        <input
+          type="text"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              handleSendMessage();
+            }
+          }}
+          placeholder="Type your message..."
+          className="text-input"
+        />
+        <button
+          onClick={handleSendMessage}
+          className="speak-button"
+          disabled={!message || isLoading}
+        >
+          {isLoading ? 'Generating...' : 'Send'}
+        </button>
+      </div>
+
+      <button onClick={handleClearChat} className="top-right-clear">
+        Clear Chat
+      </button>
+
+      {error && <p className="error">{error}</p>}
+    </div>
   );
 }
