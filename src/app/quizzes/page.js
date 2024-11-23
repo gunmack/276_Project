@@ -1,4 +1,3 @@
-// pages/quizzes/page.js
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -11,6 +10,7 @@ export default function Quizzes() {
   const [loading, setLoading] = useState(false);
   const [quizType, setQuizType] = useState('word-translation'); // Default quiz type
   const [targetLanguage, setTargetLanguage] = useState('es'); // Default target language (Spanish)
+  const [showPopup, setShowPopup] = useState(true);
 
   // Explicitly log the current quizType and targetLanguage value to debug any issues
   useEffect(() => {
@@ -79,9 +79,26 @@ export default function Quizzes() {
     <div
       data-testid="Quizzes"
       className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-ibmPlexMono)] bg-gradient-to-r"
-      
     >
       <Toolbar />
+
+      {showPopup && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-8 rounded-lg shadow-lg text-center max-w-lg">
+            <h2 className="text-2xl font-bold mb-4">Welcome to Language Quizzes!</h2>
+            <p className="text-gray-700 mb-6">
+              Test your knowledge with our quizzes. Select a quiz type and language to get started!
+            </p>
+            <button
+              onClick={() => setShowPopup(false)}
+              className="bg-black text-white p-2 rounded-lg shadow-lg hover:bg-[#5999AE] dark:hover:bg-[#5999AE] hover:text-black"
+            >
+              Got it!
+            </button>
+          </div>
+        </div>
+      )}
+
       <main className="flex flex-col gap-8 row-start-2 items-center justify-center sm:items-center max-w-lg w-full">
         <div className="flex flex-col justify-center items-center p-8 gap-4 font-[family-name:var(--font-geist-mono)] max-w-lg w-full">
           <h1 className="text-5xl text-center mb-4 text-white drop-shadow-md">
@@ -118,7 +135,7 @@ export default function Quizzes() {
           <button
             onClick={fetchQuiz}
             disabled={loading}
-            className="px-8 py-3 bg-black text-white text-lg font-semibold rounded-md shadow-md hover:bg-gray-800 hover:scale-105 transition-transform duration-200"
+            className="px-8 py-3 bg-black text-white text-lg font-semibold rounded-md shadow-md hover:bg-[#5999AE] dark:hover:bg-[#5999AE] hover:scale-105 transition-transform duration-200"
           >
             {loading ? 'Loading...' : 'Generate Quiz'}
           </button>
