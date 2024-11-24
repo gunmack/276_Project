@@ -9,7 +9,6 @@ const languageOptions = [
   { key: 'fr-FR', label: 'French (French)' },
   { key: 'fr-CA', label: 'French (Canadian)' },
   { key: 'de', label: 'German' },
-  { key: 'it', label: 'Italian' },
   { key: 'es', label: 'Spanish' }
 ];
 
@@ -27,10 +26,28 @@ export default function VocabBox() {
   const [translations, setTranslations] = useState([]);
   const [generatedContent, setGeneratedContent] = useState(''); // State for generated content
   const [translatedText, setTranslatedText] = useState('');
+  const [detectedLanguage, setDetectedLanguage] = useState('');
   const [Tloading, setTLoading] = useState(false);
   const [Gloading, setGLoading] = useState(false);
   const textareaRef = useRef(null);
   const { user } = useAuth();
+
+  const getLanguageName = (languageCode) => {
+    switch (languageCode) {
+      case 'en':
+        return 'English';
+      case 'fr-FR':
+        return 'French (French)';
+      case 'fr-CA':
+        return 'French (Canadian)';
+      case 'de':
+        return 'German';
+      case 'es':
+        return 'Spanish';
+      default:
+        return 'Unknown';
+    }
+  };
 
   useEffect(() => {
     // Clear translations on component mount (page reload)
@@ -70,11 +87,13 @@ export default function VocabBox() {
         body: JSON.stringify({ inputText, targetLanguage })
       });
       const data = await response.json();
+      const detectedLanguage = data.detectedSourceLanguage;
       const rawTranslations = data.translations;
       // Decode HTML entities in the translations
       const decodedTranslations = rawTranslations.map((text) =>
         decodeHtmlEntities(text)
       );
+      setDetectedLanguage(getLanguageName(detectedLanguage)); // Save detected language
       setTranslations(decodedTranslations); // Save decoded translations
       setTranslatedText(decodedTranslations[0]); // Set the first translation
       addToVocab();
@@ -88,6 +107,9 @@ export default function VocabBox() {
 
   async function callGemini() {
     try {
+      setInputText(''); // Clear input text
+      setTranslations([]); // Clear translations
+      setTranslatedText(''); // Clear translated text
       setGLoading(true);
       const response = await fetch('/api/generateVocab', {
         method: 'POST',
@@ -126,13 +148,11 @@ export default function VocabBox() {
               <option value="" disabled>
                 Translate to
               </option>
-              <option value="en">English</option>
-              <option value="fr-FR">French (French)</option>
-              <option value="fr-CA">French (Canadian)</option>
-              <option value="de">German</option>
-              <option value="it">Italian</option>
-              <option value="es">Spanish</option>
-              {/* Add more language options as needed */}
+              {languageOptions.map((lang) => (
+                <option key={lang.key} value={lang.key}>
+                  {lang.label}
+                </option>
+              ))}
             </select>
           </button>
         </div>
@@ -145,8 +165,8 @@ export default function VocabBox() {
                 ref={textareaRef}
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
-                placeholder="Enter text"
                 className="textarea"
+                placeholder="Enter text here..."
                 rows={10}
                 cols={50}
               />
@@ -157,11 +177,13 @@ export default function VocabBox() {
             <div>
               <div className="vocab-text">
                 <div className="vocab-out">
+                  <strong>Detected: {detectedLanguage}</strong>
+                  <br />
+                  <br />
                   <textarea
                     ref={textareaRef}
                     value={inputText}
                     onChange={(e) => setInputText(e.target.value)}
-                    placeholder="Enter text"
                     className="textarea"
                     cols={50}
                     rows={10}
@@ -170,7 +192,7 @@ export default function VocabBox() {
                 <div className="vocab-out">
                   <div>
                     <strong>
-                      Translating to{' '}
+                      Translating to:{' '}
                       {languageOptions.find(
                         (lang) => lang.key === targetLanguage
                       )?.label || 'Unknown'}
