@@ -8,9 +8,6 @@ export default function LearnVocab() {
       <div
         data-testid="Learn Vocab"
         className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-ibmPlexMono)] bg-gradient-to-r"
-        style={{
-          background: 'linear-gradient(to right, #3D6FB6, #4E9D99, #7FBFBA)'
-        }}
       >
         <Toolbar />
         <main className="flex flex-col gap-8 row-start-2 items-center justify-center sm:items-start">

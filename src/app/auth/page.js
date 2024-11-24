@@ -93,7 +93,10 @@ export default function Login() {
   };
 
   return (
-    <div className="text-center p-8" data-testid="Login screen">
+    <div
+      className="relative min-h-screen flex flex-col justify-center items-center p-8 sm:p-20 bg-gradient-to-r"
+      data-testid="Login screen"
+    >
       <strong>Sign In</strong>
       {error && alert(error)}
       <br />
