@@ -62,6 +62,7 @@ export default function VocabBox() {
     setTranslatedText('');
     setDetectedLanguage('');
     setIsButtonClicked(false);
+    setTargetLanguage('');
   };
 
   const addToVocab = async () => {

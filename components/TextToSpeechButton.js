@@ -15,6 +15,7 @@ function decodeHtmlEntities(text) {
 }
 // makes the function for the component
 export default function TextToSpeechBox() {
+  var useCount = 0;
   const { user } = useAuth();
 
   const addToTts = async () => {
@@ -93,7 +94,10 @@ export default function TextToSpeechBox() {
           const audioUrl = URL.createObjectURL(audioBlob);
           const audio = new Audio(audioUrl);
           audio.play();
-          addToTts();
+          if (useCount === 0) {
+            addToTts();
+          }
+          useCount++;
         } else {
           // otherwise give error if it was a problem with the data
           console.error('Error synthesizing speech:', data.error);
@@ -126,7 +130,10 @@ export default function TextToSpeechBox() {
       <br />
       <select
         value={selectedLanguage}
-        onChange={(e) => setSelectedLanguage(e.target.value)}
+        onChange={(e) => {
+          setSelectedLanguage(e.target.value);
+          useCount = 0;
+        }}
         className="language-dropdown"
       >
         <option value="fr">French</option>
