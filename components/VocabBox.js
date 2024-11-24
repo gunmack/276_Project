@@ -31,6 +31,7 @@ export default function VocabBox() {
   const [Gloading, setGLoading] = useState(false);
   const textareaRef = useRef(null);
   const { user } = useAuth();
+  const [isButtonClicked, setIsButtonClicked] = useState(false);
 
   const getLanguageName = (languageCode) => {
     switch (languageCode) {
@@ -54,6 +55,14 @@ export default function VocabBox() {
     setTranslations([]);
     setTranslatedText('');
   }, []);
+
+  const clear = async () => {
+    setInputText('');
+    setTranslations([]);
+    setTranslatedText('');
+    setDetectedLanguage('');
+    setIsButtonClicked(false);
+  };
 
   const addToVocab = async () => {
     const database = getDatabase(firebaseDB);
@@ -96,7 +105,8 @@ export default function VocabBox() {
       setDetectedLanguage(getLanguageName(detectedLanguage)); // Save detected language
       setTranslations(decodedTranslations); // Save decoded translations
       setTranslatedText(decodedTranslations[0]); // Set the first translation
-      addToVocab();
+      addToVocab(); // Prevent further clicks
+      setIsButtonClicked(true); // Disable the button after click
     } catch (error) {
       console.error(error);
       alert('An error occurred during translation.');
@@ -138,24 +148,27 @@ export default function VocabBox() {
   return (
     <>
       <div data-testid="Vocab Box" className="vocab-box">
-        <div>
-          <button>
-            <select
-              value={targetLanguage}
-              onChange={(e) => setTargetLanguage(e.target.value)}
-              className=" language-dropdown"
-            >
-              <option value="" disabled>
-                Translate to
-              </option>
-              {languageOptions.map((lang) => (
-                <option key={lang.key} value={lang.key}>
-                  {lang.label}
+        {!translatedText && (
+          <div>
+            Translate to:{' '}
+            <button>
+              <select
+                value={targetLanguage}
+                onChange={(e) => setTargetLanguage(e.target.value)}
+                className=" language-dropdown"
+              >
+                <option value="" disabled>
+                  Pick a language
                 </option>
-              ))}
-            </select>
-          </button>
-        </div>
+                {languageOptions.map((lang) => (
+                  <option key={lang.key} value={lang.key}>
+                    {lang.label}
+                  </option>
+                ))}
+              </select>
+            </button>
+          </div>
+        )}
         <br />
 
         <div className="vocab-text">
@@ -212,20 +225,29 @@ export default function VocabBox() {
         </div>
         <br />
         <div className="translate-button-container">
-          <button
-            onClick={handleTranslate}
-            className="translate-button"
-            disabled={Tloading}
-          >
-            {Tloading ? 'Translating...' : 'Translate'}
-          </button>
-          <button
-            onClick={callGemini}
-            className="translate-button"
-            disabled={Gloading}
-          >
-            {Gloading ? 'Asking Gemini...' : 'Ask Google Gemini'}
-          </button>
+          {!translatedText && (
+            <button
+              onClick={handleTranslate}
+              className="translate-button"
+              disabled={Tloading || isButtonClicked}
+            >
+              {Tloading ? 'Translating...' : 'Translate'}
+            </button>
+          )}
+          {!translatedText && (
+            <button
+              onClick={callGemini}
+              className="translate-button"
+              disabled={Gloading || isButtonClicked}
+            >
+              {Gloading ? 'Asking Gemini...' : 'Ask Google Gemini'}
+            </button>
+          )}
+          {translatedText && (
+            <button onClick={clear} className="clear-button">
+              Clear
+            </button>
+          )}
         </div>
       </div>
     </>

@@ -11,6 +11,7 @@ export default async function handler(req, res) {
     - French  
     - German 
     - Spanish 
+    - English
   2. Repeat step 1 two times.
   3. Pick a random word from the language. 
   4. Now generate a random sentence with that word.
