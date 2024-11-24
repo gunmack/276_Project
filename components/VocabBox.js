@@ -41,6 +41,8 @@ export default function VocabBox() {
         return 'French (French)';
       case 'fr-CA':
         return 'French (Canadian)';
+      case 'fr':
+        return 'French';
       case 'de':
         return 'German';
       case 'es':

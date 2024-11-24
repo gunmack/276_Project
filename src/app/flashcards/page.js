@@ -13,7 +13,7 @@ function decodeHtmlEntities(text) {
 }
 
 export default function Flashcards() {
-  const { user, loading } = useAuth();
+  const { user } = useAuth();
   const router = useRouter();
 
   // useEffect(() => {
@@ -28,6 +28,10 @@ export default function Flashcards() {
   const [currentFlashcard, setCurrentFlashcard] = useState(null);
   const [error, setError] = useState(null);
   const [targetLanguage, setTargetLanguage] = useState(''); // initialize language
+  const [hasFlashCard, setHasFlashCard] = useState(false);
+  const [hasTranslation, setHasTranslation] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [translating, setTranslating] = useState(false);
 
   const addToFlashCards = async () => {
     const database = getDatabase(firebaseDB);
@@ -49,6 +53,7 @@ export default function Flashcards() {
 
   async function generateNewFlashcard() {
     setError(null); // Reset error state
+    setLoading(true); // Set loading state
     try {
       const response = await fetch('/api/generateFlashcards', {
         method: 'POST',
@@ -73,16 +78,20 @@ export default function Flashcards() {
               original: sentences[0], // Take the first sentence for simplicity
               translation: '' // Placeholder for English translation
             });
+            setHasFlashCard(true);
           }
         }
       }
     } catch (error) {
       console.error(error);
       setError('Failed to generate a new flashcard');
+    } finally {
+      setLoading(false); // Reset loading state
     }
   }
 
   async function handleTranslate() {
+    setTranslating(true); // Set translating state
     if (!currentFlashcard) return;
 
     try {
@@ -105,10 +114,13 @@ export default function Flashcards() {
         ...currentFlashcard,
         translation: decodedText // Update with the decoded text
       });
+      setHasTranslation(true);
       addToFlashCards();
     } catch (error) {
       console.error(error);
       setError('Failed to fetch translation');
+    } finally {
+      setTranslating(false); // Reset translating state
     }
   }
 
@@ -157,19 +169,21 @@ export default function Flashcards() {
           )}
 
           <div className="grid grid-row p-12 m-12">
-            <button
-              onClick={handleTranslate}
-              className="p-2 m-2 bg-black text-white rounded-lg shadow-lg hover:bg-white hover:text-black"
-              disabled={!currentFlashcard} // Disable if no flashcard is displayed
-            >
-              Translate to English
-            </button>
+            {hasFlashCard && (
+              <button
+                onClick={handleTranslate}
+                className="flashcard-button"
+                disabled={translating || hasTranslation} // Disable if no flashcard is present
+              >
+                {translating ? 'Translating...' : 'Translate'}
+              </button>
+            )}
             <button
               onClick={generateNewFlashcard}
-              className="p-2 m-2 bg-black text-white rounded-lg shadow-lg hover:bg-white hover:text-black"
-              disabled={!targetLanguage} // Disable if no language is selected
+              className="flashcard-button"
+              disabled={!targetLanguage || loading} // Disable if no language is selected or if loading is true
             >
-              Generate Flashcard
+              {loading ? 'Generating Flashcard...' : 'Generate Flashcard'}
             </button>
             {error && <p style={{ color: 'red' }}>{error}</p>}
           </div>

@@ -270,6 +270,28 @@ body {
   color: #ffffff;
 }
 
+.flashcard-button {
+  padding: 0.5rem 1rem;
+  margin: 0.5rem;
+  background-color: black;
+  color: white;
+  border-radius: 0.375rem; /* rounded-lg */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+}
+
+.flashcard-button:hover:not(:disabled) {
+  background-color: white;
+  color: black;
+}
+
+.flashcard-button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
 /* Chatbot container styling */
 .chatbot-container {
   display: flex;

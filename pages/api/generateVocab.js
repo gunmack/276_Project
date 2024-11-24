@@ -6,20 +6,26 @@ export default async function handler(req, res) {
   const genAI = new GoogleGenerativeAI(geminiKey);
   const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
-  const prompt = `The user is a second language student.
-  1. Then randomly pick a language: 
-    - French  
-    - German 
-    - Spanish 
-  2. Repeat step 1 two times.
-  3. Pick a random word from the language. 
-  4. Now generate a beginner's sentence with that word.
-  Do not include the language in the response. Do not include the category in the response.
-  Only respond with your result. Ensure the response in 1 language only.`;
+  const prompt = `
+  The user is a second language student. Follow these steps:
+
+  1. Randomly select one of the following languages: 
+    - French
+    - German
+    - Spanish
+
+  2. Repeat step 1 to pick a second language.
+
+  3. From the chosen language, randomly select a word.
+
+  4. Generate a random sentence using that word.
+
+  Ensure the response is in the chosen language only. Do not include the language name or category in your response. Only provide the generated sentence.
+  `;
 
   try {
     const result = await model.generateContent(prompt);
-    let generatedText = await result.response.text();
+    let generatedText = result.response.text();
     generatedText = generatedText.replace(/\*\*/g, '');
     res.status(200).json({ generatedText });
   } catch (error) {
