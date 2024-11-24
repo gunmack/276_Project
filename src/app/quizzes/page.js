@@ -6,6 +6,8 @@ import Toolbar from '../Toolbar';
 import Link from 'next/link';
 import { useAuth } from '../context/AuthContext';
 import { useRouter } from 'next/navigation';
+import { firebaseDB } from '../../../firebase_config';
+import { getDatabase, ref, get, set } from 'firebase/database';
 export default function Quizzes() {
   const [quiz, setQuiz] = useState(null);
   const [userAnswer, setUserAnswer] = useState('');
@@ -13,6 +15,21 @@ export default function Quizzes() {
   const [loading, setLoading] = useState(false);
   const [quizType, setQuizType] = useState('word-translation'); // Default quiz type
   const [targetLanguage, setTargetLanguage] = useState('es'); // Default target language (Spanish)
+
+  const addToQuiz = async () => {
+    const database = getDatabase(firebaseDB);
+    const QuizCounttRef = ref(database, `Users/${user.displayName}/QuizCount`);
+    const count = await get(QuizCounttRef);
+    let newCount = 1;
+    if (count.exists()) {
+      newCount = count.val() + 1;
+    }
+    try {
+      await set(QuizCounttRef, newCount);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   // Explicitly log the current quizType and targetLanguage value to debug any issues
   useEffect(() => {
@@ -69,6 +86,7 @@ export default function Quizzes() {
       quiz.options.indexOf(correctAnswer)
     ];
     if (userAnswer.toUpperCase() === correctOption) {
+      addToQuiz();
       setFeedback('🎉 Correct!');
     } else {
       setFeedback(
