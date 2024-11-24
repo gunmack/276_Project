@@ -236,7 +236,6 @@ body {
 
 .translate-button:hover:not(:disabled) {
   background-color: var(--primary-color-hover);
-  transform: translateY(-2px);
 }
 
 .translate-button:active:not(:disabled) {
@@ -290,6 +289,18 @@ body {
 .flashcard-button:disabled {
   background-color: #6c757d;
   cursor: not-allowed;
+}
+.achievement-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: var(--secondary-bg);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 450px;
+  margin: 40px auto;
+  gap: 16px;
 }
 
 /* Chatbot container styling */

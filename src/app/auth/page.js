@@ -5,9 +5,9 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { firebaseDB } from '../../../firebase_config';
-import { getDatabase, ref, onValue, update, set, get } from 'firebase/database';
+import { getDatabase, ref, set, get } from 'firebase/database';
 import {
-  signInWithRedirect,
+  signInWithPopup,
   GoogleAuthProvider,
   getAuth,
   onAuthStateChanged,
@@ -21,6 +21,7 @@ export default function Login() {
   const [error, setError] = useState('');
   const router = useRouter();
   const [msg, setMsg] = useState('');
+  const [popup, setPopup] = useState(false);
 
   const auth = getAuth();
   useEffect(() => {
@@ -78,15 +79,17 @@ export default function Login() {
     }
   };
   const handleGoogleSignIn = async () => {
+    setPopup(true);
     const provider = new GoogleAuthProvider();
     try {
-      const result = await signInWithRedirect(auth, provider);
+      const result = await signInWithPopup(auth, provider);
       const user = result.user;
       addUserData(user);
       router.push('/main-menu'); // Redirect to a protected page
     } catch (err) {
       setError('Error signing in with Google: ' + err.message);
     }
+    setPopup(false);
   };
 
   const handleGuestLogin = async () => {
@@ -109,18 +112,24 @@ export default function Login() {
       <div>
         {msg && <h2>{msg}</h2>}
         <br />
-        <button
-          className="bg-white p-2 m-8 rounded-lg hover:bg-green-600"
-          onClick={handleGoogleSignIn}
-        >
-          Sign In with Google
-        </button>
-        <button
-          className="bg-white p-2 m-8 rounded-lg hover:bg-green-600"
-          onClick={handleGuestLogin}
-        >
-          Continue as Guest
-        </button>
+        {!popup && (
+          <div>
+            <button
+              className="bg-white p-2 m-8 rounded-lg hover:bg-green-600"
+              onClick={handleGoogleSignIn}
+            >
+              Sign In with Google
+            </button>
+            <button
+              className="bg-white p-2 m-8 rounded-lg hover:bg-green-600"
+              onClick={handleGuestLogin}
+            >
+              Continue as Guest
+            </button>
+          </div>
+        )}
+
+        {popup && <p>A Google popup has opened to help you log in.......</p>}
       </div>
     </div>
   );

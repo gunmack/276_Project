@@ -151,23 +151,22 @@ export default function VocabBox() {
       <div data-testid="Vocab Box" className="vocab-box">
         {!translatedText && (
           <div>
-            Translate to:{' '}
-            <button>
-              <select
-                value={targetLanguage}
-                onChange={(e) => setTargetLanguage(e.target.value)}
-                className=" language-dropdown"
-              >
-                <option value="" disabled>
-                  Pick a language
+            <label htmlFor="languageSelect">Translate to: </label>
+            <select
+              id="languageSelect"
+              value={targetLanguage}
+              onChange={(e) => setTargetLanguage(e.target.value)}
+              className="language-dropdown"
+            >
+              <option value="" disabled>
+                Pick a language
+              </option>
+              {languageOptions.map((lang) => (
+                <option key={lang.key} value={lang.key}>
+                  {lang.label}
                 </option>
-                {languageOptions.map((lang) => (
-                  <option key={lang.key} value={lang.key}>
-                    {lang.label}
-                  </option>
-                ))}
-              </select>
-            </button>
+              ))}
+            </select>
           </div>
         )}
         <br />

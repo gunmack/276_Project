@@ -12,7 +12,7 @@ export default function Logout() {
     >
       <h1>You have been logged out!!</h1>
       <p>
-        Thank you for using our app.
+        Thank you for using QuizLing.
         <br />
         Click{' '}
         <a className="bg-white p-1 rounded-md hover:bg-red-500" href="./">

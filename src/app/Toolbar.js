@@ -46,7 +46,6 @@ export default function Toolbar() {
   const handleSignOut = async () => {
     try {
       await signOut(auth);
-      alert('Success! You have been logged out.'); // Sign out the user
       router.push('/logout'); // Redirect to the login page
     } catch (error) {
       console.error('Error logging out:', error); // Log any errors
