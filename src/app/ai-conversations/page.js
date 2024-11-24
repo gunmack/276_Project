@@ -3,23 +3,12 @@ import React from 'react';
 import Toolbar from '../Toolbar';
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { useRouter } from 'next/navigation';
 import { firebaseDB } from '../../../firebase_config';
 import { getDatabase, ref, get, set } from 'firebase/database';
 
 export default function GeminiChatbot() {
-  const { user, loading } = useAuth();
-  const router = useRouter();
+  const { user } = useAuth();
 
-  // useEffect(() => {
-  //   if (!loading && !user) {
-  //     router.push('/auth'); // Redirect to login page if not logged in
-  //   }
-  // }, [user, loading, router]);
-
-  // if (loading) {
-  //   return <p>Loading...</p>;
-  // }
   const [language, setLanguage] = useState('English');
   const [message, setMessage] = useState('');
   const [conversation, setConversation] = useState([]);

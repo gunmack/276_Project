@@ -3,61 +3,8 @@
 import React from 'react';
 import Link from 'next/link';
 import Toolbar from '../Toolbar';
-import { useAuth } from '../context/AuthContext';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { firebaseDB } from '../../../firebase_config';
-import { getDatabase, ref, get } from 'firebase/database';
 
 export default function MainMenu() {
-  const { user, loading } = useAuth();
-  const router = useRouter();
-  const [message, setMessage] = useState('Begin Your Learning Journey!');
-  const [username, setUsername] = useState(''); // State to store the username
-
-  // useEffect(() => {
-  //   const getMessage = async () => {
-  //     const msg = await checkUser();
-  //     setMessage(msg);
-  //   };
-
-  //   getMessage();
-  // }, [user]);
-
-  // const checkUser = async () => {
-  //   const database = getDatabase(firebaseDB);
-  //   // const _database = database;
-  //   if (user) {
-  //     setUsername(user.displayName || 'Anonymous User'); // Set displayName or fallback to 'User'
-  //   } else {
-  //     setUsername(''); // Clear username if not authenticated
-  //   }
-
-  //   // let userRef = (0, _database.ref)(database, 'Users/'.concat(username));
-
-  //   const userRef = ref(database, `Users/${username}`);
-
-  //   // const userRef = ref(database, `Users/${username}`);
-  //   const snapshot = await get(userRef);
-  //   // Check if the user exists
-  //   const newUser = !snapshot.exists();
-
-  //   // Set the message based on whether the user is new or returning
-  //   const msg = newUser
-  //     ? 'Begin Your Learning Journey!'
-  //     : `Welcome Back to Quizling!`;
-  //   return msg;
-  // };
-
-  // useEffect(() => {
-  //   if (!loading && !user) {
-  //     router.push('/auth'); // Redirect to login page if not logged in
-  //   }
-  // }, [user, loading, router]);
-
-  // if (loading) {
-  //   return <p>Loading...</p>;
-  // }
   const features = [
     {
       name: 'Learn Vocab',
@@ -107,7 +54,7 @@ export default function MainMenu() {
       {/* Feature select */}
       <div className="flex flex-col items-center justify-center text-center">
         <h1 className="text-4xl font-bold text-black mb-10 sm:mb-12 px-4 py-2 bg-white rounded-lg shadow-md">
-          {message}
+          Begin Your Learning Journey!
         </h1>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-3xl">

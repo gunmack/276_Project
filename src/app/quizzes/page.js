@@ -5,7 +5,6 @@ import React, { useState, useEffect } from 'react';
 import Toolbar from '../Toolbar';
 import Link from 'next/link';
 import { useAuth } from '../context/AuthContext';
-import { useRouter } from 'next/navigation';
 import { firebaseDB } from '../../../firebase_config';
 import { getDatabase, ref, get, set } from 'firebase/database';
 export default function Quizzes() {
@@ -97,19 +96,8 @@ export default function Quizzes() {
       );
     }
   }
-
   const { user } = useAuth();
-  const router = useRouter();
 
-  // useEffect(() => {
-  //   if (!loading && !user) {
-  //     router.push('/auth'); // Redirect to login page if not logged in
-  //   }
-  // }, [user, loading, router]);
-
-  // if (loading) {
-  //   return <p>Loading...</p>;
-  // }
   return (
     <div
       data-testid="Quizzes"

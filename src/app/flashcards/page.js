@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import Toolbar from '../Toolbar';
 import { useAuth } from '../context/AuthContext';
-import { useRouter } from 'next/navigation';
 import { firebaseDB } from '../../../firebase_config';
 import { getDatabase, ref, get, set } from 'firebase/database';
 
@@ -14,17 +13,6 @@ function decodeHtmlEntities(text) {
 
 export default function Flashcards() {
   const { user } = useAuth();
-  const router = useRouter();
-
-  // useEffect(() => {
-  //   if (!loading && !user) {
-  //     router.push('/auth'); // Redirect to login page if not logged in
-  //   }
-  // }, [user, loading, router]);
-
-  // if (loading) {
-  //   return <p>Loading...</p>;
-  // }
   const [currentFlashcard, setCurrentFlashcard] = useState(null);
   const [error, setError] = useState(null);
   const [targetLanguage, setTargetLanguage] = useState(''); // initialize language

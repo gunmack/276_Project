@@ -3,23 +3,8 @@ import React from 'react';
 import Toolbar from '../Toolbar';
 import Link from 'next/link';
 import TextToSpeechButton from '../../../components/TextToSpeechButton';
-import { useAuth } from '../context/AuthContext';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 
 export default function TextToSpeech() {
-  const { user, loading } = useAuth();
-  const router = useRouter();
-
-  // useEffect(() => {
-  //   if (!loading && !user) {
-  //     router.push('/auth'); // Redirect to login page if not logged in
-  //   }
-  // }, [user, loading, router]);
-
-  // if (loading) {
-  //   return <p>Loading...</p>;
-  // }
   return (
     <>
       <div
