@@ -85,9 +85,12 @@ export default function Quizzes() {
       {showPopup && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-8 rounded-lg shadow-lg text-center max-w-lg">
-            <h2 className="text-2xl font-bold mb-4">Welcome to Language Quizzes!</h2>
+            <h2 className="text-2xl font-bold mb-4">
+              Welcome to Language Quizzes!
+            </h2>
             <p className="text-gray-700 mb-6">
-              Test your knowledge with our quizzes. Select a quiz type and language to get started!
+              Test your knowledge with our quizzes. Select a quiz type and
+              language to get started!
             </p>
             <button
               onClick={() => setShowPopup(false)}

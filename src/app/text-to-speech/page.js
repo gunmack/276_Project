@@ -12,9 +12,12 @@ export default function TextToSpeech() {
       {showPopup && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-8 rounded-lg shadow-lg text-center max-w-lg">
-            <h2 className="text-2xl font-bold mb-4">Welcome to Text-to-Speech!</h2>
+            <h2 className="text-2xl font-bold mb-4">
+              Welcome to Text-to-Speech!
+            </h2>
             <p className="text-gray-700 mb-6">
-              Use this tool to translate English words into other languages and learn their pronounciation 
+              Use this tool to translate English words into other languages and
+              learn their pronounciation
             </p>
             <button
               onClick={() => setShowPopup(false)}

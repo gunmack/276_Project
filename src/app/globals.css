@@ -8,7 +8,7 @@
   --background-dark: #121212;
   --foreground-dark: #ededed;
   --primary-color: #0a0202;
-  --primary-color-hover: #5999AE;
+  --primary-color-hover: #5999ae;
   --secondary-bg: #f3f4f6;
   --border-color: #d1d5db;
   --input-bg: #ffffff;
@@ -243,7 +243,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;  /* Reduced padding to save space */
+  padding: 20px; /* Reduced padding to save space */
   background-color: var(--secondary-bg);
   border-radius: 12px;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
@@ -321,8 +321,6 @@ body {
   font-size: 16px;
 }
 
-
-
 /* Error message styling */
 .error {
   color: red;
@@ -330,7 +328,6 @@ body {
   text-align: center;
   margin-top: 10px;
 }
-
 
 .top-right-clear {
   position: fixed;

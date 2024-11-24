@@ -18,9 +18,14 @@ export default function LearnVocab() {
         {showPopup && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white p-8 rounded-lg shadow-lg text-center max-w-lg">
-              <h2 className="text-2xl font-bold mb-4">Welcome to Learn Vocab!</h2>
+              <h2 className="text-2xl font-bold mb-4">
+                Welcome to Learn Vocab!
+              </h2>
               <p className="text-gray-700 mb-6">
-                Use this tool to expand your vocabulary. Type the text you want to translate and select a language. Hit the translate button to translate or try the "Ask Google Gemini" button to have AI generate a sentance for you.
+                Use this tool to expand your vocabulary. Type the text you want
+                to translate and select a language. Hit the translate button to
+                translate or try the "Ask Google Gemini" button to have AI
+                generate a sentance for you.
               </p>
               <button
                 onClick={() => setShowPopup(false)}
