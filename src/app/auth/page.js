@@ -7,7 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { firebaseDB } from '../../../firebase_config';
 import { getDatabase, ref, onValue, update, set, get } from 'firebase/database';
 import {
-  signInWithPopup,
+  signInWithRedirect,
   GoogleAuthProvider,
   getAuth,
   onAuthStateChanged,
@@ -15,17 +15,23 @@ import {
 } from 'firebase/auth';
 
 import { useRouter } from 'next/navigation';
+import Toolbar from '../Toolbar';
 
 export default function Login() {
   const [error, setError] = useState('');
   const router = useRouter();
+  const [msg, setMsg] = useState('');
 
   const auth = getAuth();
   useEffect(() => {
     // Check if the user is already signed in
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        router.push('/main-menu'); // Redirect to dashboard if already signed in
+      try {
+        if (user.displayName) {
+          router.push('/main-menu'); // Redirect to dashboard if already signed in
+        }
+      } catch (error) {
+        setMsg('No user is currently signed in.');
       }
     });
 
@@ -74,7 +80,7 @@ export default function Login() {
   const handleGoogleSignIn = async () => {
     const provider = new GoogleAuthProvider();
     try {
-      const result = await signInWithPopup(auth, provider);
+      const result = await signInWithRedirect(auth, provider);
       const user = result.user;
       addUserData(user);
       router.push('/main-menu'); // Redirect to a protected page
@@ -97,21 +103,25 @@ export default function Login() {
       className="relative min-h-screen flex flex-col justify-center items-center p-8 sm:p-20 bg-gradient-to-r"
       data-testid="Login screen"
     >
-      <strong>Sign In</strong>
-      {error && alert(error)}
-      <br />
-      <button
-        className="bg-white p-2 m-8 rounded-lg hover:bg-green-600"
-        onClick={handleGoogleSignIn}
-      >
-        Sign In with Google
-      </button>
-      <button
-        className="bg-white p-2 m-8 rounded-lg hover:bg-green-600"
-        onClick={handleGuestLogin}
-      >
-        Continue as Guest
-      </button>
+      <Toolbar />
+      <strong className="text-center">Sign In</strong>
+
+      <div>
+        {msg && <h2>{msg}</h2>}
+        <br />
+        <button
+          className="bg-white p-2 m-8 rounded-lg hover:bg-green-600"
+          onClick={handleGoogleSignIn}
+        >
+          Sign In with Google
+        </button>
+        <button
+          className="bg-white p-2 m-8 rounded-lg hover:bg-green-600"
+          onClick={handleGuestLogin}
+        >
+          Continue as Guest
+        </button>
+      </div>
     </div>
   );
 }

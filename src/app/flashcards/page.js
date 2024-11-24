@@ -42,6 +42,7 @@ export default function Flashcards() {
   async function generateNewFlashcard() {
     setError(null); // Reset error state
     setLoading(true); // Set loading state
+    setHasTranslation(false); // Reset translation state
     try {
       const response = await fetch('/api/generateFlashcards', {
         method: 'POST',
@@ -67,6 +68,7 @@ export default function Flashcards() {
               translation: '' // Placeholder for English translation
             });
             setHasFlashCard(true);
+            setHasTranslation(false);
           }
         }
       }
@@ -163,7 +165,7 @@ export default function Flashcards() {
                 className="flashcard-button"
                 disabled={translating || hasTranslation} // Disable if no flashcard is present
               >
-                {translating ? 'Translating...' : 'Translate'}
+                {translating ? 'Translating ...' : 'Translate to English'}
               </button>
             )}
             <button

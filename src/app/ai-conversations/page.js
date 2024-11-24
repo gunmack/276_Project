@@ -144,7 +144,7 @@ export default function GeminiChatbot() {
           className="speak-button"
           disabled={!message || isLoading}
         >
-          {isLoading ? 'Generating...' : 'Send'}
+          {isLoading ? 'Sending...' : 'Send'}
         </button>
       </div>
 

@@ -142,7 +142,7 @@ export default function Quizzes() {
             disabled={loading}
             className="px-8 py-3 bg-black text-white text-lg font-semibold rounded-md shadow-md hover:bg-gray-800 hover:scale-105 transition-transform duration-200"
           >
-            {loading ? 'Loading...' : 'Generate Quiz'}
+            {loading ? 'Generating...' : 'Generate Quiz'}
           </button>
         </div>
 

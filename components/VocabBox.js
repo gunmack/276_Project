@@ -31,7 +31,6 @@ export default function VocabBox() {
   const [Gloading, setGLoading] = useState(false);
   const textareaRef = useRef(null);
   const { user } = useAuth();
-  const [isButtonClicked, setIsButtonClicked] = useState(false);
 
   const getLanguageName = (languageCode) => {
     switch (languageCode) {
@@ -63,7 +62,7 @@ export default function VocabBox() {
     setTranslations([]);
     setTranslatedText('');
     setDetectedLanguage('');
-    setIsButtonClicked(false);
+
     setTargetLanguage('');
   };
 
@@ -109,7 +108,6 @@ export default function VocabBox() {
       setTranslations(decodedTranslations); // Save decoded translations
       setTranslatedText(decodedTranslations[0]); // Set the first translation
       addToVocab(); // Prevent further clicks
-      setIsButtonClicked(true); // Disable the button after click
     } catch (error) {
       console.error(error);
       alert('An error occurred during translation.');
@@ -232,7 +230,7 @@ export default function VocabBox() {
             <button
               onClick={handleTranslate}
               className="translate-button"
-              disabled={Tloading || isButtonClicked}
+              disabled={Tloading || inputText == null}
             >
               {Tloading ? 'Translating...' : 'Translate'}
             </button>
@@ -241,7 +239,7 @@ export default function VocabBox() {
             <button
               onClick={callGemini}
               className="translate-button"
-              disabled={Gloading || isButtonClicked}
+              disabled={Gloading}
             >
               {Gloading ? 'Asking Gemini...' : 'Ask Google Gemini'}
             </button>
