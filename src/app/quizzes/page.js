@@ -15,6 +15,7 @@ export default function Quizzes() {
   const [loading, setLoading] = useState(false);
   const [quizType, setQuizType] = useState('word-translation'); // Default quiz type
   const [targetLanguage, setTargetLanguage] = useState('es'); // Default target language (Spanish)
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const addToQuiz = async () => {
     const database = getDatabase(firebaseDB);
@@ -49,6 +50,7 @@ export default function Quizzes() {
     setQuiz(null);
     setFeedback('');
     setUserAnswer(''); // Reset the user's input answer
+    setIsSubmitted(false);
 
     try {
       // Adding log to track if fetchQuiz is called and with correct quizType and targetLanguage
@@ -80,6 +82,7 @@ export default function Quizzes() {
   }
 
   function checkAnswer() {
+    setIsSubmitted(true);
     if (!quiz || !userAnswer) return;
     const correctAnswer = quiz.correctAnswer;
     const correctOption = ['A', 'B', 'C', 'D'][
@@ -176,12 +179,14 @@ export default function Quizzes() {
                 onChange={(e) => setUserAnswer(e.target.value)}
                 className="border px-4 py-2 rounded-lg w-full max-w-xs text-black focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
-              <button
-                onClick={checkAnswer}
-                className="ml-4 px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition"
-              >
-                Submit
-              </button>
+              {!isSubmitted && (
+                <button
+                  onClick={checkAnswer}
+                  className="ml-4 px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition"
+                >
+                  Submit
+                </button>
+              )}
             </div>
             {feedback && (
               <p
