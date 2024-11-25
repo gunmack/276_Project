@@ -54,12 +54,5 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Restore babel.config.js for testing
-        run: mv babel.config.js.backup babel.config.js || echo "No Babel config to restore"
-
       - name: Run Jest tests
         run: npm run test
-
-      - name: Completely remove babel.config.js for production build deployment on vercel
-        run: |
-          mv babel.config.js babel.config.js.backup || echo "No Babel config to remove"
