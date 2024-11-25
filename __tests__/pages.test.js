@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { describe, it, expect } from '@jest/globals';
+import { describe, it, expect, beforeEach } from '@jest/globals';
+import { useRouter } from 'next/navigation';
 import '@testing-library/jest-dom';
 
 import Home from '../src/app/page';
@@ -12,10 +13,71 @@ import LearnVocab from '../src/app/learn-vocab/page';
 import Quizzes from '../src/app/quizzes/page';
 import TextToSpeech from '../src/app/text-to-speech/page';
 import TextToSpeechBox from '../components/TextToSpeechButton';
-import VocabBox from '../components/VocabBox';
+import Logout from '../src/app/logout/page';
+import Login from '../src/app/auth/page';
+import { useAuth } from '../src/app/context/AuthContext';
+
+// Mock the useRouter hook
+jest.mock('next/navigation', () => ({
+  useRouter: jest.fn()
+}));
+
+// jest.setup.js
+jest.mock('firebase/app', () => ({
+  initializeApp: jest.fn(() => ({
+    name: '[DEFAULT]'
+  }))
+}));
+
+jest.mock('firebase/auth', () => ({
+  getAuth: jest.fn(() => ({})),
+  onAuthStateChanged: jest.fn((auth, callback) => {
+    // Call the callback to simulate a user signing in
+    callback({ displayName: 'Mock User' });
+
+    // Return an unsubscribe mock function
+    return jest.fn();
+  })
+}));
+const mockOnAuthStateChanged = jest.fn();
+
+jest.mock('firebase/database', () => ({
+  getDatabase: jest.fn()
+}));
+
+jest.mock('../src/app/context/AuthContext', () => ({
+  useAuth: jest.fn().mockReturnValue({}) // Mocking as if a user is logged in
+}));
 
 describe('App', () => {
+  beforeEach(() => {
+    useRouter.mockImplementation(() => ({
+      push: jest.fn(),
+      query: {},
+      pathname: '/'
+    }));
+  });
+
+  beforeEach(() => {
+    // Set up mock behavior for the useAuth hook and useRouter
+    useAuth.mockReturnValue({}); // Mock as if user is authenticated (returning a user object)
+    useRouter.mockImplementation(() => ({
+      push: jest.fn(),
+      query: {},
+      pathname: '/'
+    }));
+  });
+
+  beforeEach(() => {
+    mockOnAuthStateChanged.mockClear(); // Clear the mock between tests
+  });
+
   it('should render Landing page', () => {
+    useRouter.mockImplementation(() => ({
+      push: jest.fn(),
+      query: {},
+      pathname: '/'
+    }));
     render(<Home />);
 
     const home = screen.getByTestId('landing page');
@@ -77,10 +139,16 @@ describe('App', () => {
     expect(tts_box).toBeInTheDocument();
   });
 
-  it('should render Vocab box', () => {
-    render(<VocabBox />);
+  it('should render Login Screen', () => {
+    render(<Login />);
 
-    const vocab_box = screen.getByTestId('Vocab Box');
-    expect(vocab_box).toBeInTheDocument();
+    const login = screen.getByTestId('Login screen');
+    expect(login).toBeInTheDocument();
+  });
+  it('should render Logout screen', () => {
+    render(<Logout />);
+
+    const logout = screen.getByTestId('Logout screen');
+    expect(logout).toBeInTheDocument();
   });
 });

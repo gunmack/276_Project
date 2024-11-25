@@ -52,7 +52,7 @@ export default function Home() {
           </div>
 
           <div className="flex justify-center items-center gap-4 w-full">
-            <Link href="main-menu">
+            <Link href="auth">
               <button className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#262626] dark:hover:bg-[#262626] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5">
                 Start Learning
               </button>

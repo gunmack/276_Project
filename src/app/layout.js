@@ -1,4 +1,5 @@
 import { IBM_Plex_Mono } from 'next/font/google';
+import { AuthProvider } from './context/AuthContext';
 import './globals.css';
 
 const ibmPlexMono = IBM_Plex_Mono({
@@ -13,8 +14,12 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={`${ibmPlexMono.className} antialiased`}>{children}</body>
-    </html>
+    <AuthProvider>
+      <html lang="en">
+        <body className={`${ibmPlexMono.className} antialiased`}>
+          {children}
+        </body>
+      </html>
+    </AuthProvider>
   );
 }

@@ -2,7 +2,10 @@
 
 import React, { useState, useEffect } from 'react';
 import Toolbar from '../Toolbar';
-
+import Link from 'next/link';
+import { useAuth } from '../context/AuthContext';
+import { firebaseDB } from '../../../firebase_config';
+import { getDatabase, ref, get, set } from 'firebase/database';
 export default function Quizzes() {
   const [quiz, setQuiz] = useState(null);
   const [userAnswer, setUserAnswer] = useState('');
@@ -11,6 +14,22 @@ export default function Quizzes() {
   const [quizType, setQuizType] = useState('word-translation'); // Default quiz type
   const [targetLanguage, setTargetLanguage] = useState('es'); // Default target language (Spanish)
   const [showPopup, setShowPopup] = useState(true);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const addToQuiz = async () => {
+    const database = getDatabase(firebaseDB);
+    const QuizCounttRef = ref(database, `Users/${user.displayName}/QuizCount`);
+    const count = await get(QuizCounttRef);
+    let newCount = 1;
+    if (count.exists()) {
+      newCount = count.val() + 1;
+    }
+    try {
+      await set(QuizCounttRef, newCount);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   // Explicitly log the current quizType and targetLanguage value to debug any issues
   useEffect(() => {
@@ -30,6 +49,7 @@ export default function Quizzes() {
     setQuiz(null);
     setFeedback('');
     setUserAnswer(''); // Reset the user's input answer
+    setIsSubmitted(false);
 
     try {
       // Adding log to track if fetchQuiz is called and with correct quizType and targetLanguage
@@ -61,12 +81,14 @@ export default function Quizzes() {
   }
 
   function checkAnswer() {
+    setIsSubmitted(true);
     if (!quiz || !userAnswer) return;
     const correctAnswer = quiz.correctAnswer;
     const correctOption = ['A', 'B', 'C', 'D'][
       quiz.options.indexOf(correctAnswer)
     ];
     if (userAnswer.toUpperCase() === correctOption) {
+      addToQuiz();
       setFeedback('🎉 Correct!');
     } else {
       setFeedback(
@@ -74,6 +96,7 @@ export default function Quizzes() {
       );
     }
   }
+  const { user } = useAuth();
 
   return (
     <div
@@ -140,7 +163,7 @@ export default function Quizzes() {
             disabled={loading}
             className="px-8 py-3 bg-black text-white text-lg font-semibold rounded-md shadow-md hover:bg-[#5999AE] dark:hover:bg-[#5999AE] hover:scale-105 transition-transform duration-200"
           >
-            {loading ? 'Loading...' : 'Generate Quiz'}
+            {loading ? 'Generating...' : 'Generate Quiz'}
           </button>
         </div>
 
@@ -165,12 +188,14 @@ export default function Quizzes() {
                 onChange={(e) => setUserAnswer(e.target.value)}
                 className="border px-4 py-2 rounded-lg w-full max-w-xs text-black focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
-              <button
-                onClick={checkAnswer}
-                className="ml-4 px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition"
-              >
-                Submit
-              </button>
+              {!isSubmitted && (
+                <button
+                  onClick={checkAnswer}
+                  className="ml-4 px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition"
+                >
+                  Submit
+                </button>
+              )}
             </div>
             {feedback && (
               <p

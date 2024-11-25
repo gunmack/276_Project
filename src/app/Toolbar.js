@@ -1,11 +1,35 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { signOut, onAuthStateChanged } from 'firebase/auth';
+import { useRouter } from 'next/navigation';
+
+import { getAuth } from 'firebase/auth';
 
 export default function Toolbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [buttonVisible, setButtonVisible] = useState(true);
+  const [username, setUsername] = useState(''); // State to store the username
+  const auth = getAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    // Listen for authentication state changes and retrieve the username
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUsername(user.displayName || 'Anonymous User'); // Set displayName or fallback to 'User'
+      } else {
+        setUsername('Anonymous User'); // Clear username if not authenticated
+      }
+    });
+
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    }; // Clean up the listener
+  }, [auth]);
 
   const toggleMenu = () => {
     if (menuOpen) {
@@ -16,6 +40,16 @@ export default function Toolbar() {
       }, 170);
     } else {
       setMenuOpen(true);
+    }
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      router.push('/logout'); // Redirect to the login page
+    } catch (error) {
+      console.error('Error logging out:', error); // Log any errors
+      alert('An error occurred while logging out. Please try again.');
     }
   };
 
@@ -54,6 +88,14 @@ export default function Toolbar() {
 
   return (
     <>
+      {/* Overlay */}
+      {menuOpen && (
+        <div
+          className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-900"
+          onClick={toggleMenu}
+        ></div>
+      )}
+
       {/* Side Menu */}
       <div
         className={`absolute top-0 left-0 h-full bg-white p-4 shadow-lg transition-transform duration-300 ${menuOpen ? 'transform translate-x-0' : 'transform -translate-x-full'}`}
@@ -67,6 +109,9 @@ export default function Toolbar() {
         }}
       >
         <ul className="flex flex-col gap-6 pt-20">
+          <div className="pt-4 pb-6 text-center">
+            <h2 className="text-xl font-bold">Hello, {username}!</h2>
+          </div>
           {features.map((feature) => (
             <Link key={feature.name} href={feature.href}>
               <button className="w-full h-14 rounded-lg border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background hover:bg-[#5999AE] dark:hover:bg-[#5999AE] text-sm sm:text-base shadow-md">
@@ -75,8 +120,7 @@ export default function Toolbar() {
             </Link>
           ))}
         </ul>
-
-        <div className="absolute bottom-4 right-4">
+        <div className="absolute bottom-4 right-4 flex flex-col lg:flex-row items-end lg:items-center gap-2">
           <Link
             href="/main-menu"
             className="inline-flex items-center gap-2 text-lg font-medium bg-gray-200 p-2 hover:bg-gray-300 rounded-lg transition-all duration-300"
@@ -101,7 +145,24 @@ export default function Toolbar() {
               />
             </svg>
             <span className="text-gray-700">Home</span>
-          </Link>
+          </Link>{' '}
+          {/* Sign Out Button */}
+          {username != 'Anonymous User' && (
+            <button
+              onClick={handleSignOut}
+              className="inline-flex items-center gap-2 text-lg font-medium bg-red-500 text-white p-2 hover:bg-red-600 rounded-lg transition-all duration-300"
+            >
+              <span>Log Out</span>
+            </button>
+          )}
+          {username == 'Anonymous User' && (
+            <Link
+              href="/auth"
+              className="inline-flex items-center gap-2 text-lg font-medium bg-green-500 text-white p-2 hover:bg-green-600 rounded-lg transition-all duration-300"
+            >
+              <span>Log In</span>
+            </Link>
+          )}
         </div>
 
         <button
