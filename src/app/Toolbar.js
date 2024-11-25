@@ -88,6 +88,14 @@ export default function Toolbar() {
 
   return (
     <>
+      {/* Overlay */}
+      {menuOpen && (
+        <div
+          className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-900"
+          onClick={toggleMenu}
+        ></div>
+      )}
+
       {/* Side Menu */}
       <div
         className={`absolute top-0 left-0 h-full bg-white p-4 shadow-lg transition-transform duration-300 ${menuOpen ? 'transform translate-x-0' : 'transform -translate-x-full'}`}
@@ -112,7 +120,7 @@ export default function Toolbar() {
             </Link>
           ))}
         </ul>
-        <div className="absolute bottom-4 right-4">
+        <div className="absolute bottom-4 right-4 flex flex-col lg:flex-row items-end lg:items-center gap-2">
           <Link
             href="/main-menu"
             className="inline-flex items-center gap-2 text-lg font-medium bg-gray-200 p-2 hover:bg-gray-300 rounded-lg transition-all duration-300"

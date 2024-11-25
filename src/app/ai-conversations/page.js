@@ -14,6 +14,7 @@ export default function GeminiChatbot() {
   const [conversation, setConversation] = useState([]);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showPopup, setShowPopup] = useState(true);
 
   const addToAImsg = async () => {
     const database = getDatabase(firebaseDB);
@@ -99,7 +100,29 @@ export default function GeminiChatbot() {
   return (
     <div className="chatbot-container" data-testid="AI conversations">
       <Toolbar />
+
       <h1>Gemini Multilingual Chatbot</h1>
+
+      {showPopup && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-8 rounded-lg shadow-lg text-center max-w-lg">
+            <h2 className="text-2xl font-bold mb-4">
+              Welcome to Gemini Chatbot!
+            </h2>
+            <p className="text-gray-700 mb-6">
+              Use this multilingual chatbot to communicate in various languages.
+              Select a language from the dropdown menu and send a message to
+              receive responses in your chosen language.
+            </p>
+            <button
+              onClick={() => setShowPopup(false)}
+              className="bg-black text-white p-2 rounded-lg shadow-lg hover:bg-[#5999AE] dark:hover:bg-[#5999AE] hover:text-black"
+            >
+              Got it!
+            </button>
+          </div>
+        </div>
+      )}
 
       <label htmlFor="language-select">Choose a Language: </label>
       <select

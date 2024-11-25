@@ -15,7 +15,9 @@ export default function Flashcards() {
   const { user } = useAuth();
   const [currentFlashcard, setCurrentFlashcard] = useState(null);
   const [error, setError] = useState(null);
-  const [targetLanguage, setTargetLanguage] = useState(''); // initialize language
+  const [targetLanguage, setTargetLanguage] = useState('');
+  const [showPopup, setShowPopup] = useState(true);
+  const [isGenerating, setIsGenerating] = useState(false); // Track if flashcard is being generated
   const [hasFlashCard, setHasFlashCard] = useState(false);
   const [hasTranslation, setHasTranslation] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -40,6 +42,8 @@ export default function Flashcards() {
   };
 
   async function generateNewFlashcard() {
+    setError(null);
+    setIsGenerating(true); // Set generating state to true while loading
     setError(null); // Reset error state
     setLoading(true); // Set loading state
     setHasTranslation(false); // Reset translation state
@@ -47,25 +51,22 @@ export default function Flashcards() {
       const response = await fetch('/api/generateFlashcards', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ targetLanguage }) // Send selected language to the API
+        body: JSON.stringify({ targetLanguage })
       });
 
       const data = await response.json();
-
-      console.log('API Response:', data); // Log the entire response to inspect it
+      console.log('API Response:', data);
 
       if (data.generatedText) {
         const generatedText = data.generatedText;
-
-        // Check if generatedText is a valid string
         if (generatedText && typeof generatedText === 'string') {
           const sentences = generatedText
             .split('\n')
             .map((sentence) => sentence.trim());
           if (sentences.length > 0) {
             setCurrentFlashcard({
-              original: sentences[0], // Take the first sentence for simplicity
-              translation: '' // Placeholder for English translation
+              original: sentences[0],
+              translation: ''
             });
             setHasFlashCard(true);
             setHasTranslation(false);
@@ -76,7 +77,8 @@ export default function Flashcards() {
       console.error(error);
       setError('Failed to generate a new flashcard');
     } finally {
-      setLoading(false); // Reset loading state
+      setIsGenerating(false); // Reset generating state when done
+      setLoading(false);
     }
   }
 
@@ -97,12 +99,11 @@ export default function Flashcards() {
       const data = await response.json();
       const translations = data.translations;
 
-      // Decode HTML entities in the translated text
       const decodedText = decodeHtmlEntities(translations[0]);
 
       setCurrentFlashcard({
         ...currentFlashcard,
-        translation: decodedText // Update with the decoded text
+        translation: decodedText
       });
       setHasTranslation(true);
       addToFlashCards();
@@ -121,35 +122,70 @@ export default function Flashcards() {
     >
       <Toolbar />
       <main className="flex flex-col gap-8 row-start-2 items-center justify-center sm:items-start">
-        <div className="flex flex-col justify-center items-center p-8 gap-4 font-[family-name:var(--font-geist-mono)]">
-          <h1 className="text-5xl text-center mb-2">Flashcards</h1>
-          <div className="grid grid-cols-1 gap-4 mb-2 w-full">
+        {showPopup && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white p-8 rounded-lg shadow-lg text-center max-w-lg">
+              <h2 className="text-2xl font-bold mb-4">
+                Welcome to Flashcards!
+              </h2>
+              <p className="text-gray-700 mb-6">
+                Use this feature to learn new phrases or reinforce your
+                linguistic knowledge. Select a language from the dropdown menu
+                and press "Generate Flashcard". After reading it, you can
+                translate it to English with the push of a button.
+              </p>
+              <button
+                onClick={() => setShowPopup(false)}
+                className="bg-black text-white p-2 rounded-lg shadow-lg hover:bg-[#5999AE] dark:hover:bg-[#5999AE] hover:text-black"
+              >
+                Got it!
+              </button>
+            </div>
+          </div>
+        )}
+
+        <div className="flex flex-col justify-center items-center gap-4 font-[family-name:var(--font-geist-mono)]">
+          <div className="grid grid-cols-1 gap-2 mb-2 w-full">
             <button>
               <select
                 value={targetLanguage}
                 onChange={(e) => setTargetLanguage(e.target.value)}
-                className="p-2 m-8 rounded-lg"
+                className="p-2 m-8 rounded-lg bg-black text-white"
               >
                 <option value="">Select a language</option>
                 <option value="de">German</option>
                 <option value="es">Spanish</option>
-                <option value="fr-FR">French (France)</option>
-                <option value="fr-CA">French (Canada)</option>
+                <option value="fr">French</option>
                 <option value="it">Italian</option>
-                {/* Add more language options as needed */}
               </select>
             </button>
           </div>
 
+          {/* Starting Flashcard */}
+          {!currentFlashcard && (
+            <div className="grid grid-cols-1 gap-4 mb-4 w-full">
+              <div className="col-span-1 w-full h-80 flex justify-center items-center rounded-lg bg-white text-black shadow-md border-2 border-gray-400 min-w-[300px]">
+                <div className="p-8 text-center">
+                  <h2 className="text-xl font-bold">Welcome to Flashcards!</h2>
+                  <p className="mt-4 text-lg text-black">
+                    Select a language and press "Generate Flashcard" to get
+                    started.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Generated Flashcard */}
           {currentFlashcard && (
             <div className="grid grid-cols-1 gap-4 mb-4 w-full">
-              <div className="col-span-1 w-full h-80 flex justify-center items-center rounded-lg bg-white shadow-md">
+              <div className="col-span-1 w-full h-80 flex justify-center items-center rounded-lg bg-white border-2 border-gray-400 shadow-md min-w-[800px]">
                 <div className="p-8 text-center">
                   <h2 className="text-xl font-bold">
                     {currentFlashcard.original}
                   </h2>
                   {currentFlashcard.translation && (
-                    <p className="mt-4 text-lg text-gray-700">
+                    <p className="mt-4 text-lg text-gray-600">
                       {currentFlashcard.translation}
                     </p>
                   )}
@@ -158,22 +194,20 @@ export default function Flashcards() {
             </div>
           )}
 
-          <div className="grid grid-row p-12 m-12">
-            {hasFlashCard && (
-              <button
-                onClick={handleTranslate}
-                className="flashcard-button"
-                disabled={translating || hasTranslation} // Disable if no flashcard is present
-              >
-                {translating ? 'Translating ...' : 'Translate to English'}
-              </button>
-            )}
+          <div className="w-200 p-4 bg-white rounded-lg shadow-lg flex flex-col items-center">
+            <button
+              onClick={handleTranslate}
+              className="flashcard-button"
+              disabled={!currentFlashcard || hasTranslation}
+            >
+              {translating ? 'Translating...' : 'Translate to English'}
+            </button>
             <button
               onClick={generateNewFlashcard}
-              className="flashcard-button"
-              disabled={!targetLanguage || loading} // Disable if no language is selected or if loading is true
+              className={`p-2 m-2 rounded-lg shadow-lg ${!targetLanguage || isGenerating ? 'bg-gray-400 text-gray-700 cursor-not-allowed' : 'bg-black text-white hover:bg-[#5999AE] dark:hover:bg-[#5999AE] hover:text-black'}`}
+              disabled={!targetLanguage || isGenerating}
             >
-              {loading ? 'Generating Flashcard...' : 'Generate Flashcard'}
+              {isGenerating ? 'Generating...' : 'Generate Flashcard'}
             </button>
             {error && <p style={{ color: 'red' }}>{error}</p>}
           </div>

@@ -10,7 +10,7 @@
     "check-format": "prettier --check .",
     "check-lint": "eslint . --ext ts --ext tsx --ext js  --ext jsx",
     "format": "prettier --write .",
-    "test": "jest",
+    "test": "node renameBabel.js && jest && node revertBabel.js",
     "test:watch": "jest --watch",
     "test:e2e": "playwright test",
     "test:coverage": "jest --coverage",
