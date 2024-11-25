@@ -18,9 +18,14 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@babel/plugin-transform-class-properties": "^7.25.9",
+    "@babel/plugin-transform-nullish-coalescing-operator": "^7.25.9",
+    "@babel/plugin-transform-optional-chaining": "^7.25.9",
     "@google-cloud/text-to-speech": "^5.5.0",
     "@google/generative-ai": "^0.21.0",
     "@heroicons/react": "^2.1.5",
+    "@tsparticles/engine": "^3.7.1",
+    "@tsparticles/react": "^3.0.0",
     "cross-fetch": "^4.0.0",
     "fill-range": "^7.1.1",
     "font-awesome": "^4.7.0",
@@ -30,8 +35,8 @@
     "node-fetch": "^3.3.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "rimraf": "^6.0.1",
     "simple-swizzle": "^0.2.2",
-    "react-tsparticles": "^2.12.2",
     "tsparticles": "^3.5.0"
   },
   "devDependencies": {
@@ -43,7 +48,7 @@
     "@testing-library/react": "^16.0.1",
     "babel-jest": "^29.7.0",
     "eslint": "^9.14.0",
-    "eslint-config-next": "15.0.2",
+    "eslint-config-next": "15.0.3",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-react": "^7.37.2",
     "globals": "^15.12.0",
