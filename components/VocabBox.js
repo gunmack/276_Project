@@ -1,12 +1,14 @@
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
+import { firebaseDB } from '../firebase_config';
+import { getDatabase, ref, get, set } from 'firebase/database';
+import { useAuth } from '../src/app/context/AuthContext';
 
 const languageOptions = [
   { key: 'en', label: 'English' },
   { key: 'fr-FR', label: 'French (French)' },
   { key: 'fr-CA', label: 'French (Canadian)' },
   { key: 'de', label: 'German' },
-  { key: 'it', label: 'Italian' },
   { key: 'es', label: 'Spanish' }
 ];
 
@@ -24,15 +26,60 @@ export default function VocabBox() {
   const [translations, setTranslations] = useState([]);
   const [generatedContent, setGeneratedContent] = useState(''); // State for generated content
   const [translatedText, setTranslatedText] = useState('');
+  const [detectedLanguage, setDetectedLanguage] = useState('');
   const [Tloading, setTLoading] = useState(false);
   const [Gloading, setGLoading] = useState(false);
   const textareaRef = useRef(null);
+  const { user } = useAuth();
+
+  const getLanguageName = (languageCode) => {
+    switch (languageCode) {
+      case 'en':
+        return 'English';
+      case 'fr-FR':
+        return 'French (French)';
+      case 'fr-CA':
+        return 'French (Canadian)';
+      case 'fr':
+        return 'French';
+      case 'de':
+        return 'German';
+      case 'es':
+        return 'Spanish';
+      default:
+        return 'Unknown';
+    }
+  };
 
   useEffect(() => {
     // Clear translations on component mount (page reload)
     setTranslations([]);
     setTranslatedText('');
   }, []);
+
+  const clear = async () => {
+    setInputText('');
+    setTranslations([]);
+    setTranslatedText('');
+    setDetectedLanguage('');
+
+    setTargetLanguage('');
+  };
+
+  const addToVocab = async () => {
+    const database = getDatabase(firebaseDB);
+    const vocabCountRef = ref(database, `Users/${user.displayName}/VocabCount`);
+    const count = await get(vocabCountRef);
+    let newCount = 1;
+    if (count.exists()) {
+      newCount = count.val() + 1;
+    }
+    try {
+      await set(vocabCountRef, newCount);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   async function handleTranslate() {
     if (!targetLanguage) {
@@ -51,13 +98,16 @@ export default function VocabBox() {
         body: JSON.stringify({ inputText, targetLanguage })
       });
       const data = await response.json();
+      const detectedLanguage = data.detectedSourceLanguage;
       const rawTranslations = data.translations;
       // Decode HTML entities in the translations
       const decodedTranslations = rawTranslations.map((text) =>
         decodeHtmlEntities(text)
       );
+      setDetectedLanguage(getLanguageName(detectedLanguage)); // Save detected language
       setTranslations(decodedTranslations); // Save decoded translations
       setTranslatedText(decodedTranslations[0]); // Set the first translation
+      addToVocab(); // Prevent further clicks
     } catch (error) {
       console.error(error);
       alert('An error occurred during translation.');
@@ -68,6 +118,9 @@ export default function VocabBox() {
 
   async function callGemini() {
     try {
+      setInputText(''); // Clear input text
+      setTranslations([]); // Clear translations
+      setTranslatedText(''); // Clear translated text
       setGLoading(true);
       const response = await fetch('/api/generateVocab', {
         method: 'POST',
@@ -96,26 +149,26 @@ export default function VocabBox() {
   return (
     <>
       <div data-testid="Vocab Box" className="vocab-box">
-        <div>
-          <button>
+        {!translatedText && (
+          <div>
+            <label htmlFor="languageSelect">Translate to: </label>
             <select
+              id="languageSelect"
               value={targetLanguage}
               onChange={(e) => setTargetLanguage(e.target.value)}
-              className=" language-dropdown"
+              className="language-dropdown"
             >
               <option value="" disabled>
-                Translate to
+                Pick a language
               </option>
-              <option value="en">English</option>
-              <option value="fr-FR">French (French)</option>
-              <option value="fr-CA">French (Canadian)</option>
-              <option value="de">German</option>
-              <option value="it">Italian</option>
-              <option value="es">Spanish</option>
-              {/* Add more language options as needed */}
+              {languageOptions.map((lang) => (
+                <option key={lang.key} value={lang.key}>
+                  {lang.label}
+                </option>
+              ))}
             </select>
-          </button>
-        </div>
+          </div>
+        )}
         <br />
 
         <div className="vocab-text">
@@ -125,36 +178,40 @@ export default function VocabBox() {
                 ref={textareaRef}
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
-                placeholder="Enter text"
                 className="textarea"
+                placeholder="Enter text here..."
                 rows={10}
-                cols={20}
+                cols={50}
               />
             </div>
           )}
 
           {translatedText && (
             <div>
-              <br />
-              <strong>
-                Translating to{' '}
-                {languageOptions.find((lang) => lang.key === targetLanguage)
-                  ?.label || 'Unknown'}
-              </strong>
-              <br />
-              <br />
               <div className="vocab-text">
                 <div className="vocab-out">
+                  <strong>Detected: {detectedLanguage}</strong>
+                  <br />
+                  <br />
                   <textarea
                     ref={textareaRef}
                     value={inputText}
                     onChange={(e) => setInputText(e.target.value)}
-                    placeholder="Enter text"
                     className="textarea"
+                    cols={50}
+                    rows={10}
                   />
                 </div>
                 <div className="vocab-out">
                   <div>
+                    <strong>
+                      Translating to:{' '}
+                      {languageOptions.find(
+                        (lang) => lang.key === targetLanguage
+                      )?.label || 'Unknown'}
+                    </strong>
+                    <br />
+                    <br />
                     <ul className="no-list">
                       {translations.map((translation, index) => (
                         <li key={index}>{translation}</li>
@@ -168,20 +225,29 @@ export default function VocabBox() {
         </div>
         <br />
         <div className="translate-button-container">
-          <button
-            onClick={handleTranslate}
-            className="translate-button"
-            disabled={Tloading}
-          >
-            {Tloading ? 'Translating...' : 'Translate'}
-          </button>
-          <button
-            onClick={callGemini}
-            className="translate-button"
-            disabled={Gloading}
-          >
-            {Gloading ? 'Asking Gemini...' : 'Ask Google Gemini'}
-          </button>
+          {!translatedText && (
+            <button
+              onClick={handleTranslate}
+              className="translate-button"
+              disabled={Tloading || inputText == null}
+            >
+              {Tloading ? 'Translating...' : 'Translate'}
+            </button>
+          )}
+          {!translatedText && (
+            <button
+              onClick={callGemini}
+              className="translate-button"
+              disabled={Gloading}
+            >
+              {Gloading ? 'Asking Gemini...' : 'Ask Google Gemini'}
+            </button>
+          )}
+          {translatedText && (
+            <button onClick={clear} className="clear-button">
+              Clear
+            </button>
+          )}
         </div>
       </div>
     </>

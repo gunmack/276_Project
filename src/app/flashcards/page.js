@@ -1,6 +1,9 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import Toolbar from '../Toolbar';
+import { useAuth } from '../context/AuthContext';
+import { firebaseDB } from '../../../firebase_config';
+import { getDatabase, ref, get, set } from 'firebase/database';
 
 function decodeHtmlEntities(text) {
   const textArea = document.createElement('textarea');
@@ -9,15 +12,41 @@ function decodeHtmlEntities(text) {
 }
 
 export default function Flashcards() {
+  const { user } = useAuth();
   const [currentFlashcard, setCurrentFlashcard] = useState(null);
   const [error, setError] = useState(null);
   const [targetLanguage, setTargetLanguage] = useState('');
   const [showPopup, setShowPopup] = useState(true);
   const [isGenerating, setIsGenerating] = useState(false); // Track if flashcard is being generated
+  const [hasFlashCard, setHasFlashCard] = useState(false);
+  const [hasTranslation, setHasTranslation] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [translating, setTranslating] = useState(false);
+
+  const addToFlashCards = async () => {
+    const database = getDatabase(firebaseDB);
+    const FlashCardCountRef = ref(
+      database,
+      `Users/${user.displayName}/FlashCardCount`
+    );
+    const count = await get(FlashCardCountRef);
+    let newCount = 1;
+    if (count.exists()) {
+      newCount = count.val() + 1;
+    }
+    try {
+      await set(FlashCardCountRef, newCount);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   async function generateNewFlashcard() {
     setError(null);
     setIsGenerating(true); // Set generating state to true while loading
+    setError(null); // Reset error state
+    setLoading(true); // Set loading state
+    setHasTranslation(false); // Reset translation state
     try {
       const response = await fetch('/api/generateFlashcards', {
         method: 'POST',
@@ -39,6 +68,8 @@ export default function Flashcards() {
               original: sentences[0],
               translation: ''
             });
+            setHasFlashCard(true);
+            setHasTranslation(false);
           }
         }
       }
@@ -47,10 +78,12 @@ export default function Flashcards() {
       setError('Failed to generate a new flashcard');
     } finally {
       setIsGenerating(false); // Reset generating state when done
+      setLoading(false);
     }
   }
 
   async function handleTranslate() {
+    setTranslating(true); // Set translating state
     if (!currentFlashcard) return;
 
     try {
@@ -72,9 +105,13 @@ export default function Flashcards() {
         ...currentFlashcard,
         translation: decodedText
       });
+      setHasTranslation(true);
+      addToFlashCards();
     } catch (error) {
       console.error(error);
       setError('Failed to fetch translation');
+    } finally {
+      setTranslating(false); // Reset translating state
     }
   }
 
@@ -160,10 +197,10 @@ export default function Flashcards() {
           <div className="w-200 p-4 bg-white rounded-lg shadow-lg flex flex-col items-center">
             <button
               onClick={handleTranslate}
-              className={`p-2 m-2 rounded-lg shadow-lg ${!currentFlashcard ? 'bg-gray-400 text-gray-700 cursor-not-allowed' : 'bg-black text-white hover:bg-[#5999AE] dark:hover:bg-[#5999AE] hover:text-black'}`}
-              disabled={!currentFlashcard}
+              className="flashcard-button"
+              disabled={!currentFlashcard || hasTranslation}
             >
-              Translate to English
+              {translating ? 'Translating...' : 'Translate to English'}
             </button>
             <button
               onClick={generateNewFlashcard}
