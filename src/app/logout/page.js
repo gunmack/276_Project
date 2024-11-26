@@ -37,11 +37,19 @@ export default function Logout() {
         </div>
 
         <main className="flex flex-col gap-8 row-start-2 items-center justify-center sm:items-start">
-          <div className="flex flex-col justify-center items-center p-8 gap-4 font-[family-name:var(--font-geist-mono)] relative">
+          <div className="flex flex-col justify-center items-center p-8 gap-8 font-[family-name:var(--font-geist-mono)] relative text-center">
             <div className="w-full max-w-2xl p-6 bg-white rounded-lg shadow-md">
-              <h1 className="text-3xl text-center mb-16">
-                Thank you for using QuizLing!
+              <h1 className="text-3xl mb-16">
+                Logout successful!
               </h1>
+              <p className="mb-8">Thank you for using QuizLing.</p>
+                <p p className="mb-8"> Please consider filling out our survey:</p>
+              
+              <a href="https://forms.office.com/Pages/DesignPageV2.aspx?subpage=design&FormId=fmfoBInJuUeGGdg9Wl9sZwljOeC3bOFFtqXQxk0gPCJUQzlTN0NTN01VTTBJRjBBRUtXVVg0UVQyNi4u" 
+                className="inline-block bg-black text-white p-2 rounded-lg shadow-lg hover:bg-[#5999AE] dark:hover:bg-[#5999AE] hover:text-black mb-8">
+                QuizLing Survey
+              </a>
+
               <div className="flex justify-center items-center gap-4 w-full">
                 <Link href="\">
                   <button className="bg-black text-white p-2 rounded-lg shadow-lg hover:bg-[#5999AE] dark:hover:bg-[#5999AE] hover:text-black">
@@ -52,6 +60,8 @@ export default function Logout() {
             </div>
           </div>
         </main>
+
+
       </div>
     </>
   );
