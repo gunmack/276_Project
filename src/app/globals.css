@@ -85,7 +85,7 @@ body {
   border-radius: 6px;
   transition: border-color 0.2s ease;
   cursor: pointer;
-  color: white
+  color: white;
 }
 
 .language-dropdown:focus {
