@@ -150,7 +150,7 @@ export default function Toolbar() {
           {username != 'Anonymous User' && (
             <button
               onClick={handleSignOut}
-              className="inline-flex items-center gap-2 text-lg font-medium bg-red-500 text-white p-2 hover:bg-red-600 rounded-lg transition-all duration-300"
+              className="inline-flex items-center gap-2 text-lg font-medium bg-[#5999AE] text-white p-2 hover:bg-[#294a54] rounded-lg transition-all duration-300"
             >
               <span>Log Out</span>
             </button>
@@ -158,7 +158,7 @@ export default function Toolbar() {
           {username == 'Anonymous User' && (
             <Link
               href="/auth"
-              className="inline-flex items-center gap-2 text-lg font-medium bg-green-500 text-white p-2 hover:bg-green-600 rounded-lg transition-all duration-300"
+              className="inline-flex items-center gap-2 text-lg font-medium bg-[#5999AE]  text-white p-2 hover:bg-[#294a54] rounded-lg transition-all duration-300"
             >
               <span>Log In</span>
             </Link>

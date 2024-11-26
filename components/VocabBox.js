@@ -6,8 +6,7 @@ import { useAuth } from '../src/app/context/AuthContext';
 
 const languageOptions = [
   { key: 'en', label: 'English' },
-  { key: 'fr-FR', label: 'French (French)' },
-  { key: 'fr-CA', label: 'French (Canadian)' },
+  { key: 'fr', label: 'French' },
   { key: 'de', label: 'German' },
   { key: 'es', label: 'Spanish' }
 ];

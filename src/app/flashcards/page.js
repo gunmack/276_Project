@@ -153,10 +153,9 @@ export default function Flashcards() {
                 className="p-2 m-8 rounded-lg bg-black text-white"
               >
                 <option value="">Select a language</option>
+                <option value="fr">French</option>
                 <option value="de">German</option>
                 <option value="es">Spanish</option>
-                <option value="fr">French</option>
-                <option value="it">Italian</option>
               </select>
             </button>
           </div>
