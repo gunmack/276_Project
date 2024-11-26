@@ -124,7 +124,7 @@ export default function TextToSpeechBox() {
         onChange={(e) => setText(e.target.value)}
         rows="4"
         cols="50"
-        placeholder="Enter Text"
+        placeholder="Text-to-Speech"
         className="text-input"
       />
       <br />

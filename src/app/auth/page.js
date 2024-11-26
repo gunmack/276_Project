@@ -103,33 +103,40 @@ export default function Login() {
 
   return (
     <div
-      className="relative min-h-screen flex flex-col justify-center items-center p-8 sm:p-20 bg-gradient-to-r"
+      className="relative min-h-screen flex justify-center items-center p-8 sm:p-20 bg-gradient-to-r"
       data-testid="Login screen"
     >
-      <Toolbar />
-      <strong className="text-center">Sign In</strong>
+      <div className="bg-white w-full max-w-3xl shadow-md rounded-lg p-8">
+        <Toolbar />
+        <strong className="text-center block mb-6 text-2xl">Sign In</strong>
+        <p className="text-center block mb-2 text-l">
+          Signing in allows you to unlock the full potential of QuizLing. By
+          signing in, you can track your linguistic progress over time, set
+          personalized goals, and enjoy full access to our achievements feature.
+        </p>
 
-      <div>
-        {msg && <h2>{msg}</h2>}
-        <br />
-        {!popup && (
-          <div>
-            <button
-              className="bg-white p-2 m-8 rounded-lg hover:bg-green-600"
-              onClick={handleGoogleSignIn}
-            >
-              Sign In with Google
-            </button>
-            <button
-              className="bg-white p-2 m-8 rounded-lg hover:bg-green-600"
-              onClick={handleGuestLogin}
-            >
-              Continue as Guest
-            </button>
-          </div>
-        )}
+        <div className="text-center">
+          {msg && <h2 className="mb-4 text-red-500">{msg}</h2>}
+          <br />
+          {!popup && (
+            <div>
+              <button
+                className="bg-black p-2 m-8 rounded-lg hover:bg-[#5999AE] text-white"
+                onClick={handleGoogleSignIn}
+              >
+                Sign In with Google
+              </button>
+              <button
+                className="bg-black p-2 m-8 rounded-lg hover:bg-[#5999AE] text-white"
+                onClick={handleGuestLogin}
+              >
+                Continue as Guest
+              </button>
+            </div>
+          )}
 
-        {popup && <p>A Google popup has opened to help you log in.......</p>}
+          {popup && <p>A Google popup has opened to help you log in...</p>}
+        </div>
       </div>
     </div>
   );

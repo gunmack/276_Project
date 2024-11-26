@@ -36,7 +36,6 @@ export default function TextToSpeech() {
         <Toolbar />
         <main className="flex flex-col gap-8 row-start-2 items-center justify-center sm:items-start">
           <div className="flex flex-col justify-center items-center p-8 gap-4 font-[family-name:var(--font-geist-mono)]">
-            <h1 className="text-5xl text-center mb-2">Text to Speech</h1>
             <TextToSpeechButton />
           </div>
         </main>

@@ -131,10 +131,10 @@ export default function GeminiChatbot() {
         onChange={handleLanguageChange}
         className="language-dropdown"
       >
+        <option value="English">English</option>
         <option value="French">French</option>
         <option value="German">German</option>
         <option value="Spanish">Spanish</option>
-        <option value="English">English</option>
       </select>
 
       <div className="chat-area">

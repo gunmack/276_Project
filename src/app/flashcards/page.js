@@ -153,10 +153,9 @@ export default function Flashcards() {
                 className="p-2 m-8 rounded-lg bg-black text-white"
               >
                 <option value="">Select a language</option>
+                <option value="fr">French</option>
                 <option value="de">German</option>
                 <option value="es">Spanish</option>
-                <option value="fr">French</option>
-                <option value="it">Italian</option>
               </select>
             </button>
           </div>
@@ -197,7 +196,7 @@ export default function Flashcards() {
           <div className="w-200 p-4 bg-white rounded-lg shadow-lg flex flex-col items-center">
             <button
               onClick={handleTranslate}
-              className="flashcard-button"
+              className={`p-2 m-2 rounded-lg shadow-lg ${!targetLanguage || isGenerating ? 'bg-gray-400 text-gray-700 cursor-not-allowed' : 'bg-black text-white hover:bg-[#5999AE] dark:hover:bg-[#5999AE] hover:text-black'}`}
               disabled={!currentFlashcard || hasTranslation}
             >
               {translating ? 'Translating...' : 'Translate to English'}
