@@ -126,36 +126,84 @@ export default function Quizzes() {
       )}
 
       <main className="flex flex-col gap-8 row-start-2 items-center justify-center sm:items-center max-w-lg w-full">
-        <div className="flex flex-col justify-center items-center p-8 gap-4 font-[family-name:var(--font-geist-mono)] max-w-lg w-full">
-          <h1 className="text-5xl text-center mb-4 text-white drop-shadow-md">
-            Language Quizzes
-          </h1>
-          <p className="text-lg text-center text-white mb-6">
-            Test your language skills! Generate a random quiz that will ask you
-            to translate a word or phrase. Choose the correct option and see how
-            well you do!
-          </p>
-          <div className="mb-4">
-            <label className="text-white mr-4">Select Quiz Type:</label>
+        {quiz ? (
+          <div className="bg-white text-black rounded-lg p-8 shadow-lg w-[200%] max-w-3xl text-center">
+            <h2 className="text-3xl font-bold mb-6">{quiz.question}</h2>
+            <ul className="list-none mb-8">
+              {quiz.options.map((option, index) => (
+                <li key={index} className="mb-4 text-lg">
+                  <span className="font-bold text-xl">
+                    {['A', 'B', 'C', 'D'][index]}:
+                  </span>{' '}
+                  {option}
+                </li>
+              ))}
+            </ul>
+            <div className="mt-6 flex flex-col items-center justify-center gap-8 w-3/4 max-w-lg mx-auto">
+              <input
+                type="text"
+                placeholder="Enter A, B, C, or D"
+                value={userAnswer}
+                onChange={(e) => setUserAnswer(e.target.value)}
+                className="border px-6 py-3 text-lg rounded-lg w-full text-black focus:outline-none focus:ring-4 focus:ring-black"
+              />
+              {!isSubmitted && (
+                <button
+                  onClick={checkAnswer}
+                  className="mt-4 px-8 py-3 bg-black text-white text-lg font-semibold rounded-lg shadow-md hover:bg-[#5999AE] transition"
+                >
+                  Submit
+                </button>
+              )}
+            </div>
+            {feedback && (
+              <p
+                className={`mt-8 text-xl font-semibold ${
+                  feedback.includes('Correct')
+                    ? 'text-green-600'
+                    : 'text-red-600'
+                }`}
+              >
+                {feedback}
+              </p>
+            )}
+          </div>
+        ) : (
+          <div className="bg-gray-100 text-black rounded-lg p-8 shadow-lg max-w-3xl w-full text-center">
+            <h2 className="text-3xl font-bold mb-4">Language Quizzes!</h2>
+            <p className="text-lg text-gray-700">
+              Select a quiz type and language, then click "Generate Quiz" to get
+              started!
+            </p>
+          </div>
+        )}
+
+        <div className="bg-white text-black rounded-lg p-6 shadow-lg w-[80%] flex flex-col items-center gap-4">
+          <div className="w-full text-center mb-1">
+            <label className="text-black block mb-2 text-lg">
+              Select Quiz Type:
+            </label>
             <select
               value={quizType}
               onChange={(e) => setQuizType(e.target.value)}
-              className="p-2 rounded-md"
+              className="p-2 rounded-md border border-gray-300 bg-black text-white w-3/4 max-w-xs"
             >
               <option value="word-translation">Word Translation</option>
               <option value="phrase-translation">Phrase Translation</option>
             </select>
           </div>
-          <div className="mb-4">
-            <label className="text-white mr-4">Select Language:</label>
+          <div className="w-full text-center mb-4">
+            <label className="text-black block mb-2 text-lg">
+              Select Language:
+            </label>
             <select
               value={targetLanguage}
               onChange={(e) => setTargetLanguage(e.target.value)}
-              className="p-2 rounded-md"
+              className="p-2 rounded-md border border-gray-300 bg-black text-white w-3/4 max-w-xs"
             >
-              <option value="es">Spanish</option>
               <option value="fr">French</option>
               <option value="de">German</option>
+              <option value="es">Spanish</option>
             </select>
           </div>
           <button
@@ -166,50 +214,6 @@ export default function Quizzes() {
             {loading ? 'Generating...' : 'Generate Quiz'}
           </button>
         </div>
-
-        {quiz && (
-          <div className="bg-white text-black rounded-lg p-6 shadow-lg max-w-lg w-full text-center">
-            <h2 className="text-2xl font-bold mb-4">{quiz.question}</h2>
-            <ul className="list-none mb-6">
-              {quiz.options.map((option, index) => (
-                <li key={index} className="mb-2">
-                  <span className="font-bold">
-                    {['A', 'B', 'C', 'D'][index]}:
-                  </span>{' '}
-                  {option}
-                </li>
-              ))}
-            </ul>
-            <div className="mt-4 flex items-center justify-center">
-              <input
-                type="text"
-                placeholder="Enter A, B, C, or D"
-                value={userAnswer}
-                onChange={(e) => setUserAnswer(e.target.value)}
-                className="border px-4 py-2 rounded-lg w-full max-w-xs text-black focus:outline-none focus:ring-2 focus:ring-blue-400"
-              />
-              {!isSubmitted && (
-                <button
-                  onClick={checkAnswer}
-                  className="ml-4 px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition"
-                >
-                  Submit
-                </button>
-              )}
-            </div>
-            {feedback && (
-              <p
-                className={`mt-6 text-lg font-semibold ${
-                  feedback.includes('Correct')
-                    ? 'text-green-600'
-                    : 'text-red-600'
-                }`}
-              >
-                {feedback}
-              </p>
-            )}
-          </div>
-        )}
       </main>
     </div>
   );
