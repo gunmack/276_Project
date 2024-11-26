@@ -47,7 +47,7 @@ export default function VocabBox() {
       case 'es':
         return 'Spanish';
       default:
-        return 'Unknown';
+        return 'Language not supported';
     }
   };
 
@@ -193,14 +193,7 @@ export default function VocabBox() {
                   <strong>Detected: {detectedLanguage}</strong>
                   <br />
                   <br />
-                  <textarea
-                    ref={textareaRef}
-                    value={inputText}
-                    onChange={(e) => setInputText(e.target.value)}
-                    className="textarea"
-                    cols={50}
-                    rows={10}
-                  />
+                  <div className="no-list">{inputText}</div>
                 </div>
                 <div className="vocab-out">
                   <div>
