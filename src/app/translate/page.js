@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import Toolbar from '../Toolbar';
-import VocabBox from '../../../components/VocabBox';
+import Toolbar from '../components/Toolbar';
+import VocabBox from '../components/VocabBox';
 
 export default function LearnVocab() {
   const [showPopup, setShowPopup] = useState(true);
@@ -36,6 +36,12 @@ export default function LearnVocab() {
             </div>
           </div>
         )}
+        <button
+          onClick={() => setShowPopup(true)}
+          className="bg-black text-white p-4 rounded-full shadow-lg hover:bg-green-600 hover:text-black fixed top-4 right-4 flex items-center justify-center w-16 h-16"
+        >
+          ❔
+        </button>
 
         <main className="flex flex-col gap-8 row-start-2 items-center justify-center sm:items-start">
           <div className="flex flex-col justify-center items-center p-8 gap-4 font-[family-name:var(--font-geist-mono)]">

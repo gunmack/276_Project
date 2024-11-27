@@ -1,6 +1,6 @@
 'use client'; // Client-side rendering
 import React from 'react';
-import Toolbar from '../Toolbar';
+import Toolbar from '../components/Toolbar';
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { firebaseDB } from '../../../firebase_config';
@@ -123,6 +123,12 @@ export default function GeminiChatbot() {
           </div>
         </div>
       )}
+      <button
+        onClick={() => setShowPopup(true)}
+        className="bg-black text-white p-4 rounded-full shadow-lg hover:bg-green-600 hover:text-black fixed top-4 right-4 flex items-center justify-center w-16 h-16"
+      >
+        ❔
+      </button>
 
       <label htmlFor="language-select">Choose a Language: </label>
       <select
