@@ -28,12 +28,12 @@ export default function TextToSpeech() {
           </div>
         </div>
       )}
-        <button
-          onClick={() => setShowPopup(true)}
-          className="bg-black text-white p-4 rounded-full shadow-lg hover:bg-green-600 hover:text-black fixed top-4 right-4 flex items-center justify-center w-16 h-16"
-        >
-          ❔
-        </button>
+      <button
+        onClick={() => setShowPopup(true)}
+        className="bg-black text-white p-4 rounded-full shadow-lg hover:bg-green-600 hover:text-black fixed top-4 right-4 flex items-center justify-center w-16 h-16"
+      >
+        ❔
+      </button>
 
       <div
         data-testid="Text to Speech"

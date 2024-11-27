@@ -27,7 +27,9 @@ export default function Logout() {
         data-testid="Logout screen"
         className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-ibmPlexMono)] bg-gradient-to-r"
       >
-        <div className="absolute top-12 left-1/2 transform -translate-x-1/2 p-6 bg-white border-4 border-gray-300 rounded-xl shadow-lg z-10 mb-16"> {/* Added margin-bottom */}
+        <div className="absolute top-12 left-1/2 transform -translate-x-1/2 p-6 bg-white border-4 border-gray-300 rounded-xl shadow-lg z-10 mb-16">
+          {' '}
+          {/* Added margin-bottom */}
           <p
             className="text-6xl text-center"
             style={{ fontFamily: 'Baloo, sans-serif' }}

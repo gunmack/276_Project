@@ -124,12 +124,12 @@ export default function Quizzes() {
           </div>
         </div>
       )}
-        <button
-          onClick={() => setShowPopup(true)}
-          className="bg-black text-white p-4 rounded-full shadow-lg hover:bg-green-600 hover:text-black fixed top-4 right-4 flex items-center justify-center w-16 h-16"
-        >
-          ❔
-        </button>
+      <button
+        onClick={() => setShowPopup(true)}
+        className="bg-black text-white p-4 rounded-full shadow-lg hover:bg-green-600 hover:text-black fixed top-4 right-4 flex items-center justify-center w-16 h-16"
+      >
+        ❔
+      </button>
 
       <main className="flex flex-col gap-8 row-start-2 items-center justify-center sm:items-center max-w-lg w-full">
         {quiz ? (

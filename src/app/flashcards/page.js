@@ -150,7 +150,6 @@ export default function Flashcards() {
           ❔
         </button>
 
-
         <div className="flex flex-col justify-center items-center gap-4 font-[family-name:var(--font-geist-mono)]">
           <div className="grid grid-cols-1 gap-2 mb-2 w-full">
             <button>
