@@ -397,7 +397,7 @@ body {
 
 .top-right-clear {
   position: fixed;
-  top: 20px; /* 20px from the top of the page */
+  bottom: 20px; /* 20px from the top of the page */
   right: 20px; /* 20px from the right of the page */
   background-color: black;
   color: white;
