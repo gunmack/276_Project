@@ -20,16 +20,17 @@ const decodeHtmlEntities = (text) => {
 };
 
 export default function VocabBox() {
-  const [inputText, setInputText] = useState('');
-  const [outputText, setOutputText] = useState('');
-  const [sourceLang, setSourceLang] = useState('');
-  const [targetLanguage, setTargetLanguage] = useState(''); // Default target language
-  const [translations, setTranslations] = useState([]);
-  const [generatedContent, setGeneratedContent] = useState(''); // State for generated content
-  const [detectedLanguage, setDetectedLanguage] = useState('');
+  var [inputText, setInputText] = useState('');
+  var [outputText, setOutputText] = useState('');
+  var [sourceLang, setSourceLang] = useState('');
+  var [targetLanguage, setTargetLanguage] = useState(''); // Default target language
+  var [translations, setTranslations] = useState([]);
+  var [generatedContent, setGeneratedContent] = useState(''); // State for generated content
+  var [detectedLanguage, setDetectedLanguage] = useState('');
   const [Tloading, setTLoading] = useState(false);
   const [Gloading, setGLoading] = useState(false);
   const textareaRef = useRef(null);
+
   const { user } = useAuth();
 
   const getLanguageName = (languageCode) => {
@@ -52,6 +53,14 @@ export default function VocabBox() {
   };
 
   useEffect(() => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = 'auto'; // Reset height
+      textarea.style.height = `${textarea.scrollHeight}px`; // Set height based on content
+    }
+  }, [inputText]);
+
+  useEffect(() => {
     // Clear translations on component mount (page reload)
     setInputText('');
     setOutputText('');
@@ -60,63 +69,26 @@ export default function VocabBox() {
     setTranslations(null);
   }, []);
 
-  const clear = async () => {
+  async function swapFields() {
+    var tempText = inputText;
+    setInputText(outputText);
+    setOutputText(tempText);
+
+    var tempLang = sourceLang;
+    setSourceLang(targetLanguage);
+    setTargetLanguage(tempLang);
+  }
+
+  async function clearText() {
+    setInputText('');
+  }
+
+  async function clear() {
     setInputText('');
     setOutputText('');
-    setDetectedLanguage('');
     setSourceLang('');
     setTargetLanguage('');
     setTranslations(null);
-  };
-
-  const addToVocab = async () => {
-    const database = getDatabase(firebaseDB);
-    const vocabCountRef = ref(database, `Users/${user.displayName}/VocabCount`);
-    const count = await get(vocabCountRef);
-    let newCount = 1;
-    if (count.exists()) {
-      newCount = count.val() + 1;
-    }
-    try {
-      await set(vocabCountRef, newCount);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  async function handleTranslate() {
-    if (!targetLanguage) {
-      alert('Please select a target language.');
-      return;
-    }
-    if (!inputText.trim()) {
-      alert('Please enter some text to translate.');
-      return;
-    }
-    try {
-      setTLoading(true);
-      const response = await fetch('/api/vocabTranslate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ inputText, targetLanguage })
-      });
-      const data = await response.json();
-      setDetectedLanguage(getLanguageName(data.detectedLanguage)); // Save detected language
-      setSourceLang(detectedLanguage); // Save detected language
-      const rawTranslations = data.translations;
-      // Decode HTML entities in the translations
-      const decodedTranslations = rawTranslations.map((text) =>
-        decodeHtmlEntities(text)
-      ); // Save detected language
-      setTranslations(decodedTranslations); // Save decoded translations
-      setOutputText(decodedTranslations); // Set the first translation
-      addToVocab(); // Prevent further clicks
-    } catch (error) {
-      console.error(error);
-      alert('An error occurred during translation.');
-    } finally {
-      setTLoading(false); // Reset loading state
-    }
   }
 
   async function callGemini() {
@@ -133,7 +105,6 @@ export default function VocabBox() {
       const data = await response.json();
       setGeneratedContent(data.generatedText); // Save generated content
       setInputText(generatedContent); // Update input text with generated content
-      // Update state with generated content
     } catch (error) {
       console.error(error);
       alert('An error occurred while asking Gemini.');
@@ -142,179 +113,184 @@ export default function VocabBox() {
     }
   }
 
-  useEffect(() => {
-    const textarea = textareaRef.current;
-    if (textarea) {
-      textarea.style.height = 'auto'; // Reset height
-      textarea.style.height = `${textarea.scrollHeight}px`; // Set height based on content
+  async function handleTranslate() {
+    if (!targetLanguage) {
+      alert('Please select a target language.');
+      return;
     }
-  }, [inputText]);
+    // Ensure inputText is a string and not empty
+    if (!inputText) {
+      alert('Please enter some text to translate.');
+      return;
+    }
+    try {
+      setTLoading(true);
+      const response = await fetch('/api/vocabTranslate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ inputText, targetLanguage })
+      });
+      const data = await response.json();
+      const detectedLanguage = data.detectedSourceLanguage;
+      const rawTranslations = data.translations;
+      // Decode HTML entities in the translations
+      const decodedTranslations = rawTranslations.map((text) =>
+        decodeHtmlEntities(text)
+      );
+      setDetectedLanguage(getLanguageName(detectedLanguage)); // Save detected language
+      setSourceLang(detectedLanguage); // Set the detected language
+      setTranslations(decodedTranslations); // Set the first translation
+      setOutputText(decodedTranslations);
+      if (sourceLang != targetLanguage) {
+        addToVocab(); // Prevent further clicks
+      }
+    } catch (error) {
+      console.error(error);
+      alert('An error occurred during translation.');
+    } finally {
+      setTLoading(false); // Reset loading state
+    }
+  }
 
-  const swapFields = () => {
-    const temp = inputText;
-    const tempLang = sourceLang;
-    setInputText(outputText);
-    setOutputText(temp);
-    setSourceLang(targetLanguage);
-    setTargetLanguage(tempLang);
-  };
+  async function addToVocab() {
+    const database = getDatabase(firebaseDB);
+    const vocabCountRef = ref(database, `Users/${user.displayName}/VocabCount`);
+    const count = await get(vocabCountRef);
+    let newCount = 1;
+    if (count.exists()) {
+      newCount = count.val() + 1;
+    }
+    try {
+      await set(vocabCountRef, newCount);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     <>
       <div data-testid="Vocab Box" className="vocab-box">
         <div className="vocab-text">
-          {!translations && ( // Only render this div when `translatedText` is not present
-            <div className="flex flex-1 gap-4">
-              <div>
-                <select
-                  id="languageSelect"
-                  value={sourceLang}
-                  onChange={(e) => setSourceLang(e.target.value)}
-                  className="language-dropdown pb-4"
-                >
-                  <option value="" disabled>
-                    Select language
+          <div className="flex flex-1 gap-4">
+            <div>
+              <select
+                id="languageSelect"
+                value={sourceLang}
+                onChange={(e) => setSourceLang(e.target.value)}
+                className="language-dropdown pb-4"
+              >
+                <option value="" disabled>
+                  Translate from
+                </option>
+                {languageOptions.map((lang) => (
+                  <option key={lang.key} value={lang.key}>
+                    {lang.label}
                   </option>
-                  {languageOptions.map((lang) => (
-                    <option key={lang.key} value={lang.key}>
-                      {lang.label}
-                    </option>
-                  ))}
-                </select>
-                <br />
-                <br />
-                <textarea
-                  ref={textareaRef}
-                  value={inputText}
-                  onChange={(e) => setInputText(e.target.value)}
-                  className="textarea"
-                  placeholder="Enter text here..."
-                  rows={10}
-                  cols={50}
-                />
-              </div>
+                ))}
+              </select>
+              <br />
+              <br />
 
-              <div>
-                <select
-                  id="languageSelect"
-                  value={targetLanguage}
-                  onChange={(e) => setTargetLanguage(e.target.value)}
-                  className="language-dropdown pb-4"
-                >
-                  <option value="" disabled>
-                    Select language
-                  </option>
-                  {languageOptions.map((lang) => (
-                    <option key={lang.key} value={lang.key}>
-                      {lang.label}
-                    </option>
-                  ))}
-                </select>
-                <br />
-                <br />
+              <textarea
+                ref={textareaRef}
+                value={inputText}
+                onChange={(e) => {
+                  setInputText(e.target.value);
 
-                <textarea
-                  ref={textareaRef}
-                  value={outputText}
-                  onChange={(e) => setOutputText(e.target.value)}
-                  className="textarea"
-                  placeholder="Enter text here..."
-                  rows={10}
-                  cols={50}
-                />
-              </div>
+                  setTargetLanguage('');
+                }}
+                className="textarea"
+                placeholder={
+                  Gloading ? 'Asking Gemini... ' : 'Enter text to translate...'
+                }
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    // Check if Enter key is pressed
+                    e.preventDefault(); // Prevent default Enter key behavior (like newline in textarea)
+                    handleTranslate(); // Call the translate function
+                  }
+                }}
+                rows={10}
+                cols={50}
+              />
             </div>
-          )}
 
-          {translations && (
-            <div className="flex flex-1 gap-4">
-              <div>
-                <select
-                  id="languageSelect"
-                  value={sourceLang}
-                  onChange={(e) => setSourceLang(e.target.value)}
-                  className="language-dropdown pb-4"
-                >
-                  <option value="" disabled>
-                    Select language
-                  </option>
-                  {languageOptions.map((lang) => (
-                    <option key={lang.key} value={lang.key}>
-                      {lang.label}
-                    </option>
-                  ))}
-                </select>
-                <br />
-                <br />
-                <textarea
-                  ref={textareaRef}
-                  value={inputText}
-                  onChange={(e) => setInputText(e.target.value)}
-                  className="textarea"
-                  placeholder="Enter text here..."
-                  rows={10}
-                  cols={50}
-                />
-              </div>
-
-              <button onClick={swapFields} className="swap-button">
-                Swap
+            {inputText && (
+              <button
+                className="text-clear"
+                onClick={clearText}
+                aria-label="Clear text"
+              >
+                &times; {/* HTML entity for the "X" character */}
               </button>
+            )}
 
-              <div>
-                <select
-                  id="languageSelect"
-                  value={targetLanguage}
-                  onChange={(e) => setTargetLanguage(e.target.value)}
-                  className="language-dropdown pb-4"
-                >
-                  <option value="" disabled>
-                    Select language
+            <button onClick={swapFields} disabled={!translations}>
+              <img
+                src="data:image/png;base64,
+                iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA7klEQVR4
+                nO2ZwQqDMBBE5/MqveRg8NB+fdK/sJAi5BAkVXOozazzYC+LBwfiZGcFhBBsDABiLgdiIoCUawYwwYCQxCzG5Zc3IWas
+                iHkDeIKQUWIA3AG88ge32ODRfjq55j1rLh0jNPbPrmhFSDhyqy4P3Rr63R2t3vBfnOsBIrxEdIKzMqJECyJMjfFDYfVUFi
+                uEEL/BFfumMlxRMa3Ghs1QwyIi7YUaFhEz243rlQc6wVsNNemk1U7LHm33CuhlvRMb+3aFuD8drdY9Wlj1q2gL3iujpf8T
+                k4URZUsM5fRbE0M3/daCVWAOVkJclQ+6NrIaq+fhgAAAAABJRU5ErkJggg=="
+                alt="sorting-arrows-horizontal"
+              ></img>
+            </button>
+
+            <div>
+              <select
+                id="languageSelect"
+                value={targetLanguage}
+                onChange={(e) => {
+                  targetLanguage = e.target.value;
+
+                  handleTranslate(setTargetLanguage(targetLanguage));
+                }}
+                className="language-dropdown pb-4"
+              >
+                <option value="" disabled>
+                  Translate to
+                </option>
+                {languageOptions.map((lang) => (
+                  <option key={lang.key} value={lang.key}>
+                    {lang.label}
                   </option>
-                  {languageOptions.map((lang) => (
-                    <option key={lang.key} value={lang.key}>
-                      {lang.label}
-                    </option>
-                  ))}
-                </select>
-                <br />
-                <br />
-                <textarea
-                  ref={textareaRef}
-                  value={outputText}
-                  onChange={(e) => setOutputText(e.target.value)}
-                  className="textarea"
-                  placeholder="Enter text here..."
-                  rows={10}
-                  cols={50}
-                />
-              </div>
+                ))}
+              </select>
+              <br />
+              <br />
+              <textarea
+                disabled={true}
+                ref={textareaRef}
+                value={outputText}
+                onChange={(e) => setOutputText(e.target.value)}
+                className="textarea"
+                placeholder={
+                  Tloading
+                    ? 'Translating...'
+                    : 'Translation will appear here...'
+                }
+                rows={10}
+                cols={50}
+              />
             </div>
-          )}
+          </div>
         </div>
         <br />
         <div className="translate-button-container">
-          {!translations && (
-            <button
-              onClick={handleTranslate}
-              className="translate-button"
-              disabled={Tloading || inputText == null}
-            >
-              {Tloading ? 'Translating...' : 'Translate'}
-            </button>
-          )}
-          {!translations && (
-            <button
-              onClick={callGemini}
-              className="translate-button"
-              disabled={Gloading}
-            >
-              {Gloading ? 'Asking Gemini...' : 'Ask Google Gemini'}
-            </button>
-          )}
+          <div> {Tloading ? 'Translating...' : ''}</div>
+
+          <button
+            onClick={callGemini}
+            className="translate-button"
+            disabled={Gloading}
+          >
+            {Gloading ? 'Asking Gemini...' : 'Ask Google Gemini'}
+          </button>
+
           {translations && (
             <button onClick={clear} className="clear-button">
-              Clear
+              Reset
             </button>
           )}
         </div>

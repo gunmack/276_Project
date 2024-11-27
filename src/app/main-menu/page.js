@@ -7,9 +7,9 @@ import Toolbar from '../Toolbar';
 export default function MainMenu() {
   const features = [
     {
-      name: 'Learn Vocab',
-      href: './learn-vocab',
-      description: 'Expand your vocabulary.',
+      name: 'Translate',
+      href: './translate',
+      description: 'Use the built in translation Feature.',
       icon: '📚'
     },
     {

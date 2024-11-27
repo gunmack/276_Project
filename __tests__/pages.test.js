@@ -9,7 +9,7 @@ import MainMenu from '../src/app/main-menu/page';
 import Achievements from '../src/app/achievements/page';
 import AiConversations from '../src/app/ai-conversations/page';
 import Flashcards from '../src/app/flashcards/page';
-import LearnVocab from '../src/app/learn-vocab/page';
+import LearnVocab from '../src/app/translate/page';
 import Quizzes from '../src/app/quizzes/page';
 import TextToSpeech from '../src/app/text-to-speech/page';
 import TextToSpeechBox from '../components/TextToSpeechButton';
