@@ -155,6 +155,7 @@ export default function VocabBox() {
       setTranslations(null); // Clear translations
       setOutputText(''); // Clear translated text
       setSourceLang(''); // Clear source language
+      setTargetLanguage(''); // Clear target language
       setGLoading(true);
       const response = await fetch('/api/generateVocab', {
         method: 'POST',
@@ -181,19 +182,17 @@ export default function VocabBox() {
           <div className="flex flex-1 gap-4">
             <div>
               <select
+                disabled={true}
                 id="languageSelect"
                 value={sourceLang}
                 onChange={(e) => setSourceLang(e.target.value)}
                 className="language-dropdown pb-4"
               >
                 <option value="" disabled>
-                  Translate from
+                  {sourceLang
+                    ? getLanguageName(sourceLang)
+                    : 'Detected language'}
                 </option>
-                {languageOptions.map((lang) => (
-                  <option key={lang.key} value={lang.key}>
-                    {lang.label}
-                  </option>
-                ))}
               </select>
               <br />
               <br />
@@ -203,12 +202,11 @@ export default function VocabBox() {
                 value={inputText}
                 onChange={(e) => {
                   setInputText(e.target.value);
-
-                  setTargetLanguage('');
+                  // setTargetLanguage('');
                 }}
                 className="textarea"
                 placeholder={
-                  Gloading ? 'Asking Gemini... ' : 'Enter text to translate...'
+                  Gloading ? 'Asking Gemini... ' : 'Enter text or ask Gemini...'
                 }
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
@@ -294,8 +292,6 @@ export default function VocabBox() {
         </div>
         <br />
         <div className="translate-button-container">
-          <div> {Tloading ? 'Translating...' : ''}</div>
-
           <button
             onClick={callGemini}
             className="translate-button"
@@ -303,6 +299,17 @@ export default function VocabBox() {
           >
             {Gloading ? 'Asking Gemini...' : 'Ask Google Gemini'}
           </button>
+
+          {/* 
+          {inputText && (
+            <button
+              onClick={handleTranslate}
+              className="translate-button"
+              disabled={Tloading}
+            >
+              {Tloading ? 'Translating...' : 'Translate'}
+            </button>
+          )} */}
 
           {translations && (
             <button onClick={clear} className="clear-button">

@@ -20,7 +20,7 @@ export default function LearnVocab() {
             <div className="bg-white p-8 rounded-lg shadow-lg text-center max-w-lg">
               <h2 className="text-2xl font-bold mb-4">Welcome to Translate!</h2>
               <p className="text-gray-700 mb-6">
-                Use this tool to assist with your learning. Type the text you
+                Use this tool to assist with your learning. Enter the text you
                 want to translate and select a language to proceed. Also try
                 asking Google Gemini to generate a sentence for you.
               </p>
