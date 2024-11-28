@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import Toolbar from '../Toolbar';
+import Toolbar from '../components/Toolbar';
 import { useAuth } from '../context/AuthContext';
 import { firebaseDB } from '../../../firebase_config';
 import { getDatabase, ref, get, set } from 'firebase/database';
@@ -16,7 +16,7 @@ export default function Flashcards() {
   const [currentFlashcard, setCurrentFlashcard] = useState(null);
   const [error, setError] = useState(null);
   const [targetLanguage, setTargetLanguage] = useState('');
-  const [showPopup, setShowPopup] = useState(true);
+  const [showPopup, setShowPopup] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false); // Track if flashcard is being generated
   const [hasFlashCard, setHasFlashCard] = useState(false);
   const [hasTranslation, setHasTranslation] = useState(false);
@@ -143,6 +143,12 @@ export default function Flashcards() {
             </div>
           </div>
         )}
+        <button
+          onClick={() => setShowPopup(true)}
+          className="bg-black text-white p-4 rounded-full shadow-lg hover:bg-green-600 hover:text-black fixed top-4 right-4 flex items-center justify-center w-16 h-16"
+        >
+          ❔
+        </button>
 
         <div className="flex flex-col justify-center items-center gap-4 font-[family-name:var(--font-geist-mono)]">
           <div className="grid grid-cols-1 gap-2 mb-2 w-full">

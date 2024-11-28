@@ -62,32 +62,38 @@ export default function Toolbar() {
     {
       name: 'Learn Vocab',
       href: './learn-vocab',
-      description: 'Expand your vocabulary.'
+      description: 'Expand your vocabulary.',
+      icon: '📚'
     },
     {
       name: 'Quizzes',
       href: './quizzes',
-      description: 'Test your knowledge.'
+      description: 'Test your knowledge.',
+      icon: '📝'
     },
     {
       name: 'Text-to-Speech',
       href: './text-to-speech',
-      description: 'Learn pronounciation.'
+      description: 'Learn pronounciation.',
+      icon: '🔊'
     },
     {
       name: 'AI Conversations',
       href: './ai-conversations',
-      description: 'Practice conversations.'
+      description: 'Practice conversations.',
+      icon: '🤖'
     },
     {
       name: 'Flashcards',
       href: './flashcards',
-      description: 'Learn with flashcards.'
+      description: 'Learn with flashcards.',
+      icon: '💡'
     },
     {
       name: 'Achievements',
       href: './achievements',
-      description: 'Track your progress.'
+      description: 'Track your progress.',
+      icon: '🏆'
     }
   ];
 
@@ -106,6 +112,7 @@ export default function Toolbar() {
         className={`absolute top-0 left-0 h-full bg-white p-4 shadow-lg transition-transform duration-300 ${menuOpen ? 'transform translate-x-0' : 'transform -translate-x-full'}`}
         style={{
           width: '20%',
+          minWidth: '250px',
           position: 'fixed',
           top: 0,
           left: 0,
@@ -124,6 +131,7 @@ export default function Toolbar() {
               <Link key={feature.name} href={feature.href}>
                 <button className="w-full p-2 m-2 rounded-lg border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background hover:bg-[#5999AE] dark:hover:bg-[#5999AE] text-xs lg:text-lg shadow-md">
                   {feature.name}
+                  <span className="ml-2">{feature.icon}</span>
                 </button>
               </Link>
             ))}

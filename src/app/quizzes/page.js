@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Toolbar from '../Toolbar';
+import Toolbar from '../components/Toolbar';
 import Link from 'next/link';
 import { useAuth } from '../context/AuthContext';
 import { firebaseDB } from '../../../firebase_config';
@@ -13,7 +13,7 @@ export default function Quizzes() {
   const [loading, setLoading] = useState(false);
   const [quizType, setQuizType] = useState('word-translation'); // Default quiz type
   const [targetLanguage, setTargetLanguage] = useState('es'); // Default target language (Spanish)
-  const [showPopup, setShowPopup] = useState(true);
+  const [showPopup, setShowPopup] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const addToQuiz = async () => {
@@ -112,8 +112,8 @@ export default function Quizzes() {
               Welcome to Language Quizzes!
             </h2>
             <p className="text-gray-700 mb-6">
-              Test your knowledge with our quizzes. Select a quiz type and
-              language to get started!
+              Test your knowledge with our quizzes. Select a language and quiz
+              type then press "Generate Quiz."
             </p>
             <button
               onClick={() => setShowPopup(false)}
@@ -124,6 +124,12 @@ export default function Quizzes() {
           </div>
         </div>
       )}
+      <button
+        onClick={() => setShowPopup(true)}
+        className="bg-black text-white p-4 rounded-full shadow-lg hover:bg-green-600 hover:text-black fixed top-4 right-4 flex items-center justify-center w-16 h-16"
+      >
+        ❔
+      </button>
 
       <main className="flex flex-col gap-8 row-start-2 items-center justify-center sm:items-center max-w-lg w-full">
         {quiz ? (

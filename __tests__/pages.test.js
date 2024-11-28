@@ -12,7 +12,7 @@ import Flashcards from '../src/app/flashcards/page';
 import LearnVocab from '../src/app/learn-vocab/page';
 import Quizzes from '../src/app/quizzes/page';
 import TextToSpeech from '../src/app/text-to-speech/page';
-import TextToSpeechBox from '../components/TextToSpeechButton';
+import TextToSpeechBox from '../src/app/components/TextToSpeechButton';
 import Logout from '../src/app/logout/page';
 import Login from '../src/app/auth/page';
 import { useAuth } from '../src/app/context/AuthContext';
