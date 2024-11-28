@@ -13,7 +13,7 @@ import LearnVocab from '../src/app/translate/page';
 import Quizzes from '../src/app/quizzes/page';
 import TextToSpeech from '../src/app/text-to-speech/page';
 import TextToSpeechBox from '../src/components/TextToSpeechButton';
-import Logout from '../src/app/logout/page';
+import Logout from '../src/app/sign-out/page';
 import Login from '../src/app/auth/page';
 import { useAuth } from '../src/app/context/AuthContext';
 

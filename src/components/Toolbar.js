@@ -51,7 +51,7 @@ export default function Toolbar() {
   const handleSignOut = async () => {
     try {
       await signOut(auth);
-      router.push('/logout'); // Redirect to the login page
+      router.push('/sign-out'); // Redirect to the login page
     } catch (error) {
       console.error('Error logging out:', error); // Log any errors
       alert('An error occurred while logging out. Please try again.');
@@ -169,7 +169,7 @@ export default function Toolbar() {
               onClick={handleSignOut}
               className="inline-flex items-cente text-lg font-medium bg-red-500 text-white p-2 hover:bg-red-600 rounded-lg transition-all duration-300"
             >
-              <span>Log Out</span>
+              <span>Sign Out</span>
             </button>
           )}
           {username == 'Anonymous User' && (
@@ -177,7 +177,7 @@ export default function Toolbar() {
               href="/auth"
               className="inline-flex items-center gap-2 text-lg font-medium bg-green-500 text-white p-2 hover:bg-green-600 rounded-lg transition-all duration-300"
             >
-              <span>Log In</span>
+              <span>Sign In</span>
             </Link>
           )}
         </div>

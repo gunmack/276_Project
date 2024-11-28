@@ -118,7 +118,7 @@ export default function Achievements() {
     try {
       await signOut(auth);
       alert('Success! Your account has been deleted.'); // Sign out the user
-      router.push('/logout');
+      router.push('/sign-out');
     } catch (error) {
       console.error('Error logging out:', error); // Log any errors
       alert('An error occurred while logging out. Please try again.');
@@ -205,9 +205,9 @@ export default function Achievements() {
                     href="/auth"
                     className="inline-flex items-center gap-2 text-lg font-medium bg-green-500 text-white p-2 hover:bg-green-600 rounded-lg transition-all duration-300"
                   >
-                    <span>Log In</span>
+                    <span>Sign In</span>
                   </Link>{' '}
-                  to view your achievements.
+                  to view your progress.
                   <div>
                     <div className="mt-4 bg-black text-white p-2 rounded-md">
                       <label
