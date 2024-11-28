@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { firebaseDB } from '../../firebase_config';
+import { firebaseDB } from '../firebase_config';
 import { getDatabase, ref, get, set } from 'firebase/database';
 import { useAuth } from '../app/context/AuthContext';
 

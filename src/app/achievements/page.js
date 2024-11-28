@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '../context/AuthContext';
 import { getDatabase, ref, onValue, update, get } from 'firebase/database';
-import { firebaseDB } from '../../../firebase_config';
+import { firebaseDB } from '../../firebase_config';
 
 export default function Achievements() {
   const { user } = useAuth();

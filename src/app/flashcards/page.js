@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Toolbar from '../../components/Toolbar';
 import { useAuth } from '../context/AuthContext';
-import { firebaseDB } from '../../../firebase_config';
+import { firebaseDB } from '../../firebase_config';
 import { getDatabase, ref, get, set } from 'firebase/database';
 
 function decodeHtmlEntities(text) {

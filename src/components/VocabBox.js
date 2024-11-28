@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
-import { firebaseDB } from '../../firebase_config';
+import { firebaseDB } from '../firebase_config';
 import { getDatabase, ref, get, set } from 'firebase/database';
 import { useAuth } from '../app/context/AuthContext';
 
@@ -155,6 +155,7 @@ export default function VocabBox() {
       setTranslations(null); // Clear translations
       setOutputText(''); // Clear translated text
       setSourceLang(''); // Clear source language
+      setTargetLanguage(''); // Clear target language
       setGLoading(true);
       const response = await fetch('/api/generateVocab', {
         method: 'POST',
@@ -181,19 +182,15 @@ export default function VocabBox() {
           <div className="flex flex-1 gap-4">
             <div>
               <select
+                disabled={true}
                 id="languageSelect"
                 value={sourceLang}
                 onChange={(e) => setSourceLang(e.target.value)}
                 className="language-dropdown pb-4"
               >
                 <option value="" disabled>
-                  Translate from
+                  {sourceLang ? getLanguageName(sourceLang) : 'Detect language'}
                 </option>
-                {languageOptions.map((lang) => (
-                  <option key={lang.key} value={lang.key}>
-                    {lang.label}
-                  </option>
-                ))}
               </select>
               <br />
               <br />

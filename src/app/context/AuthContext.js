@@ -4,7 +4,7 @@
 
 'use client';
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import { auth } from '../../../firebase_config';
+import { auth } from '../../firebase_config';
 
 const AuthContext = createContext();
 
