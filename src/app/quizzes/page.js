@@ -15,6 +15,7 @@ export default function Quizzes() {
   const [targetLanguage, setTargetLanguage] = useState('es'); // Default target language (Spanish)
   const [showPopup, setShowPopup] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const { user } = useAuth();
 
   const addToQuiz = async () => {
     const database = getDatabase(firebaseDB);
@@ -88,7 +89,9 @@ export default function Quizzes() {
       quiz.options.indexOf(correctAnswer)
     ];
     if (userAnswer.toUpperCase() === correctOption) {
-      addToQuiz();
+      if (user) {
+        addToQuiz();
+      }
       setFeedback('🎉 Correct!');
     } else {
       setFeedback(
@@ -96,7 +99,6 @@ export default function Quizzes() {
       );
     }
   }
-  const { user } = useAuth();
 
   return (
     <div
