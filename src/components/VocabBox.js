@@ -20,15 +20,17 @@ const decodeHtmlEntities = (text) => {
 };
 
 export default function VocabBox() {
-  const [inputText, setInputText] = useState('');
-  const [targetLanguage, setTargetLanguage] = useState(''); // Default target language
-  const [translations, setTranslations] = useState([]);
-  const [generatedContent, setGeneratedContent] = useState(''); // State for generated content
-  const [translatedText, setTranslatedText] = useState('');
-  const [detectedLanguage, setDetectedLanguage] = useState('');
+  var [inputText, setInputText] = useState('');
+  var [outputText, setOutputText] = useState('');
+  var [sourceLang, setSourceLang] = useState('');
+  var [targetLanguage, setTargetLanguage] = useState(''); // Default target language
+  var [translations, setTranslations] = useState([]);
+  var [generatedContent, setGeneratedContent] = useState(''); // State for generated content
+  var [detectedLanguage, setDetectedLanguage] = useState('');
   const [Tloading, setTLoading] = useState(false);
   const [Gloading, setGLoading] = useState(false);
   const textareaRef = useRef(null);
+
   const { user } = useAuth();
 
   const getLanguageName = (languageCode) => {
@@ -46,24 +48,49 @@ export default function VocabBox() {
       case 'es':
         return 'Spanish';
       default:
-        return 'Unknown';
+        return 'Language not supporte';
     }
   };
 
   useEffect(() => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = 'auto'; // Reset height
+      textarea.style.height = `${textarea.scrollHeight}px`; // Set height based on content
+    }
+  }, [inputText]);
+
+  useEffect(() => {
     // Clear translations on component mount (page reload)
-    setTranslations([]);
-    setTranslatedText('');
+    setInputText('');
+    setOutputText('');
+    setSourceLang('');
+    setTargetLanguage('');
+    setTranslations(null);
   }, []);
 
-  const clear = async () => {
-    setInputText('');
-    setTranslations([]);
-    setTranslatedText('');
-    setDetectedLanguage('');
+  async function swapFields() {
+    var tempText = inputText;
+    setInputText(outputText);
+    setOutputText(tempText);
 
+    var tempLang = sourceLang;
+    setSourceLang(targetLanguage);
+    setTargetLanguage(tempLang);
+  }
+
+  async function clearText() {
+    setInputText('');
+    setSourceLang('');
+  }
+
+  async function clear() {
+    setInputText('');
+    setOutputText('');
+    setSourceLang('');
     setTargetLanguage('');
-  };
+    setTranslations(null);
+  }
 
   const addToVocab = async () => {
     const database = getDatabase(firebaseDB);
@@ -85,7 +112,7 @@ export default function VocabBox() {
       alert('Please select a target language.');
       return;
     }
-    if (!inputText.trim()) {
+    if (!inputText) {
       alert('Please enter some text to translate.');
       return;
     }
@@ -104,12 +131,19 @@ export default function VocabBox() {
         decodeHtmlEntities(text)
       );
       setDetectedLanguage(getLanguageName(detectedLanguage)); // Save detected language
+      setSourceLang(detectedLanguage); // Save detected language
       setTranslations(decodedTranslations); // Save decoded translations
-      setTranslatedText(decodedTranslations[0]); // Set the first translation
-      addToVocab(); // Prevent further clicks
+      if (translations === '') {
+        alert('An error occurred during translation, please try again.');
+        return;
+      }
+      setOutputText(decodedTranslations); // Display translations
+      if (user) {
+        addToVocab(); // Prevent further clicks
+      }
     } catch (error) {
       console.error(error);
-      alert('An error occurred during translation.');
+      alert('An error occurred during translation, please try again.');
     } finally {
       setTLoading(false); // Reset loading state
     }
@@ -118,133 +152,161 @@ export default function VocabBox() {
   async function callGemini() {
     try {
       setInputText(''); // Clear input text
-      setTranslations([]); // Clear translations
-      setTranslatedText(''); // Clear translated text
+      setTranslations(null); // Clear translations
+      setOutputText(''); // Clear translated text
+      setSourceLang(''); // Clear source language
       setGLoading(true);
       const response = await fetch('/api/generateVocab', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
       });
       const data = await response.json();
-      let generatedText = data.generatedText;
-      setInputText(generatedText); // Update input text with generated content
-      setGeneratedContent(generatedText); // Update state with generated content
+      setGeneratedContent(data.generatedText); // Save generated content
+      setInputText(generatedContent); // Update input text with generated content
+      if (generatedContent === '') {
+        alert('An error occurred while asking Gemini, please try again.');
+      }
     } catch (error) {
       console.error(error);
-      alert('An error occurred while asking Gemini.');
+      alert('An error occurred while asking Gemini, please try again.');
     } finally {
       setGLoading(false); // Reset loading state
     }
   }
 
-  useEffect(() => {
-    const textarea = textareaRef.current;
-    if (textarea) {
-      textarea.style.height = 'auto'; // Reset height
-      textarea.style.height = `${textarea.scrollHeight}px`; // Set height based on content
-    }
-  }, [inputText]);
-
   return (
     <>
       <div data-testid="Vocab Box" className="vocab-box">
-        {!translatedText && (
-          <div>
-            <label htmlFor="languageSelect">Translate to: </label>
-            <select
-              id="languageSelect"
-              value={targetLanguage}
-              onChange={(e) => setTargetLanguage(e.target.value)}
-              className="language-dropdown"
-            >
-              <option value="" disabled>
-                Pick a language
-              </option>
-              {languageOptions.map((lang) => (
-                <option key={lang.key} value={lang.key}>
-                  {lang.label}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
-        <br />
-
         <div className="vocab-text">
-          {!translatedText && ( // Only render this div when `translatedText` is not present
-            <div className="vocab-in">
+          <div className="flex flex-1 gap-4">
+            <div>
+              <select
+                id="languageSelect"
+                value={sourceLang}
+                onChange={(e) => setSourceLang(e.target.value)}
+                className="language-dropdown pb-4"
+              >
+                <option value="" disabled>
+                  Translate from
+                </option>
+                {languageOptions.map((lang) => (
+                  <option key={lang.key} value={lang.key}>
+                    {lang.label}
+                  </option>
+                ))}
+              </select>
+              <br />
+              <br />
+
               <textarea
                 ref={textareaRef}
                 value={inputText}
-                onChange={(e) => setInputText(e.target.value)}
+                onChange={(e) => {
+                  setInputText(e.target.value);
+
+                  setTargetLanguage('');
+                }}
                 className="textarea"
-                placeholder="Enter text here..."
+                placeholder={
+                  Gloading ? 'Asking Gemini... ' : 'Enter text to translate...'
+                }
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    // Check if Enter key is pressed
+                    e.preventDefault(); // Prevent default Enter key behavior (like newline in textarea)
+                    handleTranslate(); // Call the translate function
+                  }
+                }}
                 rows={10}
                 cols={50}
               />
             </div>
-          )}
 
-          {translatedText && (
+            {inputText && (
+              <button
+                className="text-clear"
+                onClick={clearText}
+                aria-label="Clear text"
+              >
+                &times; {/* HTML entity for the "X" character */}
+              </button>
+            )}
+
+            <button
+              onClick={swapFields}
+              aria-label="Swap fields"
+              disabled={!outputText}
+              className={`bg-emerald-300 h-1/3 mt-44 rounded-md p-1 
+  ${outputText ? 'hover:bg-emerald-500' : 'opacity-50 cursor-not-allowed'}`}
+            >
+              <img
+                src="data:image/png;base64,
+                iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA7klEQVR4
+                nO2ZwQqDMBBE5/MqveRg8NB+fdK/sJAi5BAkVXOozazzYC+LBwfiZGcFhBBsDABiLgdiIoCUawYwwYCQxCzG5Zc3IWas
+                iHkDeIKQUWIA3AG88ge32ODRfjq55j1rLh0jNPbPrmhFSDhyqy4P3Rr63R2t3vBfnOsBIrxEdIKzMqJECyJMjfFDYfVUFi
+                uEEL/BFfumMlxRMa3Ghs1QwyIi7YUaFhEz243rlQc6wVsNNemk1U7LHm33CuhlvRMb+3aFuD8drdY9Wlj1q2gL3iujpf8T
+                k4URZUsM5fRbE0M3/daCVWAOVkJclQ+6NrIaq+fhgAAAAABJRU5ErkJggg=="
+                alt="sorting-arrows-horizontal"
+              ></img>
+            </button>
+
             <div>
-              <div className="vocab-text">
-                <div className="vocab-out">
-                  <strong>Detected: {detectedLanguage}</strong>
-                  <br />
-                  <br />
-                  <textarea
-                    ref={textareaRef}
-                    value={inputText}
-                    onChange={(e) => setInputText(e.target.value)}
-                    className="textarea"
-                    cols={50}
-                    rows={10}
-                  />
-                </div>
-                <div className="vocab-out">
-                  <div>
-                    <strong>
-                      Translating to:{' '}
-                      {languageOptions.find(
-                        (lang) => lang.key === targetLanguage
-                      )?.label || 'Unknown'}
-                    </strong>
-                    <br />
-                    <br />
-                    <ul className="no-list">
-                      {translations.map((translation, index) => (
-                        <li key={index}>{translation}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </div>
+              <select
+                disabled={!inputText}
+                id="languageSelect"
+                value={targetLanguage}
+                onChange={(e) => {
+                  targetLanguage = e.target.value;
+
+                  handleTranslate(setTargetLanguage(targetLanguage));
+                }}
+                className={`language-dropdown pb-4 ${
+                  inputText ? '' : 'opacity-50 cursor-not-allowed' // Dim the dropdown if disabled
+                }`}
+              >
+                <option value="" disabled>
+                  Translate to
+                </option>
+                {languageOptions.map((lang) => (
+                  <option key={lang.key} value={lang.key}>
+                    {lang.label}
+                  </option>
+                ))}
+              </select>
+              <br />
+              <br />
+              <textarea
+                disabled={true}
+                ref={textareaRef}
+                value={outputText}
+                onChange={(e) => setOutputText(e.target.value)}
+                className="textarea"
+                placeholder={
+                  Tloading
+                    ? 'Translating...'
+                    : 'Translation will appear here...'
+                }
+                rows={10}
+                cols={50}
+              />
             </div>
-          )}
+          </div>
         </div>
         <br />
         <div className="translate-button-container">
-          {!translatedText && (
-            <button
-              onClick={handleTranslate}
-              className="translate-button"
-              disabled={Tloading || inputText == null}
-            >
-              {Tloading ? 'Translating...' : 'Translate'}
-            </button>
-          )}
-          {!translatedText && (
-            <button
-              onClick={callGemini}
-              className="translate-button"
-              disabled={Gloading}
-            >
-              {Gloading ? 'Asking Gemini...' : 'Ask Google Gemini'}
-            </button>
-          )}
-          {translatedText && (
+          <div> {Tloading ? 'Translating...' : ''}</div>
+
+          <button
+            onClick={callGemini}
+            className="translate-button"
+            disabled={Gloading}
+          >
+            {Gloading ? 'Asking Gemini...' : 'Ask Google Gemini'}
+          </button>
+
+          {translations && (
             <button onClick={clear} className="clear-button">
-              Clear
+              Reset
             </button>
           )}
         </div>
