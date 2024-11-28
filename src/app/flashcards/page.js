@@ -16,7 +16,7 @@ export default function Flashcards() {
   const [currentFlashcard, setCurrentFlashcard] = useState(null);
   const [error, setError] = useState(null);
   const [targetLanguage, setTargetLanguage] = useState('');
-  const [showPopup, setShowPopup] = useState(true);
+  const [showPopup, setShowPopup] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false); // Track if flashcard is being generated
   const [hasFlashCard, setHasFlashCard] = useState(false);
   const [hasTranslation, setHasTranslation] = useState(false);

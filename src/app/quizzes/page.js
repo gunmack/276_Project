@@ -13,7 +13,7 @@ export default function Quizzes() {
   const [loading, setLoading] = useState(false);
   const [quizType, setQuizType] = useState('word-translation'); // Default quiz type
   const [targetLanguage, setTargetLanguage] = useState('es'); // Default target language (Spanish)
-  const [showPopup, setShowPopup] = useState(true);
+  const [showPopup, setShowPopup] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const addToQuiz = async () => {
@@ -112,8 +112,8 @@ export default function Quizzes() {
               Welcome to Language Quizzes!
             </h2>
             <p className="text-gray-700 mb-6">
-              Test your knowledge with our quizzes. Select a quiz type and
-              language to get started!
+              Test your knowledge with our quizzes. Select a language and quiz
+              type then press "Generate Quiz."
             </p>
             <button
               onClick={() => setShowPopup(false)}

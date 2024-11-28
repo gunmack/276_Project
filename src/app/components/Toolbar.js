@@ -63,6 +63,7 @@ export default function Toolbar() {
       name: 'Translate',
       href: './translate',
       description: 'Use the built in translation Feature.',
+
       icon: '📚'
     },
     {

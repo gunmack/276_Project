@@ -14,7 +14,7 @@ export default function GeminiChatbot() {
   const [conversation, setConversation] = useState([]);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [showPopup, setShowPopup] = useState(true);
+  const [showPopup, setShowPopup] = useState(false);
 
   const addToAImsg = async () => {
     const database = getDatabase(firebaseDB);
