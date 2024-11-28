@@ -4,8 +4,8 @@ import React, { useState, useEffect } from 'react';
 import Toolbar from '../../components/Toolbar';
 import Link from 'next/link';
 import { useAuth } from '../context/AuthContext';
-import { firebaseDB } from '../../firebase_config';
-import { getDatabase, ref, get, set } from 'firebase/database';
+import { addToQuiz } from '../app_firebase';
+
 export default function Quizzes() {
   const [quiz, setQuiz] = useState(null);
   const [userAnswer, setUserAnswer] = useState('');
@@ -16,21 +16,6 @@ export default function Quizzes() {
   const [showPopup, setShowPopup] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { user } = useAuth();
-
-  const addToQuiz = async () => {
-    const database = getDatabase(firebaseDB);
-    const QuizCounttRef = ref(database, `Users/${user.displayName}/QuizCount`);
-    const count = await get(QuizCounttRef);
-    let newCount = 1;
-    if (count.exists()) {
-      newCount = count.val() + 1;
-    }
-    try {
-      await set(QuizCounttRef, newCount);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   // Explicitly log the current quizType and targetLanguage value to debug any issues
   useEffect(() => {
@@ -90,7 +75,7 @@ export default function Quizzes() {
     ];
     if (userAnswer.toUpperCase() === correctOption) {
       if (user) {
-        addToQuiz();
+        addToQuiz(user);
       }
       setFeedback('🎉 Correct!');
     } else {
