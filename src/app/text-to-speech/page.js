@@ -5,7 +5,7 @@ import Toolbar from '../components/Toolbar';
 import TextToSpeechButton from '../components/TextToSpeechButton';
 
 export default function TextToSpeech() {
-  const [showPopup, setShowPopup] = useState(true);
+  const [showPopup, setShowPopup] = useState(false);
 
   return (
     <>
@@ -17,7 +17,8 @@ export default function TextToSpeech() {
             </h2>
             <p className="text-gray-700 mb-6">
               Use this tool to translate English words into other languages and
-              learn their pronounciation
+              learn their pronunciation. Just select the language you want to hear and type what you want
+              translated then press "Speak Translated Text."
             </p>
             <button
               onClick={() => setShowPopup(false)}
