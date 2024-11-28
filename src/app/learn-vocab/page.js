@@ -23,8 +23,8 @@ export default function LearnVocab() {
               </h2>
               <p className="text-gray-700 mb-6">
                 Use this tool to expand your vocabulary. Type the text you want
-                to translate and select a language. Press the translate button to
-                translate or try the "Ask Google Gemini" button to have AI
+                to translate and select a language. Press the translate button
+                to translate or try the "Ask Google Gemini" button to have AI
                 generate a sentence for you.
               </p>
               <button

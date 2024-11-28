@@ -17,8 +17,9 @@ export default function TextToSpeech() {
             </h2>
             <p className="text-gray-700 mb-6">
               Use this tool to translate English words into other languages and
-              learn their pronunciation. Just select the language you want to hear and type what you want
-              translated then press "Speak Translated Text."
+              learn their pronunciation. Just select the language you want to
+              hear and type what you want translated then press "Speak
+              Translated Text."
             </p>
             <button
               onClick={() => setShowPopup(false)}

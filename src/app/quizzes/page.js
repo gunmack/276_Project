@@ -112,7 +112,8 @@ export default function Quizzes() {
               Welcome to Language Quizzes!
             </h2>
             <p className="text-gray-700 mb-6">
-              Test your knowledge with our quizzes. Select a language and quiz type then press "Generate Quiz."
+              Test your knowledge with our quizzes. Select a language and quiz
+              type then press "Generate Quiz."
             </p>
             <button
               onClick={() => setShowPopup(false)}

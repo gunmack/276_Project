@@ -171,31 +171,31 @@ export default function Achievements() {
       >
         <Toolbar />
         <main className="flex flex-col gap-8 row-start-2 items-center justify-center sm:items-start">
-        {showPopup && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white p-8 rounded-lg shadow-lg text-center max-w-lg">
-              <h2 className="text-2xl font-bold mb-4">
-                Welcome to Achievements!
-              </h2>
-              <p className="text-gray-700 mb-6">
-                Use this feature to track your progress. Select a difficulty to see how close you are 
-                to mastering different features.
-              </p>
-              <button
-                onClick={() => setShowPopup(false)}
-                className="bg-black text-white p-2 rounded-lg shadow-lg hover:bg-[#5999AE] dark:hover:bg-[#5999AE] hover:text-black"
-              >
-                Got it!
-              </button>
+          {showPopup && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+              <div className="bg-white p-8 rounded-lg shadow-lg text-center max-w-lg">
+                <h2 className="text-2xl font-bold mb-4">
+                  Welcome to Achievements!
+                </h2>
+                <p className="text-gray-700 mb-6">
+                  Use this feature to track your progress. Select a difficulty
+                  to see how close you are to mastering different features.
+                </p>
+                <button
+                  onClick={() => setShowPopup(false)}
+                  className="bg-black text-white p-2 rounded-lg shadow-lg hover:bg-[#5999AE] dark:hover:bg-[#5999AE] hover:text-black"
+                >
+                  Got it!
+                </button>
+              </div>
             </div>
-          </div>
-        )}
-        <button
-          onClick={() => setShowPopup(true)}
-          className="bg-black text-white p-4 rounded-full shadow-lg hover:bg-green-600 hover:text-black fixed top-4 right-4 flex items-center justify-center w-16 h-16"
-        >
-          ❔
-        </button>
+          )}
+          <button
+            onClick={() => setShowPopup(true)}
+            className="bg-black text-white p-4 rounded-full shadow-lg hover:bg-green-600 hover:text-black fixed top-4 right-4 flex items-center justify-center w-16 h-16"
+          >
+            ❔
+          </button>
           <div className="flex flex-col justify-center items-center p-8 gap-4 font-[family-name:var(--font-geist-mono)]">
             <div className="achievement-container">
               {userName && !hasData && <p>Loading...</p>}
