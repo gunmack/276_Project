@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '../context/AuthContext';
 import { getDatabase, ref, onValue, update, get } from 'firebase/database';
-import { firebaseDB } from '../../../firebase_config';
+import { firebaseDB } from '../../firebase_config';
 
 export default function Achievements() {
   const { user } = useAuth();
@@ -118,7 +118,7 @@ export default function Achievements() {
     try {
       await signOut(auth);
       alert('Success! Your account has been deleted.'); // Sign out the user
-      router.push('/logout');
+      router.push('/sign-out');
     } catch (error) {
       console.error('Error logging out:', error); // Log any errors
       alert('An error occurred while logging out. Please try again.');
@@ -198,10 +198,72 @@ export default function Achievements() {
           </button>
           <div className="flex flex-col justify-center items-center p-8 gap-4 font-[family-name:var(--font-geist-mono)]">
             <div className="achievement-container">
+              {!userName && (
+                <div>
+                  Please{' '}
+                  <Link
+                    href="/auth"
+                    className="inline-flex items-center gap-2 text-lg font-medium bg-green-500 text-white p-2 hover:bg-green-600 rounded-lg transition-all duration-300"
+                  >
+                    <span>Sign In</span>
+                  </Link>{' '}
+                  to view your progress.
+                  <div>
+                    <div className="mt-4 bg-black text-white p-2 rounded-md">
+                      <label
+                        htmlFor="levelSelect"
+                        className=" bg-black text-white"
+                      >
+                        Select Level:{' '}
+                      </label>
+                      <select
+                        id="levelSelect"
+                        value={selectedLevel}
+                        onChange={handleLevelChange}
+                        className="p-2 border rounded-md  bg-black text-white"
+                      >
+                        <option value="Beginner">Beginner</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Advanced">Advanced</option>
+                      </select>
+                    </div>
+                    {/* Check if userData is available before rendering */}
+                    {userData && (
+                      <div className="flex flex-col space-y-8  m-4">
+                        {Achievements.find(
+                          (tier) => tier.level === selectedLevel
+                        ).criteria.map((item) => (
+                          <div
+                            key={item.key}
+                            className="flex flex-col space-y-2"
+                          >
+                            <div className="flex justify-between items-center">
+                              <strong>{item.description}:</strong>
+                            </div>
+                            <div className="w-3/3 flex items-center gap-4">
+                              <span>
+                                {Math.min(userData[item.key] || 0, item.value)}/
+                                {item.value}
+                              </span>
+                              <ProgressBar
+                                value={userData[item.key] || 0}
+                                max={item.value}
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
               {userName && !hasData && <p>Loading...</p>}
-              {!userName && !hasData && <h2>{msg}</h2>}
               {userName && hasData && (
                 <div>
+                  <h2 className="p-2">
+                    <strong>{msg}</strong>
+                  </h2>
                   <div className="mt-4 bg-black text-white p-2 rounded-md">
                     <label
                       htmlFor="levelSelect"
@@ -221,8 +283,8 @@ export default function Achievements() {
                     </select>
                   </div>
                   {/* Check if userData is available before rendering */}
-                  {userData ? (
-                    <div className="flex flex-col space-y-8  m-8">
+                  {userData && (
+                    <div className="flex flex-col space-y-8  m-4">
                       {Achievements.find(
                         (tier) => tier.level === selectedLevel
                       ).criteria.map((item) => (
@@ -243,8 +305,6 @@ export default function Achievements() {
                         </div>
                       ))}
                     </div>
-                  ) : (
-                    <p>Loading user data...</p>
                   )}
                 </div>
               )}
