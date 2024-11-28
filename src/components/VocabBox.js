@@ -39,7 +39,9 @@ export default function VocabBox() {
                 className="language-dropdown pb-4"
               >
                 <option value="" disabled>
-                  {sourceLang ? getLanguageName(sourceLang) : 'Detect language'}
+                  {sourceLang
+                    ? getLanguageName(sourceLang)
+                    : 'Detected language'}
                 </option>
               </select>
               <br />
@@ -50,12 +52,11 @@ export default function VocabBox() {
                 value={inputText}
                 onChange={(e) => {
                   setInputText(e.target.value);
-
                   setTargetLanguage('');
                 }}
                 className="textarea"
                 placeholder={
-                  Gloading ? 'Asking Gemini... ' : 'Enter text to translate...'
+                  Gloading ? 'Asking Gemini... ' : 'Enter text or ask Gemini...'
                 }
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
@@ -137,8 +138,6 @@ export default function VocabBox() {
         </div>
         <br />
         <div className="translate-button-container">
-          <div> {Tloading ? 'Translating...' : ''}</div>
-
           <button
             onClick={callGemini}
             className="translate-button"
@@ -146,6 +145,17 @@ export default function VocabBox() {
           >
             {Gloading ? 'Asking Gemini...' : 'Ask Google Gemini'}
           </button>
+
+          {/* 
+          {inputText && (
+            <button
+              onClick={handleTranslate}
+              className="translate-button"
+              disabled={Tloading}
+            >
+              {Tloading ? 'Translating...' : 'Translate'}
+            </button>
+          )} */}
 
           {translations && (
             <button onClick={clear} className="clear-button">
