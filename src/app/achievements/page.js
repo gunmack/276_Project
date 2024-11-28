@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import Toolbar from '../components/Toolbar';
+import Toolbar from '../../components/Toolbar';
 import { signOut } from 'firebase/auth';
 
 import { getAuth } from 'firebase/auth';
