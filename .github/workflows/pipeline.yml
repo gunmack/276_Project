@@ -14,9 +14,6 @@ env:
   VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
 on:
-  push:
-    branches:
-      - staging
   pull_request:
     branches:
       - staging
