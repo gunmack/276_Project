@@ -4,7 +4,7 @@
 
 'use client';
 import React, { useState, useEffect } from 'react';
-import { firebaseDB } from '../../../firebase_config';
+import { firebaseDB } from '../../firebase_config';
 import { getDatabase, ref, set, get } from 'firebase/database';
 import {
   signInWithPopup,

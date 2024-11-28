@@ -2,8 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Toolbar from '../../components/Toolbar';
 import { useAuth } from '../context/AuthContext';
-import { firebaseDB } from '../../../firebase_config';
-import { getDatabase, ref, get, set } from 'firebase/database';
+import { addToFlashCards } from '../app_firebase';
 
 function decodeHtmlEntities(text) {
   const textArea = document.createElement('textarea');
@@ -22,24 +21,6 @@ export default function Flashcards() {
   const [hasTranslation, setHasTranslation] = useState(false);
   const [loading, setLoading] = useState(false);
   const [translating, setTranslating] = useState(false);
-
-  const addToFlashCards = async () => {
-    const database = getDatabase(firebaseDB);
-    const FlashCardCountRef = ref(
-      database,
-      `Users/${user.displayName}/FlashCardCount`
-    );
-    const count = await get(FlashCardCountRef);
-    let newCount = 1;
-    if (count.exists()) {
-      newCount = count.val() + 1;
-    }
-    try {
-      await set(FlashCardCountRef, newCount);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   async function generateNewFlashcard() {
     setError(null);
@@ -107,7 +88,7 @@ export default function Flashcards() {
       });
       setHasTranslation(true);
       if (user) {
-        addToFlashCards();
+        addToFlashCards(user);
       }
     } catch (error) {
       console.error(error);

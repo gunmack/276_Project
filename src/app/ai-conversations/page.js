@@ -3,8 +3,7 @@ import React from 'react';
 import Toolbar from '../../components/Toolbar';
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { firebaseDB } from '../../../firebase_config';
-import { getDatabase, ref, get, set } from 'firebase/database';
+import { addToAImsg } from '../app_firebase';
 
 export default function GeminiChatbot() {
   const { user } = useAuth();
@@ -15,21 +14,6 @@ export default function GeminiChatbot() {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
-
-  const addToAImsg = async () => {
-    const database = getDatabase(firebaseDB);
-    const AImsgCountRef = ref(database, `Users/${user.displayName}/AImsgCount`);
-    const count = await get(AImsgCountRef);
-    let newCount = 1;
-    if (count.exists()) {
-      newCount = count.val() + 1;
-    }
-    try {
-      await set(AImsgCountRef, newCount);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   // retrieves a conversation string from localStorage if it has data then
   // parse the JSON string into an array
@@ -84,7 +68,7 @@ export default function GeminiChatbot() {
         { sender: 'Bot', text: data.reply }
       ]);
       if (user) {
-        addToAImsg();
+        addToAImsg(user);
       }
       setMessage('');
     } catch (err) {
