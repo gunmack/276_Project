@@ -1,13 +1,12 @@
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
-import { firebaseDB } from '../firebase_config';
+import { firebaseDB } from '../../firebase_config';
 import { getDatabase, ref, get, set } from 'firebase/database';
-import { useAuth } from '../src/app/context/AuthContext';
+import { useAuth } from '../app/context/AuthContext';
 
 const languageOptions = [
   { key: 'en', label: 'English' },
-  { key: 'fr-FR', label: 'French (French)' },
-  { key: 'fr-CA', label: 'French (Canadian)' },
+  { key: 'fr', label: 'French' },
   { key: 'de', label: 'German' },
   { key: 'es', label: 'Spanish' }
 ];

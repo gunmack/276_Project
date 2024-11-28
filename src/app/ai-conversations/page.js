@@ -1,6 +1,6 @@
 'use client'; // Client-side rendering
 import React from 'react';
-import Toolbar from '../Toolbar';
+import Toolbar from '../../components/Toolbar';
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { firebaseDB } from '../../../firebase_config';
@@ -14,7 +14,7 @@ export default function GeminiChatbot() {
   const [conversation, setConversation] = useState([]);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [showPopup, setShowPopup] = useState(true);
+  const [showPopup, setShowPopup] = useState(false);
 
   const addToAImsg = async () => {
     const database = getDatabase(firebaseDB);
@@ -123,6 +123,12 @@ export default function GeminiChatbot() {
           </div>
         </div>
       )}
+      <button
+        onClick={() => setShowPopup(true)}
+        className="bg-black text-white p-4 rounded-full shadow-lg hover:bg-green-600 hover:text-black fixed top-4 right-4 flex items-center justify-center w-16 h-16"
+      >
+        ❔
+      </button>
 
       <label htmlFor="language-select">Choose a Language: </label>
       <select
@@ -131,10 +137,10 @@ export default function GeminiChatbot() {
         onChange={handleLanguageChange}
         className="language-dropdown"
       >
+        <option value="English">English</option>
         <option value="French">French</option>
         <option value="German">German</option>
         <option value="Spanish">Spanish</option>
-        <option value="English">English</option>
       </select>
 
       <div className="chat-area">

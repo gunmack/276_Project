@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { firebaseDB } from '../firebase_config';
+import { firebaseDB } from '../../firebase_config';
 import { getDatabase, ref, get, set } from 'firebase/database';
-import { useAuth } from '../src/app/context/AuthContext';
+import { useAuth } from '../app/context/AuthContext';
 
 // helper function it helps decode any HTML entities in the translated text so its a clean readable output.
 function decodeHtmlEntities(text) {
@@ -124,7 +124,7 @@ export default function TextToSpeechBox() {
         onChange={(e) => setText(e.target.value)}
         rows="4"
         cols="50"
-        placeholder="Enter Text"
+        placeholder="Text-to-Speech"
         className="text-input"
       />
       <br />

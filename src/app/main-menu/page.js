@@ -2,14 +2,14 @@
 
 import React from 'react';
 import Link from 'next/link';
-import Toolbar from '../Toolbar';
+import Toolbar from '../../components/Toolbar';
 
 export default function MainMenu() {
   const features = [
     {
-      name: 'Learn Vocab',
-      href: './learn-vocab',
-      description: 'Expand your vocabulary.',
+      name: 'Translate',
+      href: './translate',
+      description: 'Use the built in translation Feature.',
       icon: '📚'
     },
     {
