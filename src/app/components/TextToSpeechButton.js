@@ -94,10 +94,12 @@ export default function TextToSpeechBox() {
           const audioUrl = URL.createObjectURL(audioBlob);
           const audio = new Audio(audioUrl);
           audio.play();
-          if (useCount === 0) {
-            addToTts();
+          if (user) {
+            if (useCount === 0) {
+              addToTts();
+            }
+            useCount++;
           }
-          useCount++;
         } else {
           // otherwise give error if it was a problem with the data
           console.error('Error synthesizing speech:', data.error);

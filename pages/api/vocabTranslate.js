@@ -20,7 +20,6 @@ export default async function handler(req, res) {
     const translations = data.data.translations.map((t) => t.translatedText);
     const detectedSourceLanguage =
       data.data.translations[0]?.detectedSourceLanguage;
-    console.log(translations, detectedSourceLanguage);
     res.status(200).json({ translations, detectedSourceLanguage });
   } catch (error) {
     res.status(500).json({ error: error.message });

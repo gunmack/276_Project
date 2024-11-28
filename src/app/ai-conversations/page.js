@@ -83,7 +83,9 @@ export default function GeminiChatbot() {
         { sender: 'User', text: message },
         { sender: 'Bot', text: data.reply }
       ]);
-      addToAImsg();
+      if (user) {
+        addToAImsg();
+      }
       setMessage('');
     } catch (err) {
       setError(`Error: ${err.message}`);

@@ -106,7 +106,9 @@ export default function Flashcards() {
         translation: decodedText
       });
       setHasTranslation(true);
-      addToFlashCards();
+      if (user) {
+        addToFlashCards();
+      }
     } catch (error) {
       console.error(error);
       setError('Failed to fetch translation');
