@@ -1,6 +1,6 @@
 'use client'; // Client-side rendering
 import React from 'react';
-import Toolbar from '../components/Toolbar';
+import Toolbar from '../../components/Toolbar';
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { firebaseDB } from '../../../firebase_config';

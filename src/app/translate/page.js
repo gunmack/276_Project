@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import Toolbar from '../components/Toolbar';
-import VocabBox from '../components/VocabBox';
+import Toolbar from '../../components/Toolbar';
+import VocabBox from '../../components/VocabBox';
 
 export default function LearnVocab() {
   const [showPopup, setShowPopup] = useState(false);

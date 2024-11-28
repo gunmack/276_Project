@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Toolbar from '../components/Toolbar';
+import Toolbar from '../../components/Toolbar';
 import Link from 'next/link';
 import { useAuth } from '../context/AuthContext';
 import { firebaseDB } from '../../../firebase_config';

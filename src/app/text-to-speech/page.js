@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import Toolbar from '../components/Toolbar';
-import TextToSpeechButton from '../components/TextToSpeechButton';
+import Toolbar from '../../components/Toolbar';
+import TextToSpeechButton from '../../components/TextToSpeechButton';
 
 export default function TextToSpeech() {
   const [showPopup, setShowPopup] = useState(false);

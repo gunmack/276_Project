@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { firebaseDB } from '../../../firebase_config';
+import { firebaseDB } from '../../firebase_config';
 import { getDatabase, ref, get, set } from 'firebase/database';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../app/context/AuthContext';
 
 // helper function it helps decode any HTML entities in the translated text so its a clean readable output.
 function decodeHtmlEntities(text) {
