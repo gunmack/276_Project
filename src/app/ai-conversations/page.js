@@ -4,6 +4,7 @@ import Toolbar from '../../components/Toolbar';
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { addToAImsg } from '../app_firebase';
+import { useRouter } from 'next/navigation';
 
 export default function GeminiChatbot() {
   const { user } = useAuth();

@@ -17,6 +17,7 @@ import TextToSpeechBox from '../src/components/TextToSpeechButton';
 import Logout from '../src/app/sign-out/page';
 import Login from '../src/app/auth/page';
 import { useAuth } from '../src/app/context/AuthContext';
+import Toolbar from '../src/components/Toolbar';
 
 // Mock the useRouter hook
 jest.mock('next/navigation', () => ({
@@ -158,5 +159,11 @@ describe('App', () => {
 
     const logout = screen.getByTestId('Logout screen');
     expect(logout).toBeInTheDocument();
+  });
+  it('should render Toolbar', () => {
+    render(<Toolbar />);
+
+    const toolbar = screen.getByTestId('Toolbar');
+    expect(toolbar).toBeInTheDocument();
   });
 });

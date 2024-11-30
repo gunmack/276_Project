@@ -110,6 +110,7 @@ export default function Toolbar() {
 
       {/* Side Menu */}
       <div
+        data-testid="Toolbar"
         className={`absolute top-0 left-0 h-full bg-white p-4 shadow-lg transition-transform duration-300 ${menuOpen ? 'transform translate-x-0' : 'transform -translate-x-full'}`}
         style={{
           width: '20%',
@@ -129,7 +130,11 @@ export default function Toolbar() {
           </div>
           {showFeatures &&
             features.map((feature) => (
-              <Link key={feature.name} href={feature.href}>
+              <Link
+                key={feature.name}
+                href={feature.href}
+                data-testid={`toolbar-${feature.name.toLowerCase().replace(/\s+/g, '-')}`}
+              >
                 <button className="w-full p-2 m-2 rounded-lg border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background hover:bg-[#5999AE] dark:hover:bg-[#5999AE] text-xs lg:text-lg shadow-md">
                   {feature.name}
                   <span className="ml-2">{feature.icon}</span>
@@ -141,6 +146,7 @@ export default function Toolbar() {
           <Link
             href="/main-menu"
             className=" inline-flex items-center gap-2 text-lg font-medium bg-gray-200 p-2  hover:bg-gray-400 rounded-lg transition-all duration-300"
+            data-testid="toolbar-home"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
