@@ -36,7 +36,7 @@ export default function Flashcards() {
       });
 
       const data = await response.json();
-      console.log('API Response:', data);
+      // console.log('API Response:', data);
 
       if (data.generatedText) {
         const generatedText = data.generatedText;

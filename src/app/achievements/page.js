@@ -81,7 +81,7 @@ export default function Achievements() {
   };
 
   const handleDeleteAccount = () => {
-    console.log('Account deleted.');
+    // console.log('Account deleted.');
     setShowConfirm(false); // Close the popup after deletion
     DeleteAccount();
   };
@@ -98,7 +98,7 @@ export default function Achievements() {
       // Listen for changes at the 'Users/{user.displayName}' path
       onValue(userRef, (snapshot) => {
         const data = snapshot.val();
-        console.log(data);
+        // console.log(data);
 
         // Check if data exists
         if (data) {
@@ -106,7 +106,7 @@ export default function Achievements() {
           setUserData(data);
           setHasData(true);
         } else {
-          console.log('No data found');
+          // console.log('No data found');
         }
       });
     } else {
