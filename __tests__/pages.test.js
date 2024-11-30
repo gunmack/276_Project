@@ -10,6 +10,7 @@ import Achievements from '../src/app/achievements/page';
 import AiConversations from '../src/app/ai-conversations/page';
 import Flashcards from '../src/app/flashcards/page';
 import LearnVocab from '../src/app/translate/page';
+import VocabBox from '../src/components/VocabBox';
 import Quizzes from '../src/app/quizzes/page';
 import TextToSpeech from '../src/app/text-to-speech/page';
 import TextToSpeechBox from '../src/components/TextToSpeechButton';
@@ -116,6 +117,13 @@ describe('App', () => {
 
     const vocab = screen.getByTestId('Learn Vocab');
     expect(vocab).toBeInTheDocument();
+  });
+
+  it('should render Vocab Box', () => {
+    render(<VocabBox />);
+
+    const vocab_box = screen.getByTestId('Vocab Box');
+    expect(vocab_box).toBeInTheDocument();
   });
 
   it('should render Quizzes page', () => {
