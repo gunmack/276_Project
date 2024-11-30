@@ -18,9 +18,6 @@ on:
   push:
     branches-ignore:
       - staging
-  pull_request:
-    branches:
-      - staging
 
 jobs:
   build:
