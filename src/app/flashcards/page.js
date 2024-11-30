@@ -87,7 +87,7 @@ export default function Flashcards() {
         translation: decodedText
       });
       setHasTranslation(true);
-      if (user) {
+      if (user.displayName != null) {
         addToFlashCards(user);
       }
     } catch (error) {

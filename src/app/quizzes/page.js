@@ -67,21 +67,23 @@ export default function Quizzes() {
   }
 
   function checkAnswer() {
-    setIsSubmitted(true);
     if (!quiz || !userAnswer) return;
     const correctAnswer = quiz.correctAnswer;
     const correctOption = ['A', 'B', 'C', 'D'][
       quiz.options.indexOf(correctAnswer)
     ];
-    if (userAnswer.toUpperCase() === correctOption) {
-      if (user) {
-        addToQuiz(user);
+    if (userAnswer != null) {
+      setIsSubmitted(true);
+      if (userAnswer.toUpperCase() === correctOption) {
+        if (user.displayName != null) {
+          addToQuiz(user);
+        }
+        setFeedback('🎉 Correct!');
+      } else {
+        setFeedback(
+          `❌ Incorrect. The correct answer was ${correctOption}: ${correctAnswer}`
+        );
       }
-      setFeedback('🎉 Correct!');
-    } else {
-      setFeedback(
-        `❌ Incorrect. The correct answer was ${correctOption}: ${correctAnswer}`
-      );
     }
   }
 
