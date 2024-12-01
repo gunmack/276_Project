@@ -51,6 +51,7 @@
     "@babel/preset-env": "^7.26.0",
     "@babel/preset-react": "^7.25.9",
     "@eslint/js": "^9.15.0",
+    "@next/eslint-plugin-next": "^15.0.3",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.0.1",
     "@types/aria-query": "^5.0.4",

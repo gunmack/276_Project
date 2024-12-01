@@ -31,6 +31,7 @@ export default function Login() {
           router.push('/main-menu'); // Redirect to dashboard if already signed in
         }
       } catch (error) {
+        console.error('Error checking user:', error);
         setMsg('No user is currently signed in.');
       }
     });

@@ -1,6 +1,5 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import handler from '../../pages/api/geminiChat'; // Adjust import based on your actual file structure
-
+import handler from '../../pages/api/geminiChat';
 jest.mock('@google/generative-ai', () => {
   return {
     GoogleGenerativeAI: jest.fn().mockImplementation(() => {

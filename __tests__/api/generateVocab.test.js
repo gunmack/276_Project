@@ -1,4 +1,4 @@
-import handler from '../../pages/api/generateVocab'; // Adjust the path to your API handler
+import handler from '../../pages/api/generateVocab';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 jest.mock('@google/generative-ai');

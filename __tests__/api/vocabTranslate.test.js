@@ -1,4 +1,4 @@
-import handler from '../../pages/api/vocabTranslate'; // Adjust import based on your actual file structure
+import handler from '../../pages/api/vocabTranslate';
 
 // Mock the fetch function
 global.fetch = jest.fn();

@@ -3,7 +3,6 @@
 import React from 'react';
 import Link from 'next/link';
 import Toolbar from '../../components/Toolbar';
-import { useRouter } from 'next/navigation';
 
 export default function MainMenu() {
   const features = [

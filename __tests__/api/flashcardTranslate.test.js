@@ -1,4 +1,4 @@
-import handler from '../../pages/api/flashcardsTranslate'; // Adjust the path to the actual location of your handler
+import handler from '../../pages/api/flashcardsTranslate';
 
 // Mocking the global fetch method
 global.fetch = jest.fn();
@@ -11,7 +11,7 @@ describe('Translation API Handler', () => {
     mockRequest = {
       body: {
         inputText: 'Hello',
-        targetLanguage: 'es' // Spanish, for example
+        targetLanguage: 'es' // Spanish
       }
     };
     mockResponse = {

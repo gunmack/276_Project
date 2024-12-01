@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Toolbar from '../../components/Toolbar';
-import Link from 'next/link';
+
 import { useAuth } from '../context/AuthContext';
 import { addToQuiz } from '../app_firebase';
 
