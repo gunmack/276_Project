@@ -18,16 +18,12 @@ export default function Toolbar() {
   useEffect(() => {
     // Listen for authentication state changes and retrieve the username
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUsername(user.displayName || 'Anonymous User'); // Set displayName or fallback to 'User'
+      if (user.displayName !== null) {
+        setUsername(user.displayName); // Set displayName or fallback to 'User'
       } else {
         setUsername('Anonymous User'); // Clear username if not authenticated
       }
     });
-
-    if (window.innerWidth < 768) {
-      setShowFeatures(false); // Hide features on smaller screens
-    }
 
     return () => {
       if (unsubscribe) {
@@ -123,6 +119,15 @@ export default function Toolbar() {
         }}
       >
         <ul className="flex flex-col gap-2 pt-20">
+          <div className="flex items-center justify-center">
+            {' '}
+            <img
+              className="flex items-center justify-center h-20 w-20 md:h-56 md:w-56"
+              src="/icon.jpg"
+              alt="Favicon"
+            />
+          </div>
+
           <div className="text-center">
             <h2 className="text-xs lg:text-lg p-2 font-bold">
               Hello, {username}!
