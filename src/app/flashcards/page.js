@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Toolbar from '../../components/Toolbar';
 import { useAuth } from '../context/AuthContext';
 import { addToFlashCards } from '../app_firebase';
@@ -17,16 +17,15 @@ export default function Flashcards() {
   const [targetLanguage, setTargetLanguage] = useState('');
   const [showPopup, setShowPopup] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false); // Track if flashcard is being generated
-  const [hasFlashCard, setHasFlashCard] = useState(false);
   const [hasTranslation, setHasTranslation] = useState(false);
-  const [loading, setLoading] = useState(false);
+
   const [translating, setTranslating] = useState(false);
 
   async function generateNewFlashcard() {
     setError(null);
     setIsGenerating(true); // Set generating state to true while loading
     setError(null); // Reset error state
-    setLoading(true); // Set loading state
+
     setHasTranslation(false); // Reset translation state
     try {
       const response = await fetch('/api/generateFlashcards', {
@@ -36,7 +35,7 @@ export default function Flashcards() {
       });
 
       const data = await response.json();
-      console.log('API Response:', data);
+      // console.log('API Response:', data);
 
       if (data.generatedText) {
         const generatedText = data.generatedText;
@@ -49,7 +48,7 @@ export default function Flashcards() {
               original: sentences[0],
               translation: ''
             });
-            setHasFlashCard(true);
+
             setHasTranslation(false);
           }
         }
@@ -59,7 +58,6 @@ export default function Flashcards() {
       setError('Failed to generate a new flashcard');
     } finally {
       setIsGenerating(false); // Reset generating state when done
-      setLoading(false);
     }
   }
 
@@ -87,7 +85,7 @@ export default function Flashcards() {
         translation: decodedText
       });
       setHasTranslation(true);
-      if (user) {
+      if (user.displayName != null) {
         addToFlashCards(user);
       }
     } catch (error) {

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Toolbar from '../../components/Toolbar';
-import Link from 'next/link';
+
 import { useAuth } from '../context/AuthContext';
 import { addToQuiz } from '../app_firebase';
 
@@ -19,8 +19,8 @@ export default function Quizzes() {
 
   // Explicitly log the current quizType and targetLanguage value to debug any issues
   useEffect(() => {
-    console.log('Quiz Type set to:', quizType);
-    console.log('Target Language set to:', targetLanguage);
+    // console.log('Quiz Type set to:', quizType);
+    // console.log('Target Language set to:', targetLanguage);
   }, [quizType, targetLanguage]);
 
   async function fetchQuiz() {
@@ -39,7 +39,7 @@ export default function Quizzes() {
 
     try {
       // Adding log to track if fetchQuiz is called and with correct quizType and targetLanguage
-      console.log('Calling fetchQuiz function', { quizType, targetLanguage });
+      // console.log('Calling fetchQuiz function', { quizType, targetLanguage });
 
       const response = await fetch('/api/generateQuiz', {
         method: 'POST',
@@ -67,21 +67,23 @@ export default function Quizzes() {
   }
 
   function checkAnswer() {
-    setIsSubmitted(true);
     if (!quiz || !userAnswer) return;
     const correctAnswer = quiz.correctAnswer;
     const correctOption = ['A', 'B', 'C', 'D'][
       quiz.options.indexOf(correctAnswer)
     ];
-    if (userAnswer.toUpperCase() === correctOption) {
-      if (user) {
-        addToQuiz(user);
+    if (userAnswer != null) {
+      setIsSubmitted(true);
+      if (userAnswer.toUpperCase() === correctOption) {
+        if (user.displayName != null) {
+          addToQuiz(user);
+        }
+        setFeedback('🎉 Correct!');
+      } else {
+        setFeedback(
+          `❌ Incorrect. The correct answer was ${correctOption}: ${correctAnswer}`
+        );
       }
-      setFeedback('🎉 Correct!');
-    } else {
-      setFeedback(
-        `❌ Incorrect. The correct answer was ${correctOption}: ${correctAnswer}`
-      );
     }
   }
 

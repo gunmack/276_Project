@@ -88,7 +88,8 @@ export default async function handler(req, res) {
 
         try {
           quizData = JSON.parse(rawText);
-        } catch (err) {
+        } catch (error) {
+          console.error('Error parsing API response:', error);
           console.warn(`Failed to parse API response: ${rawText}. Retrying...`);
           retryCount++;
           continue;

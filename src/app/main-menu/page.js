@@ -59,7 +59,11 @@ export default function MainMenu() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-3xl">
           {features.map((feature) => (
-            <Link key={feature.name} href={feature.href}>
+            <Link
+              key={feature.name}
+              href={feature.href}
+              data-testid={`main-menu-${feature.name.toLowerCase().replace(/\s+/g, '-')}`}
+            >
               <div className="p-6 h-44 w-full rounded-lg shadow-lg bg-white hover:bg-gray-100 hover:shadow-2xl hover:scale-105 transition-all duration-300 cursor-pointer flex flex-col items-center justify-center">
                 <div className="text-4xl mb-4">{feature.icon}</div>
                 <h2 className="text-xl font-semibold text-gray-900">

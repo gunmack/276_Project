@@ -145,10 +145,11 @@ body {
   font-size: 16px;
   color: var(--foreground-light);
   background-color: var(--secondary-bg);
-  border: 1% solid var(--border-color);
+  border: 1px solid var(--border-color);
   border-radius: 2%;
   text-align: center;
-  margin: 4%;
+  margin: 0 auto; /* Center the box */
+  width: 100%;
 }
 
 .vocab-text {

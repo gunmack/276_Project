@@ -67,7 +67,7 @@ export default function GeminiChatbot() {
         { sender: 'User', text: message },
         { sender: 'Bot', text: data.reply }
       ]);
-      if (user) {
+      if (user.displayName != null) {
         addToAImsg(user);
       }
       setMessage('');

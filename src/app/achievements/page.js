@@ -31,7 +31,7 @@ export default function Achievements() {
     {
       level: 'Beginner',
       criteria: [
-        { key: 'VocabCount', value: 10, description: 'Words/Phrases learned' },
+        { key: 'VocabCount', value: 10, description: 'Translations learnt' },
         { key: 'FlashCardCount', value: 5, description: 'Flash cards studied' },
         { key: 'QuizCount', value: 10, description: 'Quizzes passed' },
         { key: 'AImsgCount', value: 20, description: 'Chatbot messages sent' },
@@ -41,7 +41,7 @@ export default function Achievements() {
     {
       level: 'Intermediate',
       criteria: [
-        { key: 'VocabCount', value: 20, description: 'Words/Phrases learned' },
+        { key: 'VocabCount', value: 20, description: 'Translations learnt' },
         {
           key: 'FlashCardCount',
           value: 10,
@@ -55,7 +55,7 @@ export default function Achievements() {
     {
       level: 'Advanced',
       criteria: [
-        { key: 'VocabCount', value: 40, description: 'Words/Phrases learned' },
+        { key: 'VocabCount', value: 40, description: 'Translations learnt' },
         {
           key: 'FlashCardCount',
           value: 20,
@@ -81,7 +81,7 @@ export default function Achievements() {
   };
 
   const handleDeleteAccount = () => {
-    console.log('Account deleted.');
+    // console.log('Account deleted.');
     setShowConfirm(false); // Close the popup after deletion
     DeleteAccount();
   };
@@ -98,7 +98,7 @@ export default function Achievements() {
       // Listen for changes at the 'Users/{user.displayName}' path
       onValue(userRef, (snapshot) => {
         const data = snapshot.val();
-        console.log(data);
+        // console.log(data);
 
         // Check if data exists
         if (data) {
@@ -106,7 +106,7 @@ export default function Achievements() {
           setUserData(data);
           setHasData(true);
         } else {
-          console.log('No data found');
+          // console.log('No data found');
         }
       });
     } else {

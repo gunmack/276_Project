@@ -78,7 +78,7 @@ export default function TextToSpeechBox() {
           const audioUrl = URL.createObjectURL(audioBlob);
           const audio = new Audio(audioUrl);
           audio.play();
-          if (user) {
+          if (user.displayName != null) {
             if (useCount === 0) {
               addToTts(user);
             }

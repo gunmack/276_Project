@@ -1,7 +1,5 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
-// import { firebaseDB } from '../firebase_config';
-// import { getDatabase, ref, get, set } from 'firebase/database';
 import { addToVocab } from './comp_firebase';
 import { useAuth } from '../app/context/AuthContext';
 
@@ -129,7 +127,7 @@ export default function translate() {
         return;
       }
       setOutputText(decodedTranslations); // Display translations
-      if (user) {
+      if (user.displayName != null) {
         addToVocab(user); // Prevent further clicks
       }
     } catch (error) {
