@@ -19,7 +19,7 @@ export default function Toolbar() {
     // Listen for authentication state changes and retrieve the username
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user && user.displayName != null) {
-        setUsername(user.displayName); // Set displayName or fallback to 'User'
+        setUsername(user.displayName || 'Anonymous User'); // Set displayName or fallback to 'User'
       } else {
         setUsername('Anonymous User'); // Clear username if not authenticated
       }
