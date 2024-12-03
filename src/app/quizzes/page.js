@@ -6,6 +6,7 @@ import Toolbar from '../../components/Toolbar';
 import { useAuth } from '../context/AuthContext';
 import { addToQuiz } from '../app_firebase';
 
+
 export default function Quizzes() {
   const [quiz, setQuiz] = useState(null);
   const [userAnswer, setUserAnswer] = useState('');
@@ -17,7 +18,6 @@ export default function Quizzes() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { user } = useAuth();
 
-  // Explicitly log the current quizType and targetLanguage value to debug any issues
   useEffect(() => {
     // console.log('Quiz Type set to:', quizType);
     // console.log('Target Language set to:', targetLanguage);
@@ -38,8 +38,8 @@ export default function Quizzes() {
     setIsSubmitted(false);
 
     try {
-      // Adding log to track if fetchQuiz is called and with correct quizType and targetLanguage
-      // console.log('Calling fetchQuiz function', { quizType, targetLanguage });
+      console.log('Calling fetchQuiz function', { quizType, targetLanguage });
+
 
       const response = await fetch('/api/generateQuiz', {
         method: 'POST',
@@ -67,23 +67,30 @@ export default function Quizzes() {
   }
 
   function checkAnswer() {
-    if (!quiz || !userAnswer) return;
+
+    if (!userAnswer) {
+      setFeedback('Please select an option before submitting.');
+      return;
+    }
+
+    setIsSubmitted(true);
+    if (!quiz) return;
+
+
     const correctAnswer = quiz.correctAnswer;
     const correctOption = ['A', 'B', 'C', 'D'][
       quiz.options.indexOf(correctAnswer)
     ];
-    if (userAnswer != null) {
-      setIsSubmitted(true);
-      if (userAnswer.toUpperCase() === correctOption) {
-        if (user.displayName != null) {
-          addToQuiz(user);
-        }
-        setFeedback('🎉 Correct!');
-      } else {
-        setFeedback(
-          `❌ Incorrect. The correct answer was ${correctOption}: ${correctAnswer}`
-        );
+
+    if (userAnswer === correctOption) {
+      if (user.Displayname != null){
+        addToQuiz();
       }
+      setFeedback('🎉 Correct!');
+    } else {
+      setFeedback(
+        `❌ Incorrect. The correct answer was ${correctOption}: ${correctAnswer}`
+      );
     }
   }
 
@@ -124,24 +131,33 @@ export default function Quizzes() {
         {quiz ? (
           <div className="bg-white text-black rounded-lg p-8 shadow-lg w-[200%] max-w-3xl text-center">
             <h2 className="text-3xl font-bold mb-6">{quiz.question}</h2>
-            <ul className="list-none mb-8">
+            <ul className="list-none mb-8 flex flex-col items-center">
               {quiz.options.map((option, index) => (
-                <li key={index} className="mb-4 text-lg">
-                  <span className="font-bold text-xl">
-                    {['A', 'B', 'C', 'D'][index]}:
-                  </span>{' '}
-                  {option}
+                <li
+                  key={index}
+                  className="mb-4 w-full max-w-md flex justify-center"
+                >
+                  <label
+                    htmlFor={`option-${index}`}
+                    className="flex items-center"
+                  >
+                    <input
+                      type="radio"
+                      id={`option-${index}`}
+                      name="quiz-options"
+                      value={['A', 'B', 'C', 'D'][index]}
+                      checked={userAnswer === ['A', 'B', 'C', 'D'][index]}
+                      onChange={(e) => setUserAnswer(e.target.value)}
+                      className="mr-2 h-5 w-5"
+                    />
+                    <span className="font-bold text-xl">
+                      {['A', 'B', 'C', 'D'][index]}: {option}
+                    </span>
+                  </label>
                 </li>
               ))}
             </ul>
             <div className="mt-6 flex flex-col items-center justify-center gap-8 w-3/4 max-w-lg mx-auto">
-              <input
-                type="text"
-                placeholder="Enter A, B, C, or D"
-                value={userAnswer}
-                onChange={(e) => setUserAnswer(e.target.value)}
-                className="border px-6 py-3 text-lg rounded-lg w-full text-black focus:outline-none focus:ring-4 focus:ring-black"
-              />
               {!isSubmitted && (
                 <button
                   onClick={checkAnswer}
@@ -156,7 +172,9 @@ export default function Quizzes() {
                 className={`mt-8 text-xl font-semibold ${
                   feedback.includes('Correct')
                     ? 'text-green-600'
-                    : 'text-red-600'
+                    : feedback.includes('select')
+                      ? 'text-yellow-600'
+                      : 'text-red-600'
                 }`}
               >
                 {feedback}
@@ -206,7 +224,7 @@ export default function Quizzes() {
             disabled={loading}
             className="px-8 py-3 bg-black text-white text-lg font-semibold rounded-md shadow-md hover:bg-[#5999AE] dark:hover:bg-[#5999AE] hover:scale-105 transition-transform duration-200"
           >
-            {loading ? 'Generating...' : 'Generate Quiz'}
+            {loading ? 'Generating...' : 'Generate Quiz Question'}
           </button>
         </div>
       </main>
