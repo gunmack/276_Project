@@ -18,16 +18,12 @@ export default function Toolbar() {
   useEffect(() => {
     // Listen for authentication state changes and retrieve the username
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUsername(user.displayName || 'Anonymous User'); // Set displayName or fallback to 'User'
+      if (user.displayName !== null) {
+        setUsername(user.displayName); // Set displayName or fallback to 'User'
       } else {
         setUsername('Anonymous User'); // Clear username if not authenticated
       }
     });
-
-    if (window.innerWidth < 768) {
-      setShowFeatures(false); // Hide features on smaller screens
-    }
 
     return () => {
       if (unsubscribe) {
@@ -51,7 +47,7 @@ export default function Toolbar() {
   const handleSignOut = async () => {
     try {
       await signOut(auth);
-      router.push('/logout'); // Redirect to the login page
+      router.push('/sign-out'); // Redirect to the login page
     } catch (error) {
       console.error('Error logging out:', error); // Log any errors
       alert('An error occurred while logging out. Please try again.');
@@ -60,34 +56,41 @@ export default function Toolbar() {
 
   const features = [
     {
-      name: 'Learn Vocab',
-      href: './learn-vocab',
-      description: 'Expand your vocabulary.'
+      name: 'Translate',
+      href: './translate',
+      description: 'Use the built in translation Feature.',
+
+      icon: '📚'
     },
     {
       name: 'Quizzes',
       href: './quizzes',
-      description: 'Test your knowledge.'
+      description: 'Test your knowledge.',
+      icon: '📝'
     },
     {
       name: 'Text-to-Speech',
       href: './text-to-speech',
-      description: 'Learn pronounciation.'
+      description: 'Learn pronounciation.',
+      icon: '🔊'
     },
     {
       name: 'AI Conversations',
       href: './ai-conversations',
-      description: 'Practice conversations.'
+      description: 'Practice conversations.',
+      icon: '🤖'
     },
     {
       name: 'Flashcards',
       href: './flashcards',
-      description: 'Learn with flashcards.'
+      description: 'Learn with flashcards.',
+      icon: '💡'
     },
     {
       name: 'Achievements',
       href: './achievements',
-      description: 'Track your progress.'
+      description: 'Track your progress.',
+      icon: '🏆'
     }
   ];
 
@@ -96,16 +99,18 @@ export default function Toolbar() {
       {/* Overlay */}
       {menuOpen && (
         <div
-          className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-900"
+          className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-50"
           onClick={toggleMenu}
         ></div>
       )}
 
       {/* Side Menu */}
       <div
+        data-testid="Toolbar"
         className={`absolute top-0 left-0 h-full bg-white p-4 shadow-lg transition-transform duration-300 ${menuOpen ? 'transform translate-x-0' : 'transform -translate-x-full'}`}
         style={{
           width: '20%',
+          minWidth: '250px',
           position: 'fixed',
           top: 0,
           left: 0,
@@ -114,6 +119,15 @@ export default function Toolbar() {
         }}
       >
         <ul className="flex flex-col gap-2 pt-20">
+          <div className="flex items-center justify-center">
+            {' '}
+            <img
+              className="flex items-center justify-center h-20 w-20 md:h-56 md:w-56"
+              src="/icon.jpg"
+              alt="Favicon"
+            />
+          </div>
+
           <div className="text-center">
             <h2 className="text-xs lg:text-lg p-2 font-bold">
               Hello, {username}!
@@ -121,9 +135,14 @@ export default function Toolbar() {
           </div>
           {showFeatures &&
             features.map((feature) => (
-              <Link key={feature.name} href={feature.href}>
+              <Link
+                key={feature.name}
+                href={feature.href}
+                data-testid={`toolbar-${feature.name.toLowerCase().replace(/\s+/g, '-')}`}
+              >
                 <button className="w-full p-2 m-2 rounded-lg border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background hover:bg-[#5999AE] dark:hover:bg-[#5999AE] text-xs lg:text-lg shadow-md">
                   {feature.name}
+                  <span className="ml-2">{feature.icon}</span>
                 </button>
               </Link>
             ))}
@@ -132,6 +151,7 @@ export default function Toolbar() {
           <Link
             href="/main-menu"
             className=" inline-flex items-center gap-2 text-lg font-medium bg-gray-200 p-2  hover:bg-gray-400 rounded-lg transition-all duration-300"
+            data-testid="toolbar-home"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -160,7 +180,7 @@ export default function Toolbar() {
               onClick={handleSignOut}
               className="inline-flex items-cente text-lg font-medium bg-red-500 text-white p-2 hover:bg-red-600 rounded-lg transition-all duration-300"
             >
-              <span>Log Out</span>
+              <span>Sign Out</span>
             </button>
           )}
           {username == 'Anonymous User' && (
@@ -168,7 +188,7 @@ export default function Toolbar() {
               href="/auth"
               className="inline-flex items-center gap-2 text-lg font-medium bg-green-500 text-white p-2 hover:bg-green-600 rounded-lg transition-all duration-300"
             >
-              <span>Log In</span>
+              <span>Sign In</span>
             </Link>
           )}
         </div>

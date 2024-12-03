@@ -51,7 +51,7 @@ export default function Home() {
                 grow your skills!
               </p>
               <div className="flex justify-center items-center gap-4 w-full">
-                <Link href="main-menu">
+                <Link href="auth">
                   <button className="bg-black text-white p-2 rounded-lg shadow-lg hover:bg-[#5999AE] dark:hover:bg-[#5999AE] hover:text-black">
                     Start Learning
                   </button>

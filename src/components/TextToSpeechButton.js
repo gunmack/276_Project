@@ -1,9 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { firebaseDB } from '../firebase_config';
-import { getDatabase, ref, get, set } from 'firebase/database';
-import { useAuth } from '../src/app/context/AuthContext';
+import { addToTts } from './comp_firebase';
+import { useAuth } from '../app/context/AuthContext';
 
 // helper function it helps decode any HTML entities in the translated text so its a clean readable output.
 function decodeHtmlEntities(text) {
@@ -17,21 +16,6 @@ function decodeHtmlEntities(text) {
 export default function TextToSpeechBox() {
   var useCount = 0;
   const { user } = useAuth();
-
-  const addToTts = async () => {
-    const database = getDatabase(firebaseDB);
-    const ttsCountRef = ref(database, `Users/${user.displayName}/ttsCount`);
-    const count = await get(ttsCountRef);
-    let newCount = 1;
-    if (count.exists()) {
-      newCount = count.val() + 1;
-    }
-    try {
-      await set(ttsCountRef, newCount);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   //stores the user's input text
   const [text, setText] = useState('');
@@ -94,10 +78,12 @@ export default function TextToSpeechBox() {
           const audioUrl = URL.createObjectURL(audioBlob);
           const audio = new Audio(audioUrl);
           audio.play();
-          if (useCount === 0) {
-            addToTts();
+          if (user.displayName != null) {
+            if (useCount === 0) {
+              addToTts(user);
+            }
+            useCount++;
           }
-          useCount++;
         } else {
           // otherwise give error if it was a problem with the data
           console.error('Error synthesizing speech:', data.error);

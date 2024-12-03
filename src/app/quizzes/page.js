@@ -1,11 +1,11 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Toolbar from '../Toolbar';
-import Link from 'next/link';
+import Toolbar from '../../components/Toolbar';
+
 import { useAuth } from '../context/AuthContext';
-import { firebaseDB } from '../../../firebase_config';
-import { getDatabase, ref, get, set } from 'firebase/database';
+import { addToQuiz } from '../app_firebase';
+
 
 export default function Quizzes() {
   const [quiz, setQuiz] = useState(null);
@@ -14,27 +14,13 @@ export default function Quizzes() {
   const [loading, setLoading] = useState(false);
   const [quizType, setQuizType] = useState('word-translation'); // Default quiz type
   const [targetLanguage, setTargetLanguage] = useState('es'); // Default target language (Spanish)
-  const [showPopup, setShowPopup] = useState(true);
+  const [showPopup, setShowPopup] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-
-  const addToQuiz = async () => {
-    const database = getDatabase(firebaseDB);
-    const QuizCounttRef = ref(database, `Users/${user.displayName}/QuizCount`);
-    const count = await get(QuizCounttRef);
-    let newCount = 1;
-    if (count.exists()) {
-      newCount = count.val() + 1;
-    }
-    try {
-      await set(QuizCounttRef, newCount);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const { user } = useAuth();
 
   useEffect(() => {
-    console.log('Quiz Type set to:', quizType);
-    console.log('Target Language set to:', targetLanguage);
+    // console.log('Quiz Type set to:', quizType);
+    // console.log('Target Language set to:', targetLanguage);
   }, [quizType, targetLanguage]);
 
   async function fetchQuiz() {
@@ -53,6 +39,7 @@ export default function Quizzes() {
 
     try {
       console.log('Calling fetchQuiz function', { quizType, targetLanguage });
+
 
       const response = await fetch('/api/generateQuiz', {
         method: 'POST',
@@ -80,6 +67,7 @@ export default function Quizzes() {
   }
 
   function checkAnswer() {
+
     if (!userAnswer) {
       setFeedback('Please select an option before submitting.');
       return;
@@ -88,13 +76,16 @@ export default function Quizzes() {
     setIsSubmitted(true);
     if (!quiz) return;
 
+
     const correctAnswer = quiz.correctAnswer;
     const correctOption = ['A', 'B', 'C', 'D'][
       quiz.options.indexOf(correctAnswer)
     ];
 
     if (userAnswer === correctOption) {
-      addToQuiz();
+      if (user.Displayname != null){
+        addToQuiz();
+      }
       setFeedback('🎉 Correct!');
     } else {
       setFeedback(
@@ -102,8 +93,6 @@ export default function Quizzes() {
       );
     }
   }
-
-  const { user } = useAuth();
 
   return (
     <div
@@ -119,8 +108,8 @@ export default function Quizzes() {
               Welcome to Language Quizzes!
             </h2>
             <p className="text-gray-700 mb-6">
-              Test your knowledge with our quizzes. Select a quiz type and
-              language to get started!
+              Test your knowledge with our quizzes. Select a language and quiz
+              type then press "Generate Quiz."
             </p>
             <button
               onClick={() => setShowPopup(false)}
@@ -131,6 +120,12 @@ export default function Quizzes() {
           </div>
         </div>
       )}
+      <button
+        onClick={() => setShowPopup(true)}
+        className="bg-black text-white p-4 rounded-full shadow-lg hover:bg-green-600 hover:text-black fixed top-4 right-4 flex items-center justify-center w-16 h-16"
+      >
+        ❔
+      </button>
 
       <main className="flex flex-col gap-8 row-start-2 items-center justify-center sm:items-center max-w-lg w-full">
         {quiz ? (

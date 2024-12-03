@@ -145,17 +145,18 @@ body {
   font-size: 16px;
   color: var(--foreground-light);
   background-color: var(--secondary-bg);
-  border: 1% solid var(--border-color);
+  border: 1px solid var(--border-color);
   border-radius: 2%;
   text-align: center;
-  margin: 4%;
+  margin: 0 auto; /* Center the box */
+  width: 100%;
 }
 
 .vocab-text {
   max-width: 100%;
   max-height: 100%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   gap: 4%;
   align-items: center;
   justify-content: center;
@@ -165,6 +166,7 @@ body {
   width: 100%;
   font-size: 16px;
   padding: 4%;
+  padding-right: 30px;
   background-color: var(--input-bg);
   border: 1px solid var(--border-color);
   border-radius: 6px;
@@ -172,41 +174,6 @@ body {
   resize: none; /* Prevent manual resizing */
   overflow-y: auto; /* Hide overflow to prevent scrolling initially */
   overflow-x: auto;
-}
-.vocab-in {
-  font-size: 16px;
-  margin: 1%;
-  color: var(--foreground-light);
-  background-color: var(--secondary-bg);
-  text-align: center;
-  max-width: 100%;
-  /* max-height: 100%; */
-}
-
-.vocab-out {
-  font-size: 16px;
-  margin: 1%;
-  color: var(--foreground-light);
-  background-color: var(--secondary-bg);
-  text-align: center;
-  max-width: 50%;
-}
-
-.no-list {
-  list-style: none; /* Remove default bullet points */
-  padding: 0;
-  margin: 0;
-  max-width: 100%;
-  background-color: var(--input-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  padding: 8px;
-}
-
-.no-list li {
-  word-wrap: break-word; /* Allow text inside list items to break */
-  word-break: break-word;
-  max-width: 100%; /* Break long words inside list items */
 }
 
 .translate-button-container {
@@ -218,13 +185,14 @@ body {
 }
 
 .translate-button {
-  width: 50%;
+  width: auto;
+  height: auto;
   justify-content: center;
   align-items: center;
-  padding: 2%;
+  padding: 1%;
   font-size: 14px;
   font-weight: 600;
-  margin: 2%;
+  margin: 1%;
   color: #ffffff;
   background-color: var(--primary-color);
   border: none;
@@ -249,13 +217,14 @@ body {
 }
 
 .clear-button {
-  width: 50%;
+  width: auto;
+  height: auto;
   justify-content: center;
   align-items: center;
-  padding: 2%;
+  padding: 1%;
   font-size: 14px;
   font-weight: 600;
-  margin: 2%;
+  margin: 1%;
   color: #ff0000;
   background-color: var(--primary-color);
   border: none;
@@ -268,6 +237,20 @@ body {
 .clear-button:hover {
   background-color: red;
   color: #ffffff;
+}
+
+.text-clear {
+  position: relative;
+  top: 75px;
+  left: -12px;
+  width: 1px;
+  height: 1px;
+  color: red;
+  cursor: pointer;
+  font-size: 32px;
+}
+.text-clear:hover {
+  color: #333;
 }
 
 .flashcard-button {
@@ -335,7 +318,7 @@ body {
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 16px; /* Smaller font size */
-  width: 100%;
+  width: 50%;
   max-width: 400px;
 }
 
@@ -397,7 +380,7 @@ body {
 
 .top-right-clear {
   position: fixed;
-  top: 20px; /* 20px from the top of the page */
+  bottom: 20px; /* 20px from the top of the page */
   right: 20px; /* 20px from the right of the page */
   background-color: black;
   color: white;

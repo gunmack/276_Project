@@ -4,7 +4,7 @@
 
 'use client';
 import React, { useState, useEffect } from 'react';
-import { firebaseDB } from '../../../firebase_config';
+import { firebaseDB } from '../../firebase_config';
 import { getDatabase, ref, set, get } from 'firebase/database';
 import {
   signInWithPopup,
@@ -15,10 +15,9 @@ import {
 } from 'firebase/auth';
 
 import { useRouter } from 'next/navigation';
-import Toolbar from '../Toolbar';
+import Toolbar from '../../components/Toolbar';
 
 export default function Login() {
-  const [error, setError] = useState('');
   const router = useRouter();
   const [msg, setMsg] = useState('');
   const [popup, setPopup] = useState(false);
@@ -32,6 +31,7 @@ export default function Login() {
           router.push('/main-menu'); // Redirect to dashboard if already signed in
         }
       } catch (error) {
+        console.error('Error checking user:', error);
         setMsg('No user is currently signed in.');
       }
     });
@@ -53,7 +53,7 @@ export default function Login() {
       // Check if the user already exists
       const snapshot = await get(userRef);
       if (snapshot.exists()) {
-        console.log('User already exists in the database.');
+        // console.log('User already exists in the database.');
         return;
       }
 
@@ -73,7 +73,7 @@ export default function Login() {
 
       await set(userRef, newUserData);
       await set(userCountRef, newUserCount);
-      console.log('User added successfully.');
+      // console.log('User added successfully.');
     } catch (error) {
       console.error('Error checking or adding user:', error);
     }
@@ -87,7 +87,8 @@ export default function Login() {
       addUserData(user);
       router.push('/main-menu'); // Redirect to a protected page
     } catch (err) {
-      setError('Error signing in with Google: ' + err.message);
+      console.error('Error signing in with Google:', err.message);
+      setMsg('Error signing in with Google, please try again.');
     }
     setPopup(false);
   };

@@ -1,10 +1,9 @@
 'use client'; // Client-side rendering
 import React from 'react';
-import Toolbar from '../Toolbar';
+import Toolbar from '../../components/Toolbar';
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { firebaseDB } from '../../../firebase_config';
-import { getDatabase, ref, get, set } from 'firebase/database';
+import { addToAImsg } from '../app_firebase';
 
 export default function GeminiChatbot() {
   const { user } = useAuth();
@@ -14,22 +13,7 @@ export default function GeminiChatbot() {
   const [conversation, setConversation] = useState([]);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [showPopup, setShowPopup] = useState(true);
-
-  const addToAImsg = async () => {
-    const database = getDatabase(firebaseDB);
-    const AImsgCountRef = ref(database, `Users/${user.displayName}/AImsgCount`);
-    const count = await get(AImsgCountRef);
-    let newCount = 1;
-    if (count.exists()) {
-      newCount = count.val() + 1;
-    }
-    try {
-      await set(AImsgCountRef, newCount);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const [showPopup, setShowPopup] = useState(false);
 
   // retrieves a conversation string from localStorage if it has data then
   // parse the JSON string into an array
@@ -83,7 +67,9 @@ export default function GeminiChatbot() {
         { sender: 'User', text: message },
         { sender: 'Bot', text: data.reply }
       ]);
-      addToAImsg();
+      if (user.displayName != null) {
+        addToAImsg(user);
+      }
       setMessage('');
     } catch (err) {
       setError(`Error: ${err.message}`);
@@ -123,6 +109,12 @@ export default function GeminiChatbot() {
           </div>
         </div>
       )}
+      <button
+        onClick={() => setShowPopup(true)}
+        className="bg-black text-white p-4 rounded-full shadow-lg hover:bg-green-600 hover:text-black fixed top-4 right-4 flex items-center justify-center w-16 h-16"
+      >
+        ❔
+      </button>
 
       <label htmlFor="language-select">Choose a Language: </label>
       <select
