@@ -6,7 +6,6 @@ import Toolbar from '../../components/Toolbar';
 import { useAuth } from '../context/AuthContext';
 import { addToQuiz } from '../app_firebase';
 
-
 export default function Quizzes() {
   const [quiz, setQuiz] = useState(null);
   const [userAnswer, setUserAnswer] = useState('');
@@ -40,7 +39,6 @@ export default function Quizzes() {
     try {
       console.log('Calling fetchQuiz function', { quizType, targetLanguage });
 
-
       const response = await fetch('/api/generateQuiz', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -67,7 +65,6 @@ export default function Quizzes() {
   }
 
   function checkAnswer() {
-
     if (!userAnswer) {
       setFeedback('Please select an option before submitting.');
       return;
@@ -76,15 +73,14 @@ export default function Quizzes() {
     setIsSubmitted(true);
     if (!quiz) return;
 
-
     const correctAnswer = quiz.correctAnswer;
     const correctOption = ['A', 'B', 'C', 'D'][
       quiz.options.indexOf(correctAnswer)
     ];
 
     if (userAnswer === correctOption) {
-      if (user.Displayname != null){
-        addToQuiz();
+      if (user.displayName != null) {
+        addToQuiz(user);
       }
       setFeedback('🎉 Correct!');
     } else {

@@ -27,7 +27,7 @@ export default function Login() {
     // Check if the user is already signed in
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       try {
-        if (user.displayName) {
+        if (user && user.displayName != null) {
           router.push('/main-menu'); // Redirect to dashboard if already signed in
         }
       } catch (error) {
