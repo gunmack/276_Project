@@ -1,6 +1,6 @@
 # Language Learning Application
 
-[Quizling](https://quizling-red.vercel.app/)
+[QuizLing](https://quizling-red.vercel.app/)
 
 ## Description
 
