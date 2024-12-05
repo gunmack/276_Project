@@ -29,14 +29,14 @@ export default function VocabBox() {
     <>
       <div data-testid="Vocab Box" className="vocab-box">
         <div className="vocab-text">
-          <div className="flex flex-1 gap-4">
+          <div className="flex flex-row md:gap-4 gap-1">
             <div>
               <select
                 disabled={true}
                 id="languageSelect"
                 value={sourceLang}
                 onChange={(e) => setSourceLang(e.target.value)}
-                className="language-dropdown pb-4"
+                className="translate-dropdown pb-4"
               >
                 <option value="" disabled>
                   {sourceLang
@@ -70,7 +70,7 @@ export default function VocabBox() {
               />
             </div>
 
-            {inputText && (
+            {inputText && window.innerWidth > 786 ? (
               <button
                 className="text-clear"
                 onClick={clearText}
@@ -78,7 +78,7 @@ export default function VocabBox() {
               >
                 &times; {/* HTML entity for the "X" character */}
               </button>
-            )}
+            ) : null}
 
             <button
               onClick={swapFields}
@@ -95,6 +95,7 @@ export default function VocabBox() {
                 uEEL/BFfumMlxRMa3Ghs1QwyIi7YUaFhEz243rlQc6wVsNNemk1U7LHm33CuhlvRMb+3aFuD8drdY9Wlj1q2gL3iujpf8T
                 k4URZUsM5fRbE0M3/daCVWAOVkJclQ+6NrIaq+fhgAAAAABJRU5ErkJggg=="
                 alt="sorting-arrows-horizontal"
+                className="md:h-6 md:w-6"
               ></img>
             </button>
 
@@ -104,7 +105,7 @@ export default function VocabBox() {
                 id="languageSelect"
                 value={targetLanguage}
                 onChange={(e) => setTargetLanguage(e.target.value)}
-                className={`language-dropdown pb-4 ${
+                className={`translate-dropdown pb-4 ${
                   inputText ? '' : 'opacity-50 cursor-not-allowed' // Dim the dropdown if disabled
                 }`}
               >

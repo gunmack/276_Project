@@ -3,10 +3,13 @@
 @tailwind utilities;
 
 :root {
-  --background-light: #ffffff;
+  /* --background-light: #ffffff;
   --foreground-light: #171717;
   --background-dark: #121212;
-  --foreground-dark: #ededed;
+  --foreground-dark: #ededed; */
+
+  --background: #ffffff;
+  --foreground: #000000;
   --primary-color: #0a0202;
   --primary-color-hover: #5999ae;
   --secondary-bg: #f3f4f6;
@@ -14,12 +17,16 @@
   --input-bg: #ffffff;
 }
 
-@media (prefers-color-scheme: dark) {
+/*
+Fix later when we implement light/dark mode
+*/
+
+/* @media (prefers-color-scheme: dark) {
   :root {
     --background: #ffffff;
     --foreground: #000000;
   }
-}
+} */
 
 body {
   color: var(--foreground);
@@ -140,6 +147,7 @@ body {
   border-radius: 6px;
   text-align: center;
 }
+
 .vocab-box {
   padding: 4%;
   font-size: 16px;
@@ -150,6 +158,19 @@ body {
   text-align: center;
   margin: 0 auto; /* Center the box */
   width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .vocab-box {
+    padding: 2%;
+    margin: 0;
+    font-size: 10px;
+    width: fit-content;
+  }
+  .vocab-text {
+    gap: 1%;
+    width: 100%;
+  }
 }
 
 .vocab-text {
@@ -174,6 +195,27 @@ body {
   resize: none; /* Prevent manual resizing */
   overflow-y: auto; /* Hide overflow to prevent scrolling initially */
   overflow-x: auto;
+}
+
+.translate-dropdown {
+  background-color: var(--foreground);
+  color: white;
+  margin: 8px 0;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px; /* Smaller font size */
+  width: 50%;
+  max-width: 400px;
+}
+
+@media screen and (max-width: 768px) {
+  .translate-dropdown {
+    width: 100%;
+    padding: 2%;
+    font-size: 14px;
+    margin: 0;
+  }
 }
 
 .translate-button-container {
@@ -278,13 +320,22 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  padding: 10%;
   background-color: var(--secondary-bg);
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  width: 550px;
-  margin: 40px auto;
-  gap: 16px;
+  width: max-content;
+  margin: 2% auto;
+  gap: 2%;
+}
+
+@media screen and (max-width: 768px) {
+  .achievement-container {
+    width: 100%;
+    padding: 5%;
+    margin: auto;
+    gap: auto;
+  }
 }
 
 /* Chatbot container styling */

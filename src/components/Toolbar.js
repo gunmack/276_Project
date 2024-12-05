@@ -18,8 +18,8 @@ export default function Toolbar() {
   useEffect(() => {
     // Listen for authentication state changes and retrieve the username
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user.displayName !== null) {
-        setUsername(user.displayName); // Set displayName or fallback to 'User'
+      if (user && user.displayName != null) {
+        setUsername(user.displayName || 'Anonymous User'); // Set displayName or fallback to 'User'
       } else {
         setUsername('Anonymous User'); // Clear username if not authenticated
       }
@@ -122,7 +122,7 @@ export default function Toolbar() {
           <div className="flex items-center justify-center">
             {' '}
             <img
-              className="flex items-center justify-center h-20 w-20 md:h-56 md:w-56"
+              className="flex items-center justify-center h-20 w-20"
               src="/icon.jpg"
               alt="Favicon"
             />
