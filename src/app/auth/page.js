@@ -116,7 +116,7 @@ export default function Login() {
                     id="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-1/2 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-[#5999AE]"
+                    className="md:w-1/2 w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-[#5999AE]"
                     placeholder="Enter your email"
                     required
                   />
@@ -131,7 +131,7 @@ export default function Login() {
                     id="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-1/2 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-[#5999AE]"
+                    className="md:w-1/2 w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-[#5999AE]"
                     placeholder="Enter your password"
                     required
                   />
@@ -139,14 +139,13 @@ export default function Login() {
                 <div className="flex flex-col gap-4 pt-8 justify-center items-center">
                   <button
                     onClick={() => handleLogin(email, password)}
-                    className="bg-black p-2 w-1/3  rounded-lg hover:bg-[#5999AE] text-white"
+                    className="bg-black p-2 md:w-1/3 w-full  rounded-lg hover:bg-[#5999AE] text-white"
                   >
                     Login
                   </button>
-                </div>
-                <div className="flex flex-row gap-4 pt-8 justify-center items-center">
+
                   <button
-                    className="bg-black p-2 w-1/3 rounded-lg hover:bg-gray-700 text-white flex items-center justify-center"
+                    className="bg-black p-2 md:w-1/3 w-full  rounded-lg hover:bg-gray-700 text-white flex items-center justify-center"
                     onClick={handleGoogleSignIn}
                   >
                     <img
@@ -155,12 +154,12 @@ export default function Login() {
                       alt="Google logo"
                     />
                   </button>
-                  or
+
                   <button
-                    className="bg-black p-2 w-1/3  rounded-lg hover:bg-[#5999AE] text-white"
+                    className="bg-black p-2 md:w-1/3 w-full rounded-lg hover:bg-[#5999AE] text-white"
                     onClick={handleGuestLogin}
                   >
-                    Continue as Guest
+                    Guest
                   </button>
                 </div>
               </div>
