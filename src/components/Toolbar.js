@@ -122,7 +122,7 @@ export default function Toolbar() {
           <div className="flex items-center justify-center">
             {' '}
             <img
-              className="flex items-center justify-center h-20 w-20"
+              className="flex items-center justify-center lg:h-20 lg:w-20 h-10 w-10"
               src="/icon.jpg"
               alt="Favicon"
             />

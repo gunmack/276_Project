@@ -136,36 +136,36 @@ export default function Login() {
                     required
                   />
                 </div>
-                <div className="flex flex-col gap-4 pt-8 justify-center items-center">
+                <div className="flex flex-row gap-4 pt-4 justify-center items-center">
                   <button
                     onClick={() => handleLogin(email, password)}
-                    className="bg-black p-2 md:w-1/3 w-full  rounded-lg hover:bg-[#5999AE] text-white"
+                    className="bg-black p-1 md:w-5/12 w-full rounded-lg hover:bg-gray-700 text-white"
                   >
                     Login
                   </button>
 
                   <button
-                    className="bg-black p-2 md:w-1/3 w-full  rounded-lg hover:bg-gray-700 text-white flex items-center justify-center"
+                    className="bg-black p-2.5 rounded-lg hover:bg-gray-700 text-white flex items-center justify-center"
                     onClick={handleGoogleSignIn}
                   >
                     <img
-                      className="w-6 h-6"
+                      className="w-3 h-3"
                       src="/google.png"
                       alt="Google logo"
                     />
-                  </button>
-
-                  <button
-                    className="bg-black p-2 md:w-1/3 w-full rounded-lg hover:bg-[#5999AE] text-white"
-                    onClick={handleGuestLogin}
-                  >
-                    Guest
                   </button>
                 </div>
               </div>
               <div className="p-8">
                 <p className="text-sm text-gray-500 mt-4">
-                  Don’t have an account?{' '}
+                  Don’t have an account?
+                  <button
+                    className=" p-2  text-blue-600 hover:underline "
+                    onClick={handleGuestLogin}
+                  >
+                    Continue as Guest
+                  </button>
+                  or{' '}
                   <Link
                     href="/sign-up"
                     className="text-blue-600 hover:underline"
