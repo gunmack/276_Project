@@ -43,7 +43,7 @@ export default function Logout() {
             <div className="w-full max-w-2xl p-6 bg-white rounded-lg shadow-md">
               <h1 className="text-3xl mb-16">Sign out successful!</h1>
               <p className="mb-8">Thank you for using QuizLing.</p>
-              <p className="mb-8"> Please consider filling out our survey:</p>
+              {/* <p className="mb-8"> Please consider filling out our survey:</p>
 
               <a
                 href="https://forms.office.com/r/gYpzRm1u5R"
@@ -52,7 +52,7 @@ export default function Logout() {
                 className="inline-block bg-black text-white p-2 rounded-lg shadow-lg hover:bg-[#5999AE] dark:hover:bg-[#5999AE] hover:text-black mb-8"
               >
                 QuizLing Survey
-              </a>
+              </a> */}
 
               <div className="flex justify-center items-center gap-4 w-full">
                 <Link href="\">
