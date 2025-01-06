@@ -116,6 +116,7 @@ export default function Achievements() {
 
   const handleSignOut = async () => {
     try {
+      await user.delete();
       await signOut(auth);
       alert('Success! Your account has been deleted.'); // Sign out the user
       router.push('/sign-out');
@@ -144,7 +145,7 @@ export default function Achievements() {
     const user = ref(database, `Users/`);
 
     // Create a reference to the user count
-    const userCountRef = ref(database, 'Users/UserCount');
+    const userCountRef = ref(database, 'Users/userCount');
 
     const userCountSnapshot = await get(userCountRef);
     // Default if the count doesn't exist
@@ -156,7 +157,7 @@ export default function Achievements() {
     }
     await update(user, {
       [userName]: null,
-      UserCount: newUserCount
+      userCount: newUserCount
     });
 
     setUserData({});

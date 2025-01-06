@@ -4,23 +4,26 @@
 
 'use client';
 import React, { useState, useEffect } from 'react';
-import { firebaseDB } from '../../firebase_config';
-import { getDatabase, ref, set, get } from 'firebase/database';
 import {
   signInWithPopup,
   GoogleAuthProvider,
   getAuth,
   onAuthStateChanged,
-  signInAnonymously
+  signInAnonymously,
+  signInWithEmailAndPassword
 } from 'firebase/auth';
 
 import { useRouter } from 'next/navigation';
-import Toolbar from '../../components/Toolbar';
+import { addUserData } from '../app_firebase';
+
+import Link from 'next/link';
 
 export default function Login() {
   const router = useRouter();
   const [msg, setMsg] = useState('');
   const [popup, setPopup] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const auth = getAuth();
   useEffect(() => {
@@ -39,45 +42,6 @@ export default function Login() {
     return () => unsubscribe(); // Clean up the subscription
   }, [router]);
 
-  const addUserData = async (user) => {
-    const database = getDatabase(firebaseDB);
-
-    if (!user || !user.displayName) {
-      console.error('Invalid user data.');
-      return;
-    }
-
-    const userRef = ref(database, `Users/${user.displayName}`);
-
-    try {
-      // Check if the user already exists
-      const snapshot = await get(userRef);
-      if (snapshot.exists()) {
-        // console.log('User already exists in the database.');
-        return;
-      }
-
-      const newUserData = {
-        displayName: user.displayName
-      };
-      // Create a reference to the user count
-      const userCountRef = ref(database, 'Users/UserCount');
-
-      // Retrieve current user count and increment it
-      const userCountSnapshot = await get(userCountRef);
-      let newUserCount = 1; // Default if the count doesn't exist
-
-      if (userCountSnapshot.exists()) {
-        newUserCount = userCountSnapshot.val() + 1; // Increment the current count
-      }
-
-      await set(userRef, newUserData);
-      await set(userCountRef, newUserCount);
-      // console.log('User added successfully.');
-    } catch (error) {
-      console.error('Error checking or adding user:', error);
-    }
-  };
   const handleGoogleSignIn = async () => {
     setPopup(true);
     const provider = new GoogleAuthProvider();
@@ -91,6 +55,27 @@ export default function Login() {
       setMsg('Error signing in with Google, please try again.');
     }
     setPopup(false);
+  };
+
+  const handleLogin = async (email, password) => {
+    if (!email || !password) {
+      alert('Please enter your email and password.');
+    } else {
+      try {
+        const result = await signInWithEmailAndPassword(auth, email, password);
+        const user = result.user;
+        addUserData(user);
+        router.push('/main-menu'); // Redirect to a protected page
+      } catch (error) {
+        // console.error('Error signing in:', error.message);
+        setMsg(`An error occured, please try again.`);
+        if (error.code === 'auth/invalid-credential') {
+          setMsg('Incorrect email or password. Please try again.');
+        } else {
+          setMsg(`An error occured, please try again.`);
+        }
+      }
+    }
   };
 
   const handleGuestLogin = async () => {
@@ -108,7 +93,6 @@ export default function Login() {
       data-testid="Login screen"
     >
       <div className="bg-white w-full max-w-3xl shadow-md rounded-lg p-8">
-        <Toolbar />
         <strong className="text-center block mb-6 text-2xl">Sign In</strong>
         <p className="text-center block mb-2 text-l">
           Signing in allows you to unlock the full potential of QuizLing. By
@@ -121,18 +105,82 @@ export default function Login() {
           <br />
           {!popup && (
             <div>
-              <button
-                className="bg-black p-2 m-8 rounded-lg hover:bg-[#5999AE] text-white"
-                onClick={handleGoogleSignIn}
-              >
-                Sign In with Google
-              </button>
-              <button
-                className="bg-black p-2 m-8 rounded-lg hover:bg-[#5999AE] text-white"
-                onClick={handleGuestLogin}
-              >
-                Continue as Guest
-              </button>
+              <div className="flex flex-col gap-4 bg-gray-100 p-8 rounded-lg">
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="block text-gray-600 text-sm mb-2"
+                  ></label>
+                  <input
+                    type="text"
+                    id="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-1/2 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-[#5999AE]"
+                    placeholder="Enter your email"
+                    required
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="password"
+                    className="block text-gray-600 text-sm mb-2"
+                  ></label>
+                  <input
+                    type="text"
+                    id="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="w-1/2 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-[#5999AE]"
+                    placeholder="Enter your password"
+                    required
+                  />
+                </div>
+                <div className="flex flex-col gap-4 pt-8 justify-center items-center">
+                  <button
+                    onClick={() => handleLogin(email, password)}
+                    className="bg-black p-2 w-1/3  rounded-lg hover:bg-[#5999AE] text-white"
+                  >
+                    Login
+                  </button>
+                </div>
+                <div className="flex flex-row gap-4 pt-8 justify-center items-center">
+                  <button
+                    className="bg-black p-2 w-1/3 rounded-lg hover:bg-gray-700 text-white flex items-center justify-center"
+                    onClick={handleGoogleSignIn}
+                  >
+                    <img
+                      className="w-6 h-6"
+                      src="/google.png"
+                      alt="Google logo"
+                    />
+                  </button>
+                  or
+                  <button
+                    className="bg-black p-2 w-1/3  rounded-lg hover:bg-[#5999AE] text-white"
+                    onClick={handleGuestLogin}
+                  >
+                    Continue as Guest
+                  </button>
+                </div>
+              </div>
+              <div className="p-8">
+                <p className="text-sm text-gray-500 mt-4">
+                  Don’t have an account?{' '}
+                  <Link
+                    href="/sign-up"
+                    className="text-blue-600 hover:underline"
+                  >
+                    Sign up
+                  </Link>
+                </p>
+                <p className="text-sm text-gray-500 mt-4">
+                  Forgot your password?{' '}
+                  <Link href="/reset" className="text-blue-600 hover:underline">
+                    Reset password
+                  </Link>
+                </p>
+              </div>
             </div>
           )}
 

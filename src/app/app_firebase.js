@@ -48,3 +48,43 @@ export async function addToAImsg(user) {
     console.error(error);
   }
 }
+
+export async function addUserData(user) {
+  const database = getDatabase(firebaseDB);
+
+  if (!user || !user.displayName) {
+    // console.error('Invalid user data.');
+    alert('Invalid sign up data, please try again.');
+    return;
+  }
+
+  const userRef = ref(database, `Users/${user.displayName}`);
+
+  try {
+    // Check if the user already exists
+    const snapshot = await get(userRef);
+    if (snapshot.exists()) {
+      alert('Welcome back ' + user.displayName);
+      return;
+    }
+
+    const newUserData = {
+      displayName: user.displayName
+    };
+    // Create a reference to the user count
+    const userCountRef = ref(database, 'Users/userCount');
+
+    // Retrieve current user count and increment it
+    const userCountSnapshot = await get(userCountRef);
+    let newUserCount = 1; // Default if the count doesn't exist
+
+    if (userCountSnapshot.exists()) {
+      newUserCount = userCountSnapshot.val() + 1; // Increment the current count
+    }
+    await set(userRef, newUserData);
+    await set(userCountRef, newUserCount);
+    // console.log('User added successfully.');
+  } catch (error) {
+    console.error('Error checking or adding user:', error);
+  }
+}
